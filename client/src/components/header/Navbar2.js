@@ -27,7 +27,7 @@ import {
 import { Navbar, Container, NavDropdown, Badge } from 'react-bootstrap';
 
 import LanguageSelectorpc from '../LanguageSelectorpc';
-import ActivateButton from '../../auth/ActivateButton';
+ 
 import VerifyModal from '../authAndVerify/VerifyModal';
 import DesactivateModal from '../authAndVerify/DesactivateModal';
 import MultiCheckboxModal from './MultiCheckboxModal.';
@@ -537,11 +537,10 @@ const Navbar2 = () => {
                       </div>
                     </div>
 
-                    {/* Estado de verificación */}
-                    <div style={{ padding: '12px 20px', margin: '0 8px' }}>
-                      <ActivateButton />
-                    </div>
-
+                  
+                    <MenuItem icon={FaInfoCircle} iconColor="#6c757d" to="/infoaplicacionn">
+                      {t('appInfo')}
+                    </MenuItem>
                     <MenuItem icon={FaTools} iconColor="#6c757d" to="/users/roles">
                       {t('roles')}
                     </MenuItem>
@@ -611,9 +610,7 @@ const Navbar2 = () => {
                     <MenuItem icon={FaUserPlus} iconColor="#667eea" to="/register">
                       {t('register')}
                     </MenuItem>
-                    <MenuItem icon={FaInfoCircle} iconColor="#6c757d" to="/bloginfo">
-                      {t('appInfo')}
-                    </MenuItem>
+                   
                     <MenuItem icon={FaInfoCircle} iconColor="#6c757d" to="/infoaplicacionn">
                       {t('appInfo')}
                     </MenuItem>

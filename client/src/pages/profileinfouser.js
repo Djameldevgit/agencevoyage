@@ -526,7 +526,7 @@ const ProfileInfoUser = () => {
                     }
                     gradient="linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)"
                   >
-                    {/* ✅ Gestión de Roles - SOLO admin */}
+                   
                     <MenuOption
                       icon={FaTools}
                       iconColor="#6c757d"
@@ -567,7 +567,16 @@ const ProfileInfoUser = () => {
                       onClick={handleLogout}
                       danger
                     />
+ <MenuOption
+                    icon={FaInfoCircle}
+                    iconColor="#6c757d"
+                    title={t('appInfo', 'Información de la App')}
+                    to="/appinfo2"
+                  />
+
                   </Section>
+
+                  
                 )}
               </Col>
             </Row>

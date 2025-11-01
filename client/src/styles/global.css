@@ -152,7 +152,7 @@ url("./header.css"); */
 @import url("./components/home/cardnodycarouselestilotikto02.css");
 @import url("./typing.css");
 @import url("./DetailPostCard.css");
- 
+@import url("./toast.css");
 .rtl {
   direction: rtl;
   text-align: right;

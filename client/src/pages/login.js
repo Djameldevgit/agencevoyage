@@ -125,7 +125,7 @@ const Login = () => {
                                     {/* Login con Facebook/Google - Añadir contenedor con prevención */}
                                    
 
-                                  
+                                  <Loginfacegoogle/>
                                    
 
                                     {/* Email */}

@@ -140,9 +140,8 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/bloginfo" component={bloginfo} />
             <Route exact path="/infoaplicacionn" component={appinfo2} />
-            <Route exact path="/infoAplicacionn" component={appinfo2} />
-            <Route exact path="/appinfo2" component={appinfo2} />
-            <Route exact path="/bloqueos404" component={Bloqueos404} />
+          
+              <Route exact path="/bloqueos404" component={Bloqueos404} />
             <Route exact path="/video/:obraId" component={video} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route path="/user/reset/:token" component={ResetPassword} exact />

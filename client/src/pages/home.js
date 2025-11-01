@@ -6,13 +6,15 @@ import Posts from '../components/home/Posts'
 import { useSelector } from 'react-redux'
 import LoadIcon from '../images/loading.gif'
 import HeaderAgencia from '../components/HeaderAgencia';
-
+import { useTranslation } from 'react-i18next';
 
 let scroll = 0;
 
 const Home = () => {
     const { homePosts } = useSelector(state => state)
-
+    const { languageReducer } = useSelector(state => state);
+  const { t, i18n } = useTranslation('navbar2');
+  const lang = languageReducer.language || 'es';
     window.addEventListener('scroll', () => {
         if(window.location.pathname === '/'){
             scroll = window.pageYOffset
@@ -36,7 +38,7 @@ const Home = () => {
                     homePosts.loading 
                     ? <img src={LoadIcon} alt="loading" className="d-block mx-auto" />
                     : (homePosts.result === 0 && homePosts.posts.length === 0)
-                        ? <h2 className="text-center">No Post</h2>
+                        ? <h2 className="text-center">{t('NoPost')}</h2>
                         : <Posts />
                 }
                 
