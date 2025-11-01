@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/icon-web-01.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+   
+    <!-- Meta tags PWA mejorados -->
+    <meta name="theme-color" content="#2c5aa0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Agence Voyage">
+    
+    <meta
+      name="description"
+      content="Agence Voyage - Votre partenaire de confiance pour les voyages organisés, locations de vacances et pèlerinages"
+    />
+    <!-- Usar rutas absolutas para los iconos -->
+    <link rel="apple-touch-icon" href="/icon-web-01.png" />
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+   
+    <!-- Bootstrap CSS consolidado -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Preload crítico -->
+    <link rel="preload" href="/static/js/bundle.js" as="script">
+    
+    <title>Agence Voyage - Voyages Organisés, Locations, Hadj & Omra</title>
+
+    <style>
+      /* Loading screen para PWA */
+      #pwa-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading screen para PWA -->
+    <div id="pwa-loading">
+      <div class="loading-spinner"></div>
+      <h4>Agence Voyage</h4>
+      <p>Chargement de votre application...</p>
+    </div>
+
+    <noscript>
+      <div class="alert alert-danger m-3">
+        <h4>JavaScript Requis</h4>
+        <p>Vous devez activer JavaScript pour utiliser Agence Voyage.</p>
+      </div>
+    </noscript>
+    
+    <div id="root"></div>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Script PWA mejorado -->
+    <script>
+      // Ocultar loading screen cuando la app esté lista
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loading = document.getElementById('pwa-loading');
+          if (loading) {
+            loading.style.opacity = '0';
+            loading.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => loading.remove(), 500);
+          }
+        }, 1000);
+
+        // Detectar si está en modo standalone PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          document.body.classList.add('pwa-standalone');
+        }
+      });
+      window.installPWA = function() {
+        if (window.deferredPrompt) {
+          window.deferredPrompt.prompt();
+          window.deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('✅ User accepted the install prompt');
+            } else {
+              console.log('❌ User dismissed the install prompt');
+            }
+            window.deferredPrompt = null;
+          });
+        } else {
+          console.log('❌ No deferredPrompt available');
+        }
+      };
+      // Registrar Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('SW registered: ', registration);
+            })
+            .catch(function(error) {
+              console.log('SW registration failed: ', error);
+            });
+        });
+      }
+
+      // Detectar PWA instalada
+      window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('🎯 Evento beforeinstallprompt capturado');
+        e.preventDefault();
+        window.deferredPrompt = e;
+        
+        // Disparar evento para que React lo capture
+        window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
+      });
+    
+      // Detectar instalación
+      window.addEventListener('appinstalled', (evt) => {
+        console.log('🎉 PWA instalada exitosamente!');
+        window.isPWAInstalled = true;
+        window.deferredPrompt = null;
+        localStorage.setItem('pwaInstalled', 'true');
+        window.dispatchEvent(new Event('pwaInstalled'));
+      });
+    
+      // Registrar Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('✅ SW registrado correctamente: ', registration.scope);
+            })
+            .catch(function(error) {
+              console.log('❌ Falló registro SW: ', error);
+            });
+        });
+      }
+
+    
+      // También podríamos guardarlo en window para acceso global
+      window.deferredPrompt = deferredPrompt;
+
+
+
+
+
+
+      window.deferredPrompt = null;
+    
+    // 1. Capturar beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('🎯 HTML: Evento beforeinstallprompt capturado!');
+      e.preventDefault();
+      window.deferredPrompt = e;
+      
+      // Disparar evento para React
+      window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
+    });
+  
+    // 2. Función global de instalación
+     
+  
+   
+
+    </script>
+  </body>
+</html>
