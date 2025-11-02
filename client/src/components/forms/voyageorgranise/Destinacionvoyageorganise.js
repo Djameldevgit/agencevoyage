@@ -7,19 +7,19 @@ const Destinacionvoyageorganise = ({ postData, handleChangeInput, destinationNum
     
     return (
         <Card className="mb-3">
-            <Card.Header>
-                <h6 className="mb-0">📍 {t('destino')} {destinationNumber} - {t('internacional')}</h6>
+             <Card.Header>
+                <h6 className="mb-0">📍 {t('destino')} {destinationNumber} - {t('local')}</h6>
             </Card.Header>
-            <Card.Body>
+            <Card>
                 <Form.Group className="mb-3">
-                    <Form.Label>{t('ciudadDestino')}</Form.Label>
+                 
                     <Form.Select
                         name={`destinacionvoyage${destinationNumber}`}
                         value={postData[`destinacionvoyage${destinationNumber}`] || ''}
                         onChange={handleChangeInput}
                     >
-                        <option value="">{t('elegirDestino')}</option>
-                        <optgroup label={t('destinosArabes')}>
+                     
+                        <optgroup  >
                             <option value="Dubai">Dubai</option>
                             <option value="Abu Dhabi">Abu Dhabi</option>
                             <option value="Sharjah">Sharjah</option>
@@ -102,7 +102,7 @@ const Destinacionvoyageorganise = ({ postData, handleChangeInput, destinationNum
                         </optgroup>
                     </Form.Select>
                 </Form.Group>
-            </Card.Body>
+            </Card>
         </Card>
     );
 };

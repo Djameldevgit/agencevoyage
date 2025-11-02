@@ -7,12 +7,11 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
     const isRTL = i18n.language === 'ar';
 
     const tiposPropiedades = [
-        { value: 'villa', label: '🏠 ' + t('villa', 'Villa'), icon: '🏠' },
-        { value: 'apartamento', label: '🏢 ' + t('apartamento', 'Apartamento'), icon: '🏢' },
-        { value: 'studio', label: '🔲 ' + t('studio', 'Studio'), icon: '🔲' },
-        { value: 'riad', label: '🏺 ' + t('riad', 'Riad'), icon: '🏺' },
-        { value: 'chalet', label: '⛰️ ' + t('chalet', 'Chalet'), icon: '⛰️' },
-        { value: 'casa_rural', label: '🌄 ' + t('casa_rural', 'Casa rural'), icon: '🌄' }
+        { value: 'villa', label: '🏠 ' + t('villa', 'Villa') },
+        { value: 'apartamento', label: '🏢 ' + t('apartamento', 'Apartamento') },
+        { value: 'studio', label: '🔲 ' + t('studio', 'Studio') },
+        { value: 'riad', label: '🏺 ' + t('riad', 'Riad') },
+        { value: 'chalet', label: '⛰️ ' + t('chalet', 'Chalet') },
     ];
 
     const capacidades = [
@@ -20,18 +19,14 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
         { value: '2_4', label: t('2_4_personas', '2-4 personas') },
         { value: '4_6', label: t('4_6_personas', '4-6 personas') },
         { value: '6_8', label: t('6_8_personas', '6-8 personas') },
-        { value: '8_plus', label: t('8_plus_personas', '8+ personas') }
+        { value: '8_plus', label: t('8_plus_personas', '8+ personas') },
     ];
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-success text-white">
-                <h5 className="mb-0">
-                    🏡 {t('alojamientoLocation', 'Alojamiento Location Vacances')}
-                </h5>
-            </Card.Header>
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
+                    
                     {/* Tipo de Propiedad */}
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
@@ -80,53 +75,26 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    {/* Número de Habitaciones */}
-                    <Col xs={12} md={4}>
+                    {/* Habitaciones */}
+                    <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('numHabitaciones', 'Habitaciones')}
+                                {t('habitaciones', 'Habitaciones')}
                             </Form.Label>
-                            <Form.Select
-                                name="numHabitaciones"
-                                value={postData.numHabitaciones || ''}
+                            <Form.Control
+                                type="number"
+                                name="habitaciones"
+                                value={postData.habitaciones || ''}
                                 onChange={handleChangeInput}
+                                min="1"
                                 className={isRTL ? 'text-end' : ''}
                                 dir={isRTL ? 'rtl' : 'ltr'}
-                            >
-                                <option value="">{t('selectNum', 'Seleccione')}</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5+</option>
-                            </Form.Select>
+                            />
                         </Form.Group>
                     </Col>
 
-                    {/* Número de Baños */}
-                    <Col xs={12} md={4}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('numBanos', 'Baños')}
-                            </Form.Label>
-                            <Form.Select
-                                name="numBanos"
-                                value={postData.numBanos || ''}
-                                onChange={handleChangeInput}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            >
-                                <option value="">{t('selectNum', 'Seleccione')}</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4+</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-
-                    {/* Superficie */}
-                    <Col xs={12} md={4}>
+                    {/* Superficie opcional */}
+                    <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label className={isRTL ? 'text-end d-block' : ''}>
                                 {t('superficie', 'Superficie (m²)')}
@@ -143,56 +111,6 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    {/* Equipamientos */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('equipamientos', 'Equipamientos')}
-                            </Form.Label>
-                            <Row>
-                                <Col xs={6} md={3}>
-                                    <Form.Check
-                                        type="checkbox"
-                                        name="wifi"
-                                        label={`📶 ${t('wifi', 'Wi-Fi')}`}
-                                        checked={postData.wifi || false}
-                                        onChange={handleChangeInput}
-                                        className={isRTL ? 'text-end' : ''}
-                                    />
-                                </Col>
-                                <Col xs={6} md={3}>
-                                    <Form.Check
-                                        type="checkbox"
-                                        name="piscina"
-                                        label={`🏊 ${t('piscina', 'Piscina')}`}
-                                        checked={postData.piscina || false}
-                                        onChange={handleChangeInput}
-                                        className={isRTL ? 'text-end' : ''}
-                                    />
-                                </Col>
-                                <Col xs={6} md={3}>
-                                    <Form.Check
-                                        type="checkbox"
-                                        name="aire_acondicionado"
-                                        label={`❄️ ${t('aire_acondicionado', 'Aire acondicionado')}`}
-                                        checked={postData.aire_acondicionado || false}
-                                        onChange={handleChangeInput}
-                                        className={isRTL ? 'text-end' : ''}
-                                    />
-                                </Col>
-                                <Col xs={6} md={3}>
-                                    <Form.Check
-                                        type="checkbox"
-                                        name="cocina"
-                                        label={`👨‍🍳 ${t('cocina', 'Cocina equipada')}`}
-                                        checked={postData.cocina || false}
-                                        onChange={handleChangeInput}
-                                        className={isRTL ? 'text-end' : ''}
-                                    />
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Col>
                 </Row>
             </Card.Body>
         </Card>

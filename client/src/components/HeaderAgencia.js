@@ -101,12 +101,12 @@ const HeaderAgencia = memo(({
                                 <Col xs={12} md={4} className="mt-3 mt-md-0">
                                     <div className={`d-flex align-items-center justify-content-center ${isRTL ? 'justify-content-md-start' : 'justify-content-md-end'}`}>
                                         <div 
-                                            className={`bg-primary rounded-circle d-flex align-items-center justify-content-center ${isRTL ? 'ms-1' : 'me-1'}`}
+                                            className={`bg-primary rounded-circle d-flex align-items-center justify-content-center ${isRTL ? 'ms-2' : 'me-2'}`}
                                             style={iconCircleStyle}
                                         >
                                             <svg 
-                                                width="15" 
-                                                height="15" 
+                                                width="20" 
+                                                height="20" 
                                                 fill="currentColor" 
                                                 className="bi bi-telephone-fill text-white" 
                                                 viewBox="0 0 16 16"
@@ -118,8 +118,8 @@ const HeaderAgencia = memo(({
                                             </svg>
                                         </div>
                                         <div className={isRTL ? 'text-start' : 'text-end'}>
-                                            <div className="text-danger">
-                                            <strong> {isRTL ? 'اتصل بنا' : 'Contactez-nous'}</strong>   
+                                            <div className="text-muted small">
+                                                {isRTL ? 'اتصل بنا' : 'Contactez-nous'}
                                             </div>
                                             <span className="text-dark fw-bold fs-5">
                                                 {t('telephone')}

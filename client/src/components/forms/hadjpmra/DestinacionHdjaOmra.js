@@ -6,16 +6,15 @@ const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 
     const { t } = useTranslation('categories');
     
     return (
-        <Card className="mb-3">
+        <Card className="mb-1">
             <Card.Header>
-                <h6 className="mb-0">📍 {t('destino')} {destinationNumber} - {t('peregrinacion')}</h6>
+                <h6 className="mb-0">{t('destino')} {destinationNumber} </h6>
             </Card.Header>
-            <Card.Body>
-                <Row>
-                    <Col md={12}>
+          
+               
+                 
                         <Form.Group className="mb-3">
-                            <Form.Label>{t('ciudadDestinoPeregrinacion')}</Form.Label>
-                            <Form.Select
+                               <Form.Select
                                 name={`destinacionvoyage${destinationNumber}`}
                                 value={postData[`destinacionvoyage${destinationNumber}`] || ''}
                                 onChange={handleChangeInput}
@@ -37,9 +36,8 @@ const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 
                                 </optgroup>
                             </Form.Select>
                         </Form.Group>
-                    </Col>
-                </Row>
-            </Card.Body>
+                   
+         
         </Card>
     );
 };

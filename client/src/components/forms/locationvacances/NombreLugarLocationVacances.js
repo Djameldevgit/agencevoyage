@@ -8,11 +8,7 @@ const NombreLugarLocationVacances = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-success text-white">
-                <h5 className="mb-0">
-                    🏡 {t('nombreLugarLocation', 'Nombre y Lugar - Location Vacances')}
-                </h5>
-            </Card.Header>
+           
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     {/* Nombre de la Propiedad */}
@@ -97,22 +93,7 @@ const NombreLugarLocationVacances = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('codigoPostal', 'Código Postal')}
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="codigoPostal"
-                                value={postData.codigoPostal || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderCodigoPostal', 'Código postal')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                 
 
                     {/* Zona/Barrio */}
                     <Col xs={12} md={6}>
@@ -132,23 +113,7 @@ const NombreLugarLocationVacances = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    {/* Referencias Cercanas */}
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('referenciasCercanas', 'Referencias Cercanas')}
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="referenciasCercanas"
-                                value={postData.referenciasCercanas || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderReferencias', 'Ej: A 200m de la playa, cerca del mercado...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                 
 
                     {/* Descripción de la Ubicación */}
                     <Col xs={12}>

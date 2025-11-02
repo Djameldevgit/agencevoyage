@@ -39,21 +39,67 @@ const postCtrl = {
                 return res.status(400).json({msg: "La wilaya et la commune sont requises."})
             }
     
-            // 🔥 CREAR NUEVO POST OPTIMIZADO
+            // 🔥 CREAR NUEVO POST OPTIMIZADO CON TODOS LOS CAMPOS
             const newPost = new Posts({
                 ...postData, // ✅ TODOS los campos del frontend automáticamente
                 images,
                 user: req.user._id,
                 
-                // Solo asegurar campos críticos con valores por defecto
+                // Campos críticos con valores por defecto
                 category: postData.category || "Agence de Voyage",
                 description: postData.description || postData.content || "",
                 
-                // 🔷 AGREGA SOLO ESTOS 2 CAMPOS FALTANTES:
-                servicios: postData.servicios || [],        // ✅ NUEVO
-                serviciosTr: postData.serviciosTr || [],    // ✅ NUEVO
+                // 🔷 CAMPOS ESPECÍFICOS DE CADA CATEGORÍA
+                // hadj omra
+                categoriaHotelMeca: postData.categoriaHotelMeca || "",
+                compagnieAerienne: postData.compagnieAerienne || "",
+                typeTransport: postData.typeTransport || "",
+                precioBase: postData.precioBase || "",
+                tipoPrecio: postData.tipoPrecio || "",
+                
+                // location vacances
+                tipoPropiedad: postData.tipoPropiedad || "",
+                capacidad: postData.capacidad || "",
+                habitaciones: postData.habitaciones || "",
+                superficie: postData.superficie || "",
+                nombrePropiedad: postData.nombrePropiedad || "",
+                direccionCompleta: postData.direccionCompleta || "",
+                ciudad: postData.ciudad || "",
+                zonaBarrio: postData.zonaBarrio || "",
+                descripcionUbicacion: postData.descripcionUbicacion || "",
+                transportInclus: postData.transportInclus || "",
+              
+                // voyage organisé
+                categoriaAlojamiento: postData.categoriaAlojamiento || "",
+                tipoHabitacion: postData.tipoHabitacion || "",
+                regimenComidas: postData.regimenComidas || "",
+                ubicacionHotel: postData.ubicacionHotel || "",
+                nombreHotel: postData.nombreHotel || "",
+                ciudadHotel: postData.ciudadHotel || "",
+                direccionHotel: postData.direccionHotel || "",
+                zonaRegion: postData.zonaRegion || "",
+                modeTransport: postData.modeTransport || "",
+                classeTransport: postData.classeTransport || "",
+                typeVol: postData.typeVol || "",
+                baggage: postData.baggage || "",
+                repasVol: postData.repasVol || "",
+                destinacionvoyage: postData.destinacionvoyage || "",
+                
+                // fechas y horarios
+                datedepar: postData.datedepar || "",
+                horadudepar: postData.horadudepar || "",
+                dateretour: postData.dateretour || "",
+                dureeSejour: postData.dureeSejour || "",
+                
+                // precios
+                prixAdulte: postData.prixAdulte || "",
+                prixEnfant: postData.prixEnfant || "",
+                prixBebe: postData.prixBebe || "",
+                price: postData.price || "",
                 
                 // Arrays que deben estar inicializados
+                servicios: postData.servicios || [],
+                serviciosTr: postData.serviciosTr || [],
                 specifications: postData.specifications || [],
                 tipodehabutaciones: postData.tipodehabutaciones || [],
                 wifi: postData.wifi || [],
@@ -80,8 +126,109 @@ const postCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
-    // ✅ UPDATE POST OPTIMIZADO
     updatePost: async (req, res) => {
+        try {
+            const { postData, images, status } = req.body
+    
+            if (!postData) {
+                return res.status(400).json({msg: "Données du post manquantes."})
+            }
+    
+            // Validación de campos requeridos
+            if (!postData.subCategory) {
+                return res.status(400).json({msg: "La catégorie est requise."})
+            }
+    
+            if (!postData.wilaya || !postData.commune) {
+                return res.status(400).json({msg: "La wilaya et la commune sont requises."})
+            }
+    
+            // Buscar el post existente
+            const post = await Posts.findOneAndUpdate(
+                { _id: req.params.id },
+                {
+                    $set: {
+                        // ✅ ACTUALIZAR TODOS LOS CAMPOS DEL FRONTEND
+                        ...postData,
+                        images: images || postData.images,
+                        
+                        // Campos específicos para asegurar consistencia
+                        category: postData.category || "Agence de Voyage",
+                        description: postData.description || postData.content || "",
+                        
+                        // hadj omra
+                        categoriaHotelMeca: postData.categoriaHotelMeca || "",
+                        compagnieAerienne: postData.compagnieAerienne || "",
+                        typeTransport: postData.typeTransport || "",
+                        precioBase: postData.precioBase || "",
+                        tipoPrecio: postData.tipoPrecio || "",
+                        
+                        // location vacances
+                        tipoPropiedad: postData.tipoPropiedad || "",
+                        capacidad: postData.capacidad || "",
+                        habitaciones: postData.habitaciones || "",
+                        superficie: postData.superficie || "",
+                        nombrePropiedad: postData.nombrePropiedad || "",
+                        direccionCompleta: postData.direccionCompleta || "",
+                        ciudad: postData.ciudad || "",
+                        zonaBarrio: postData.zonaBarrio || "",
+                        descripcionUbicacion: postData.descripcionUbicacion || "",
+                        transportInclus: postData.transportInclus || "",
+                      
+                        // voyage organisé
+                        categoriaAlojamiento: postData.categoriaAlojamiento || "",
+                        tipoHabitacion: postData.tipoHabitacion || "",
+                        regimenComidas: postData.regimenComidas || "",
+                        ubicacionHotel: postData.ubicacionHotel || "",
+                        nombreHotel: postData.nombreHotel || "",
+                        ciudadHotel: postData.ciudadHotel || "",
+                        direccionHotel: postData.direccionHotel || "",
+                        zonaRegion: postData.zonaRegion || "",
+                        modeTransport: postData.modeTransport || "",
+                        classeTransport: postData.classeTransport || "",
+                        typeVol: postData.typeVol || "",
+                        baggage: postData.baggage || "",
+                        repasVol: postData.repasVol || "",
+                        destinacionvoyage: postData.destinacionvoyage || "",
+                        
+                        // fechas y horarios
+                        datedepar: postData.datedepar || "",
+                        horadudepar: postData.horadudepar || "",
+                        dateretour: postData.dateretour || "",
+                        dureeSejour: postData.dureeSejour || "",
+                        
+                        // precios
+                        prixAdulte: postData.prixAdulte || "",
+                        prixEnfant: postData.prixEnfant || "",
+                        prixBebe: postData.prixBebe || "",
+                        price: postData.price || "",
+                        
+                        // Arrays
+                        servicios: postData.servicios || [],
+                        serviciosTr: postData.serviciosTr || []
+                    }
+                },
+                { new: true, runValidators: true }
+            )
+    
+            if (!post) {
+                return res.status(400).json({msg: "Ce post n'existe pas."})
+            }
+    
+            // Populate para obtener datos del usuario
+            await post.populate('user', 'avatar username fullname followers')
+    
+            res.json({
+                msg: 'Post modifié avec succès!',
+                newPost: post
+            })
+    
+        } catch (err) {
+            console.error('Error en updatePost:', err)
+            return res.status(500).json({msg: err.message})
+        }
+    },
+  /*  updatePost: async (req, res) => {
         try {
             const { postData, images } = req.body
 
@@ -127,7 +274,7 @@ const postCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
-    
+    */
     likePost: async (req, res) => {
         try {
             const post = await Posts.find({_id: req.params.id, likes: req.user._id})

@@ -25,11 +25,7 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-warning text-dark">
-                <h5 className="mb-0">
-                    🏨 {t('alojamientoVoyages', 'Alojamiento Voyages Organisés')}
-                </h5>
-            </Card.Header>
+           
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     {/* Categoría del Alojamiento */}

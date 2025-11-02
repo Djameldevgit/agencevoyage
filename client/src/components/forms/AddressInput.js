@@ -29,9 +29,7 @@ const AddressInput = ({
                         className={isRTL ? 'text-end' : ''}
                         dir={isRTL ? 'rtl' : 'ltr'}
                     />
-                    <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-                        {t('villeDepartHelp', 'Entrez la ville de départ du voyage')}
-                    </Form.Text>
+                   
                 </Form.Group>
             </Col>
             
@@ -52,9 +50,7 @@ const AddressInput = ({
                         <option value="">{t('selectionnezWilaya', 'Sélectionnez une wilaya')}</option>
                         {wilayasOptions}
                     </Form.Select>
-                    <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-                        {t('wilayaHelp', 'Sélectionnez la wilaya de départ')}
-                    </Form.Text>
+                 
                 </Form.Group>
             </Col>
         </Row>

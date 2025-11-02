@@ -20,7 +20,7 @@ const CategorySelector = ({ postData, handleChangeInput }) => {
     };
 
     return (
-        <Form.Group className="mb-4">
+        <Form.Group >
             <Form.Label className="fw-bold">📂 {t('categoriaPublicacion')}</Form.Label>
             
             {/* Mostrar categoría seleccionada */}

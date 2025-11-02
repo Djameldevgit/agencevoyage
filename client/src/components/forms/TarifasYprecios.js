@@ -17,7 +17,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-info text-white">
+            <Card.Header className="">
                 <h5 className="mb-0">
                     💰 {t('tarifasPrecios', 'Tarifas y Precios')}
                 </h5>
@@ -186,47 +186,8 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                         </h6>
                     </Col>
 
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('descuentoGrupo', 'Descuento por Grupo')}
-                            </Form.Label>
-                            <div className="input-group">
-                                <Form.Control
-                                    type="number"
-                                    name="descuentoGrupo"
-                                    value={postData.descuentoGrupo || ''}
-                                    onChange={handleChangeInput}
-                                    placeholder="0"
-                                    min="0"
-                                    max="100"
-                                    className={isRTL ? 'text-end' : ''}
-                                    dir={isRTL ? 'rtl' : 'ltr'}
-                                />
-                                <span className="input-group-text">%</span>
-                            </div>
-                            <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-                                {t('descuentoGrupoHelp', 'Descuento para grupos grandes')}
-                            </Form.Text>
-                        </Form.Group>
-                    </Col>
-
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('ofertaEspecial', 'Oferta Especial')}
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="ofertaEspecial"
-                                value={postData.ofertaEspecial || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderOferta', 'Ej: 3x2, Early Booking...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                    
+ 
 
                     {/* Total Calculado */}
                     <Col xs={12}>
@@ -241,24 +202,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                         </Alert>
                     </Col>
 
-                    {/* Información de Pago */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('infoPago', 'Información de Pago')}
-                            </Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={2}
-                                name="infoPago"
-                                value={postData.infoPago || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderInfoPago', 'Condiciones de pago, seña requerida, métodos de pago aceptados...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                  
                 </Row>
             </Card.Body>
         </Card>

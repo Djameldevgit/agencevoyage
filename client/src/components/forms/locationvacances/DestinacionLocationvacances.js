@@ -14,7 +14,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>{t('ciudadDestino')}</Form.Label>
+                           
                             <Form.Select
                                 name={`destinacionvoyage${destinationNumber}`}
                                 value={postData[`destinacionvoyage${destinationNumber}`] || ''}
@@ -72,7 +72,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>{t('tipoAlojamiento')}</Form.Label>
+                       
                             <Form.Control
                                 type="text"
                                 name={`voyage${destinationNumber}hotel${destinationNumber}`}

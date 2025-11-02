@@ -8,11 +8,7 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-primary text-white">
-                <h5 className="mb-0">
-                    🏨 {t('nombreLugarHajj', 'Nombre y Lugar - Hajj/Omra')}
-                </h5>
-            </Card.Header>
+       
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     {/* Hotel en La Meca */}
@@ -24,9 +20,7 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
                     
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('nombreHotelMeca', 'Nombre del Hotel en La Meca')} *
-                            </Form.Label>
+                         
                             <Form.Control
                                 type="text"
                                 name="nombreHotelMeca"
@@ -42,9 +36,7 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
 
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('zonaMeca', 'Zona en La Meca')} *
-                            </Form.Label>
+                           
                             <Form.Select
                                 name="zonaMeca"
                                 value={postData.zonaMeca || ''}
@@ -64,17 +56,11 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
                     </Col>
 
                     {/* Hotel en Medina */}
-                    <Col xs={12}>
-                        <h6 className={`border-bottom pb-2 mt-4 ${isRTL ? 'text-end' : ''}`}>
-                            🕌 {t('hotelMedina', 'Hotel en Medina')}
-                        </h6>
-                    </Col>
+                    
 
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('nombreHotelMedina', 'Nombre del Hotel en Medina')} *
-                            </Form.Label>
+                           
                             <Form.Control
                                 type="text"
                                 name="nombreHotelMedina"
@@ -90,9 +76,7 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
 
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('zonaMedina', 'Zona en Medina')} *
-                            </Form.Label>
+                           
                             <Form.Select
                                 name="zonaMedina"
                                 value={postData.zonaMedina || ''}
@@ -110,24 +94,7 @@ const NombreLugarhotelhadj = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    {/* Dirección Detallada */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('direccionDetallada', 'Dirección Detallada (opcional)')}
-                            </Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={2}
-                                name="direccionHoteles"
-                                value={postData.direccionHoteles || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderDireccion', 'Dirección completa de los hoteles...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                 
                 </Row>
             </Card.Body>
         </Card>

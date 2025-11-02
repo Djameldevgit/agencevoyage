@@ -8,11 +8,7 @@ const NombreLugarVoyagesOrganises = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-warning text-dark">
-                <h5 className="mb-0">
-                    🏨 {t('nombreLugarVoyages', 'Nombre y Lugar - Voyages Organisés')}
-                </h5>
-            </Card.Header>
+          
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     {/* Nombre del Hotel */}
@@ -35,23 +31,7 @@ const NombreLugarVoyagesOrganises = ({ postData, handleChangeInput }) => {
                     </Col>
 
                     {/* Cadena Hotelera */}
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('cadenaHotelera', 'Cadena Hotelera')}
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="cadenaHotelera"
-                                value={postData.cadenaHotelera || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderCadena', 'Ej: Hilton, Marriott, Accor...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
-
+               
                     {/* Ciudad y País */}
                     <Col xs={12} md={6}>
                         <Form.Group className="mb-3">
@@ -71,23 +51,7 @@ const NombreLugarVoyagesOrganises = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('pais', 'País')} *
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="paisHotel"
-                                value={postData.paisHotel || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderPais', 'Ej: Turquía, Marruecos, Francia...')}
-                                required
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                   
 
                     {/* Dirección del Hotel */}
                     <Col xs={12}>
@@ -133,42 +97,8 @@ const NombreLugarVoyagesOrganises = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    {/* Código Postal */}
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('codigoPostal', 'Código Postal')}
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="codigoPostalHotel"
-                                value={postData.codigoPostalHotel || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderCodigoPostal', 'Código postal')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
-
-                    {/* Puntos de Interés Cercanos */}
-                    <Col xs={12}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('puntosInteres', 'Puntos de Interés Cercanos')}
-                            </Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={2}
-                                name="puntosInteres"
-                                value={postData.puntosInteres || ''}
-                                onChange={handleChangeInput}
-                                placeholder={t('placeholderPuntosInteres', 'Ej: A 5 min del centro histórico, cerca del metro...')}
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            />
-                        </Form.Group>
-                    </Col>
+                
+                   
                 </Row>
             </Card.Body>
         </Card>

@@ -1,59 +1,55 @@
-import React from 'react';
-import { Form, Row, Col, Card } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { Form, Card, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
-const ServiciosVoyagesOrganises = ({ postData, handleChangeInput }) => {
-    const { t, i18n } = useTranslation('categories');
-    const isRTL = i18n.language === 'ar';
+const ServicesVoyagesOrganises = ({ postData, handleChangeInput }) => {
+  const { t, i18n } = useTranslation("categories");
+  const isRTL = i18n.language === "ar";
 
-    const servicios = [
-        { name: 'guiaAcompañante', label: '👨‍💼 ' + t('guiaAcompañante', 'Guía acompañante'), description: t('guiaAcompañante_desc', 'Guía profesional durante todo el viaje') },
-        { name: 'excursionesIncluidas', label: '🗺️ ' + t('excursionesIncluidas', 'Excursiones incluidas'), description: t('excursionesIncluidas_desc', 'Visitas a lugares turísticos') },
-        { name: 'entradasMonumentos', label: '🎫 ' + t('entradasMonumentos', 'Entradas a monumentos'), description: t('entradasMonumentos_desc', 'Acceso a sitios históricos') },
-        { name: 'trasladosAeropuerto', label: '🚗 ' + t('trasladosAeropuerto', 'Traslados aeropuerto'), description: t('trasladosAeropuerto_desc', 'Transporte ida y vuelta') },
-        { name: 'asistencia24h', label: '📞 ' + t('asistencia24h', 'Asistencia 24/7'), description: t('asistencia24h_desc', 'Soporte durante todo el viaje') },
-        { name: 'seguroViaje', label: '🛡️ ' + t('seguroViaje', 'Seguro de viaje'), description: t('seguroViaje_desc', 'Cobertura médica y de cancelación') },
-        { name: 'comidasIncluidas', label: '🍽️ ' + t('comidasIncluidas', 'Comidas incluidas'), description: t('comidasIncluidas_desc', 'Según régimen seleccionado') },
-        { name: 'actividadesRecreativas', label: '🎭 ' + t('actividadesRecreativas', 'Actividades recreativas'), description: t('actividadesRecreativas_desc', 'Entretenimiento y diversión') },
-        { name: 'espectaculosNocturnos', label: '🌃 ' + t('espectaculosNocturnos', 'Espectáculos nocturnos'), description: t('espectaculosNocturnos_desc', 'Shows y entretenimiento') },
-        { name: 'deportesAcuaticos', label: '🏄 ' + t('deportesAcuaticos', 'Deportes acuáticos'), description: t('deportesAcuaticos_desc', 'Actividades en el agua') },
-        { name: 'spaBienestar', label: '💆 ' + t('spaBienestar', 'Spa y bienestar'), description: t('spaBienestar_desc', 'Masajes y tratamientos') },
-        { name: 'comprasGuiadas', label: '🛍️ ' + t('comprasGuiadas', 'Compras guiadas'), description: t('comprasGuiadas_desc', 'Tour de compras con guía') }
-    ];
+  const handleCheckboxChange = (value) => {
+    const newServicios = postData.servicios.includes(value)
+      ? postData.servicios.filter((item) => item !== value)
+      : [...postData.servicios, value];
+    handleChangeInput({ target: { name: "servicios", value: newServicios } });
+  };
 
-    return (
-        <Card className="mb-4">
-            <Card.Header className="bg-warning text-dark">
-                <h5 className="mb-0">
-                    🧳 {t('serviciosVoyages', 'Servicios Voyages Organisés')}
-                </h5>
-            </Card.Header>
-            <Card.Body>
-                <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
-                    {servicios.map((servicio, index) => (
-                        <Col xs={12} md={6} lg={4} key={index}>
-                            <Form.Group className="mb-3">
-                                <Form.Check
-                                    type="checkbox"
-                                    name={servicio.name}
-                                    label={
-                                        <div>
-                                            <strong>{servicio.label}</strong>
-                                            <br />
-                                            <small className="text-muted">{servicio.description}</small>
-                                        </div>
-                                    }
-                                    checked={postData[servicio.name] || false}
-                                    onChange={handleChangeInput}
-                                    className={isRTL ? 'text-end' : ''}
-                                />
-                            </Form.Group>
-                        </Col>
-                    ))}
-                </Row>
-            </Card.Body>
-        </Card>
-    );
+  const services = [
+    "Hébergement",
+    "Transport",
+    "Guide touristique",
+    "Billet d’avion",
+    "Visites guidées",
+    "Assurance voyage",
+  ];
+
+  return (
+    <Card className="mb-4">
+      <Card.Body>
+        <Row className={`${isRTL ? "rtl-direction" : ""}`}>
+          <Col xs={12}>
+            <Form.Group>
+              <Form.Label className={isRTL ? "text-end d-block" : ""}>
+                {t("servicesInclus", "Services inclus")}
+              </Form.Label>
+              <div className={isRTL ? "text-end" : ""}>
+                {services.map((service, index) => (
+                  <Form.Check
+                    key={index}
+                    inline
+                    type="checkbox"
+                    label={service}
+                    checked={postData.servicios.includes(service)}
+                    onChange={() => handleCheckboxChange(service)}
+                    className={isRTL ? "ms-2" : "me-2"}
+                  />
+                ))}
+              </div>
+            </Form.Group>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  );
 };
 
-export default ServiciosVoyagesOrganises;
+export default ServicesVoyagesOrganises;

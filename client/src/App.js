@@ -140,6 +140,7 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/bloginfo" component={bloginfo} />
             <Route exact path="/infoaplicacionn" component={appinfo2} />
+            <Route path="/edit-post/:id" element={<Createpost />} />
           
               <Route exact path="/bloqueos404" component={Bloqueos404} />
             <Route exact path="/video/:obraId" component={video} />

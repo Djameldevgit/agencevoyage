@@ -37,26 +37,64 @@ const postSchema = new mongoose.Schema({
     horariollegada: String,
     duracionviaje: String,
     fecharegreso: String,
+    dateretour: String,           // 🔷 NUEVO
+    dureeSejour: String,          // 🔷 NUEVO
 
     // 🔷 CAMPOS DE TRANSPORTE
     transporte: String,
-    tipoTransporte: String,           // 🔷 NUEVO - para componente TransporteViaje
-    claseTransporte: String,          // 🔷 NUEVO
-    companiaTransporte: String,       // 🔷 NUEVO
-    numeroTransporte: String,         // 🔷 NUEVO
-    itinerarioTransporte: String,     // 🔷 NUEVO
-    tiempoTransporte: String,         // 🔷 NUEVO
+    tipoTransporte: String,
+    claseTransporte: String,
+    companiaTransporte: String,
+    numeroTransporte: String,
+    itinerarioTransporte: String,
+    tiempoTransporte: String,
     serviciosTransporte: {
         type: Array,
         default: []
     },
     comentariosTransporte: String,
 
+    // 🔷 CAMPOS ESPECÍFICOS DE HAJJ & OMRA
+    categoriaHotelMeca: String,    // 🔷 NUEVO
+    compagnieAerienne: String,     // 🔷 NUEVO (también usado en voyage organisé)
+    typeTransport: String,         // 🔷 NUEVO
+    precioBase: String,            // 🔷 NUEVO
+    tipoPrecio: String,            // 🔷 NUEVO
+    destinacionhadj: String,
+
+    // 🔷 CAMPOS ESPECÍFICOS DE LOCATION VACANCES
+    tipoPropiedad: String,         // 🔷 NUEVO
+    capacidad: String,             // 🔷 NUEVO
+    habitaciones: String,          // 🔷 NUEVO
+    superficie: String,
+    nombrePropiedad: String,       // 🔷 NUEVO
+    direccionCompleta: String,     // 🔷 NUEVO
+    ciudad: String,                // 🔷 NUEVO
+    zonaBarrio: String,            // 🔷 NUEVO
+    descripcionUbicacion: String,  // 🔷 NUEVO
+    transportInclus: String,       // 🔷 NUEVO
+ 
+    // 🔷 CAMPOS ESPECÍFICOS DE VOYAGE ORGANISÉ
+    categoriaAlojamiento: String,  // 🔷 NUEVO
+    tipoHabitacion: String,        // 🔷 NUEVO
+    regimenComidas: String,        // 🔷 NUEVO
+    ubicacionHotel: String,        // 🔷 NUEVO
+    nombreHotel: String,           // 🔷 NUEVO
+    ciudadHotel: String,           // 🔷 NUEVO
+    direccionHotel: String,        // 🔷 NUEVO
+    zonaRegion: String,            // 🔷 NUEVO
+    modeTransport: String,         // 🔷 NUEVO
+    classeTransport: String,       // 🔷 NUEVO
+    typeVol: String,               // 🔷 NUEVO
+    baggage: String,               // 🔷 NUEVO
+    repasVol: String,              // 🔷 NUEVO
+    destinacionvoyage: String,     // 🔷 NUEVO
+
     // 🔷 CAMPOS DE PERIODO VIAJE
-    mesInicio: String,                // 🔷 NUEVO - para componente PeriodoViaje
-    mesFin: String,                   // 🔷 NUEVO
-    temporada: String,                // 🔷 NUEVO
-    anio: String,                     // 🔷 NUEVO
+    mesInicio: String,
+    mesFin: String,
+    temporada: String,
+    anio: String,
 
     // 🔷 PRECIOS
     prixAdulte: String,
@@ -92,13 +130,21 @@ const postSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    servicios: {
+        type: Array,
+        default: []
+    },
+    serviciosTr: {
+        type: Array,
+        default: []
+    },
 
     // 🔷 TIPO Y CATEGORÍA
     typeVoyage: String,
     niveauConfort: String,
     publicCible: String,
 
-    // 🔷 CAMPOS ESPECÍFICOS PARA VOYAGE ORGANISÉ
+    // 🔷 CAMPOS ESPECÍFICOS PARA VOYAGE ORGANISÉ (EXISTENTES)
     destinacionvoyage1: String,
     destinacionvoyage2: String,
     paysDestination: String,
@@ -108,14 +154,6 @@ const postSchema = new mongoose.Schema({
     voyage1nombrehotel2: String,
 
     // 🔷 CAMPOS PARA CLASIFICACION HOTEL
-    servicios: {                      // 🔷 NUEVO - para componente ClasificacionHotel
-        type: Array,
-        default: []
-    },
-    serviciosTr: {                    // 🔷 NUEVO
-        type: Array,
-        default: []
-    },
     nombredelhotel: String,
     adresshotel: String,
     estrellas: String,
@@ -132,10 +170,9 @@ const postSchema = new mongoose.Schema({
     },
     hotelWebsite: String,
 
-    // 🔷 CAMPOS ESPECÍFICOS PARA LOCATION VACANCES
+    // 🔷 CAMPOS ESPECÍFICOS PARA LOCATION VACANCES (EXISTENTES)
     Location_Vacances: String,
     alquilergeneral: String,
-    superficie: String,
     etage: String,
     promoteurimmobilier: {
         type: Boolean,
@@ -146,7 +183,7 @@ const postSchema = new mongoose.Schema({
     nombreChambres: String,
     nombreSallesBain: String,
 
-    // 🔷 EQUIPAMIENTOS
+    // 🔷 EQUIPAMIENTOS (MANTENER EL ORIGINAL COMO BOOLEAN)
     wifiGratuit: {
         type: Boolean,
         default: false
@@ -167,10 +204,7 @@ const postSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    parking: {
-        type: Boolean,
-        default: false
-    },
+ 
     animauxAcceptes: {
         type: Boolean,
         default: false
@@ -188,6 +222,7 @@ const postSchema = new mongoose.Schema({
     tarifnuit: String,
     reservacionenlinea: String,
     views: { type: Number, default: 0 },
+
     // 🔷 PAGO
     acompteRequise: {
         type: Boolean,
@@ -195,8 +230,7 @@ const postSchema = new mongoose.Schema({
     },
     pourcentageAcompte: String,
 
-    // 🔷 CAMPOS ESPECÍFICOS PARA HAJJ & OMRA
-    destinacionhadj: String,
+    // 🔷 CAMPOS ESPECÍFICOS PARA HAJJ & OMRA (EXISTENTES)
     guideLocal: {
         type: Boolean,
         default: false
