@@ -93,110 +93,199 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Script PWA mejorado -->
+    <!-- Script PWA CORREGIDO Y OPTIMIZADO -->
     <script>
-      // Ocultar loading screen cuando la app esté lista
+      // ==================== CONFIGURACIÓN PWA CORREGIDA ====================
+      console.log('🚀 Inicializando PWA...');
+      
+      // Variables globales
+      window.deferredPrompt = null;
+      window.isPWAInstalled = false;
+
+      // 1. Ocultar loading screen cuando la app esté lista
       window.addEventListener('load', function() {
+        console.log('📱 Página cargada completamente');
+        
         setTimeout(function() {
           const loading = document.getElementById('pwa-loading');
           if (loading) {
             loading.style.opacity = '0';
             loading.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => loading.remove(), 500);
+            setTimeout(() => {
+              if (loading.parentNode) {
+                loading.remove();
+              }
+            }, 500);
           }
         }, 1000);
 
         // Detectar si está en modo standalone PWA
         if (window.matchMedia('(display-mode: standalone)').matches) {
+          console.log('📱 Modo PWA detectado');
           document.body.classList.add('pwa-standalone');
+          window.isPWAInstalled = true;
+          localStorage.setItem('pwaInstalled', 'true');
         }
       });
+
+      // 2. Función global para instalar PWA - CORREGIDA
       window.installPWA = function() {
+        console.log('🔧 Ejecutando installPWA...');
+        
         if (window.deferredPrompt) {
-          window.deferredPrompt.prompt();
-          window.deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('✅ User accepted the install prompt');
-            } else {
-              console.log('❌ User dismissed the install prompt');
-            }
-            window.deferredPrompt = null;
-          });
+          console.log('📲 Mostrando prompt de instalación...');
+          return window.deferredPrompt.prompt()
+            .then(() => window.deferredPrompt.userChoice)
+            .then((choiceResult) => {
+              console.log('✅ Resultado:', choiceResult.outcome);
+              
+              if (choiceResult.outcome === 'accepted') {
+                console.log('🎉 Usuario aceptó la instalación');
+                window.isPWAInstalled = true;
+                localStorage.setItem('pwaInstalled', 'true');
+                // Disparar evento para React
+                window.dispatchEvent(new Event('pwaInstalled'));
+              } else {
+                console.log('❌ Usuario rechazó la instalación');
+              }
+              
+              window.deferredPrompt = null;
+              return choiceResult.outcome === 'accepted';
+            })
+            .catch((error) => {
+              console.error('❌ Error en installPWA:', error);
+              window.deferredPrompt = null;
+              return false;
+            });
         } else {
-          console.log('❌ No deferredPrompt available');
+          console.log('⚠️ No hay deferredPrompt disponible');
+          return Promise.resolve(false);
         }
       };
-      // Registrar Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-              console.log('SW registered: ', registration);
-            })
-            .catch(function(error) {
-              console.log('SW registration failed: ', error);
-            });
-        });
-      }
 
-      // Detectar PWA instalada
+      // 3. Capturar beforeinstallprompt - UNA SOLA VEZ
       window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('🎯 Evento beforeinstallprompt capturado');
+        console.log('🎯 Evento beforeinstallprompt capturado!');
         e.preventDefault();
         window.deferredPrompt = e;
+        
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('pwaInstallAvailable', 'true');
         
         // Disparar evento para que React lo capture
         window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
       });
-    
-      // Detectar instalación
+
+      // 4. Detectar cuando se instala la PWA
       window.addEventListener('appinstalled', (evt) => {
         console.log('🎉 PWA instalada exitosamente!');
         window.isPWAInstalled = true;
         window.deferredPrompt = null;
         localStorage.setItem('pwaInstalled', 'true');
+        localStorage.removeItem('pwaInstallAvailable');
+        
+        // Disparar evento para React
         window.dispatchEvent(new Event('pwaInstalled'));
       });
-    
-      // Registrar Service Worker
+
+      // 5. Registrar Service Worker con manejo de errores MEJORADO
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js')
-            .then(function(registration) {
-              console.log('✅ SW registrado correctamente: ', registration.scope);
-            })
-            .catch(function(error) {
-              console.log('❌ Falló registro SW: ', error);
-            });
+          console.log('🔧 Registrando Service Worker...');
+          
+          // Intentar diferentes rutas para el Service Worker
+          const swPaths = [
+            '/sw.js',
+            './sw.js',
+            `${window.location.origin}/sw.js`
+          ];
+          
+          let currentAttempt = 0;
+          
+          const tryRegisterSW = () => {
+            if (currentAttempt >= swPaths.length) {
+              console.error('❌ No se pudo registrar el SW en ninguna ruta');
+              return;
+            }
+            
+            const swPath = swPaths[currentAttempt];
+            console.log(`🔄 Intentando registrar SW en: ${swPath}`);
+            
+            navigator.serviceWorker.register(swPath)
+              .then(function(registration) {
+                console.log('✅ SW registrado correctamente:', registration.scope);
+                
+                // Verificar estado del SW
+                if (registration.installing) {
+                  console.log('🔄 SW instalándose...');
+                  registration.installing.addEventListener('statechange', function(e) {
+                    console.log('📊 Estado SW:', e.target.state);
+                  });
+                }
+                
+                if (registration.waiting) {
+                  console.log('⏳ SW esperando...');
+                }
+                
+                if (registration.active) {
+                  console.log('🎯 SW activo y listo');
+                }
+                
+                // Escuchar actualizaciones
+                registration.addEventListener('updatefound', () => {
+                  console.log('🔄 Nueva versión de SW encontrada');
+                  const newWorker = registration.installing;
+                  newWorker.addEventListener('statechange', () => {
+                    console.log('📊 Nuevo SW estado:', newWorker.state);
+                  });
+                });
+              })
+              .catch(function(error) {
+                console.error(`❌ Error registrando SW en ${swPath}:`, error);
+                currentAttempt++;
+                
+                // Intentar con la siguiente ruta después de un delay
+                setTimeout(tryRegisterSW, 1000);
+              });
+          };
+          
+          // Iniciar el proceso de registro
+          tryRegisterSW();
         });
+
+        // Escuchar cambios de controlador
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          console.log('🔄 Controller changed - SW actualizado');
+        });
+      } else {
+        console.log('❌ Service Worker no soportado en este navegador');
       }
 
-    
-      // También podríamos guardarlo en window para acceso global
-      window.deferredPrompt = deferredPrompt;
+      // 6. Verificar estado de PWA al cargar
+      window.addEventListener('DOMContentLoaded', function() {
+        console.log('🔍 Verificando estado PWA...');
+        
+        // Verificar si ya está instalada
+        if (localStorage.getItem('pwaInstalled') === 'true') {
+          window.isPWAInstalled = true;
+          console.log('📱 PWA marcada como instalada en localStorage');
+        }
+        
+        // Verificar si hay instalación disponible
+        if (localStorage.getItem('pwaInstallAvailable') === 'true' && !window.deferredPrompt) {
+          console.log('🔄 Recuperando estado de instalación disponible');
+          window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
+        }
+        
+        // Verificar display mode
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+          window.isPWAInstalled = true;
+          localStorage.setItem('pwaInstalled', 'true');
+          console.log('📱 PWA detectada por display mode');
+        }
+      });
 
-
-
-
-
-
-      window.deferredPrompt = null;
-    
-    // 1. Capturar beforeinstallprompt
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('🎯 HTML: Evento beforeinstallprompt capturado!');
-      e.preventDefault();
-      window.deferredPrompt = e;
-      
-      // Disparar evento para React
-      window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
-    });
-  
-    // 2. Función global de instalación
-     
-  
-   
-
+      console.log('✅ Configuración PWA completada');
     </script>
   </body>
 </html>
