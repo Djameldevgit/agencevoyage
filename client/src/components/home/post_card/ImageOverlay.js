@@ -1,387 +1,256 @@
-// components/home/post_card/ImageOverlay.js
-import React from 'react';
-
-const GRADIENTS = {
-    saved: 'linear-gradient(135deg, rgba(255, 140, 0, 0.9) 0%, rgba(255, 165, 0, 0.9) 100%)'
-};
+import React, { useMemo } from 'react';
+import Carousel from '../../Carousel';
+import { useTranslation } from "react-i18next";
 
 const ImageOverlay = ({
-  showInfo,
   post,
-  t,
-  formatDate,
+  isDetailPage,
+  showInfo,
+  styles,
+  handleImageClick,
+  handleTouchStart,
+  handleTouchEnd,
+  navigateToDetail,
+  setShowOptionsModal,
   isLike,
+  loadLike,
   saved,
   saveLoad,
-  savesCount = 0,
-  onLike,
-  onSaveToggle,
-  onShare,
-  onViewDetails,
-  onCommentClick,
-  isPostDetailPage = false
+  handleLike,
+  handleUnLike,
+  handleSavePost,
+  handleUnSavePost,
+  handleShare,
+  viewsCount,
+  t,
+  auth
 }) => {
-  
-  // ✅ Si estamos en DetailPost, no mostrar la información del usuario
-  const shouldShowUserInfo = showInfo && !isPostDetailPage;
-  
+
+  // Componente de botón de acción memoizado
+  const ActionButton = React.memo(({ icon, color, onClick, count, loading }) => (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+      <div
+        style={styles.actionButton}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.15)";
+          e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+        }}
+        onClick={onClick}
+      >
+        <span className="material-icons" style={{ fontSize: "22px", color, transition: "all 0.3s ease" }}>
+          {loading ? "hourglass_empty" : icon}
+        </span>
+      </div>
+      {count !== undefined && (
+        <span style={{
+          fontSize: "12px",
+          fontWeight: "bold",
+          color: "white",
+          textShadow: "1px 1px 3px rgba(0,0,0,0.8)",
+          minWidth: "20px",
+          textAlign: "center"
+        }}>
+          {count}
+        </span>
+      )}
+    </div>
+  ));
+
   return (
-    <div style={{
-      position: "absolute",
-      bottom: "0",
-      left: "0",
-      right: "0",
-      zIndex: 2,
-      color: "white",
-      background: showInfo
-        ? "linear-gradient(transparent 0%, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.8) 100%)"
-        : "transparent",
-      padding: showInfo ? "20px 16px 16px 16px" : "0px 16px",
-      backdropFilter: showInfo ? "blur(10px)" : "none",
-      borderTop: showInfo ? "1px solid rgba(255, 255, 255, 0.15)" : "none",
-      height: showInfo ? "auto" : "0px",
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '7px'
-    }}>
-
-      {/* ✅ FILA 1: Username - SOLO mostrar en HOME */}
-      {shouldShowUserInfo && post.user.username && (
-        <div style={{
-          fontSize: "clamp(16px, 2.5vh, 20px)",
-          opacity: 0.95,
-          lineHeight: "1.4",
-          fontWeight: "600",
-          display: "-webkit-box",
-          WebkitLineClamp: 1,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          textOverflow: "ellipsis"
-        }}>
-          {post.user.username}
-        </div>
-      )}
-
-      {/* ✅ FILA 2: Title - SOLO mostrar en HOME */}
-      {shouldShowUserInfo && (
-        <div style={{
-          fontSize: "clamp(14px, 2vh, 18px)",
-          opacity: 0.95,
-          lineHeight: "1.4",
-          fontWeight: "500",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          textOverflow: "ellipsis"
-        }} >
-          {post.title}
-        </div>
-      )}
-
-      {/* ✅ FILA 3: Fecha - SOLO mostrar en HOME */}
-      {shouldShowUserInfo && (
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          fontSize: "13px",
-          color: "rgba(255, 255, 255, 0.8)",
-          opacity: 1
-        }}>
-          <span className="material-icons" style={{
-            fontSize: "14px",
-            color: "rgba(255, 255, 255, 0.7)"
-          }}>
-            schedule
+    <>
+      {/* Botón de opciones */}
+      <div style={styles.optionsButton}>
+        <div
+          style={styles.iconCircle}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+            e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowOptionsModal(true);
+          }}
+        >
+          <span className="material-icons" style={{ fontSize: "18px", color: "white" }}>
+            more_vert
           </span>
-          <span>{formatDate(post.createdAt)}  </span>
-        </div>
-      )}
-
-      {/* ✅ FILA 4: Contenido (si existe) - SOLO mostrar en HOME */}
-      {shouldShowUserInfo && post.content && (
-        <div style={{
-          fontSize: "clamp(13px, 1.8vh, 15px)",
-          opacity: 0.8,
-          lineHeight: "1.4",
-          display: "-webkit-box",
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-          textOverflow: "ellipsis"
-        }}>
-          {post.content}
-        </div>
-      )}
-
-      {/* ✅ FILA 5: Iconos de interacción - MOSTRAR SIEMPRE */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingTop: "8px",
-        borderTop: shouldShowUserInfo ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
-        opacity: 1
-      }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          flexWrap: "wrap"
-        }}>
-          {/* Like */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
-              padding: "8px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.1)",
-              position: 'relative'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onLike();
-            }}
-          >
-            <span
-              className="material-icons"
-              style={{
-                fontSize: "20px",
-                color: isLike ? "#ff3040" : "white"
-              }}
-            >
-              {isLike ? "favorite" : "favorite_border"}
-            </span>
-            {/* Contador de likes */}
-            {post.likes?.length > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-4px',
-                right: '-4px',
-                fontSize: "10px",
-                color: "white",
-                fontWeight: "600",
-                background: 'rgba(255, 48, 64, 0.9)',
-                borderRadius: '50%',
-                minWidth: '16px',
-                height: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px'
-              }}>
-                {post.likes?.length > 99 ? '99+' : post.likes?.length}
-              </span>
-            )}
-          </div>
-
-          {/* Comment */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
-              padding: "8px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.1)",
-              position: 'relative'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onCommentClick();
-            }}
-          >
-            <span className="material-icons" style={{ fontSize: "20px" }}>
-              chat_bubble_outline
-            </span>
-            {/* Contador de comentarios */}
-            {post.comments?.length > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-4px',
-                right: '-4px',
-                fontSize: "10px",
-                color: "white",
-                fontWeight: "600",
-                background: 'rgba(0, 150, 255, 0.9)',
-                borderRadius: '50%',
-                minWidth: '16px',
-                height: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px'
-              }}>
-                {post.comments?.length > 99 ? '99+' : post.comments?.length}
-              </span>
-            )}
-          </div>
-
-          {/* VIEWS */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              padding: "8px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.1)",
-              position: 'relative'
-            }}
-          >
-            <span className="material-icons" style={{
-              fontSize: "20px",
-              color: "white"
-            }}>
-              visibility
-            </span>
-            {/* Contador de vistas */}
-            {(post.views || 0) > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-4px',
-                right: '-4px',
-                fontSize: "10px",
-                color: "white",
-                fontWeight: "600",
-                background: 'rgba(156, 39, 176, 0.9)',
-                borderRadius: '50%',
-                minWidth: '16px',
-                height: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px'
-              }}>
-                {post.views > 999 ? `${Math.floor(post.views / 1000)}k` :
-                  post.views > 99 ? '99+' : post.views}
-              </span>
-            )}
-          </div>
-
-          {/* SAVE */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              cursor: saveLoad ? "wait" : "pointer",
-              padding: "8px",
-              borderRadius: "50%",
-              background: saved
-                ? "rgba(255, 140, 0, 0.3)"
-                : "rgba(255, 255, 255, 0.1)",
-              opacity: saveLoad ? 0.6 : 1,
-              position: 'relative'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onSaveToggle();
-            }}
-          >
-            <span
-              className="material-icons"
-              style={{
-                fontSize: "20px",
-                color: saved ? "#FF8C00" : "white"
-              }}
-            >
-              {saveLoad ? "hourglass_empty" : (saved ? "bookmark" : "bookmark_border")}
-            </span>
-            {/* Contador de saves */}
-            {savesCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-4px',
-                right: '-4px',
-                fontSize: "10px",
-                color: "white",
-                fontWeight: "600",
-                background: 'rgba(255, 140, 0, 0.9)',
-                borderRadius: '50%',
-                minWidth: '16px',
-                height: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px'
-              }}>
-                {savesCount > 99 ? '99+' : savesCount}
-              </span>
-            )}
-          </div>
-
-          {/* Share */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              cursor: "pointer",
-              padding: "8px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.1)"
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onShare();
-            }}
-          >
-            <span className="material-icons" style={{ fontSize: "20px" }}>
-              share
-            </span>
-          </div>
         </div>
       </div>
 
-      {/* ✅ FILA 6: Botón Detalles - SOLO mostrar en HOME */}
-      {shouldShowUserInfo && (
+      {/* Información del post */}
+      <div style={styles.infoContainer}>
         <div style={{
-          marginTop: '8px'
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: showInfo ? "8px" : "0px",
+          transition: 'margin-bottom 0.3s ease'
         }}>
+          <div style={{ flex: 1 }}>
+            <div style={{
+              fontSize: "clamp(14px, 2vh, 18px)",
+              fontWeight: "bold",
+              marginBottom: "2px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              opacity: showInfo ? 1 : 0,
+              transform: showInfo ? 'translateX(0)' : 'translateX(-10px)',
+              transition: 'all 0.3s ease 0.1s'
+            }}>
+              <span>{post?.subCategory || t('default_category')}</span>
+              <span>{post?.destinacionvoyage1 || post?.destinacionvoyage2 || post?.paysDestination}</span>
+              {post.user?.isVerified && (
+                <span className="material-icons" style={{ fontSize: "16px", color: "#0095f6" }}>
+                  verified
+                </span>
+              )}
+            </div>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "clamp(10px, 1.5vh, 12px)",
+              opacity: showInfo ? 0.9 : 0,
+              transform: showInfo ? 'translateX(0)' : 'translateX(-10px)',
+              transition: 'all 0.3s ease 0.15s'
+            }}>
+              <span className="material-icons" style={{ fontSize: "12px" }}>schedule</span>
+              <div>
+                {post?.wilaya} {post?.datedepar}
+              </div>
+            </div>
+          </div>
+
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onViewDetails();
-            }}
+            onClick={navigateToDetail}
             style={{
-              background: "rgba(255, 255, 255, 0.15)",
+              background: "rgba(255, 255, 255, 0.2)",
               border: "1px solid rgba(255, 255, 255, 0.3)",
               color: "white",
-              padding: "12px 20px",
-              borderRadius: "12px",
-              fontSize: "14px",
-              fontWeight: "600",
+              padding: "6px 12px",
+              borderRadius: "20px",
+              fontSize: "clamp(10px, 1.5vh, 12px)",
+              fontWeight: "500",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
+              gap: "4px",
+              transition: "all 0.3s ease",
               backdropFilter: "blur(10px)",
-              width: "100%",
-              textAlign: "center"
+              opacity: showInfo ? 1 : 0,
+              transform: showInfo ? 'translateX(0)' : 'translateX(10px)'
             }}
           >
-            <span>{t('viewDetails')}</span>
-            <span className="material-icons" style={{ fontSize: "18px" }}>
-              arrow_forward
-            </span>
+            <span>{t('details')}</span>
+            <span className="material-icons" style={{ fontSize: "14px" }}>arrow_forward</span>
           </button>
         </div>
+
+        {post.title && (
+          <div style={{
+            fontSize: "clamp(12px, 1.5vh, 14px)",
+            opacity: showInfo ? 0.95 : 0,
+            lineHeight: "1.3",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            marginTop: showInfo ? "4px" : "0px",
+            transform: showInfo ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'all 0.3s ease 0.25s'
+          }}>
+            <strong className='text-warning'>Départ: </strong> {post.commune} : {post.wilaya}
+          </div>
+        )}
+      </div>
+
+      {!showInfo && (
+        <div style={{
+          position: "absolute",
+          bottom: "10px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 1,
+          background: "rgba(0, 0, 0, 0.5)",
+          color: "white",
+          padding: "4px 12px",
+          borderRadius: "15px",
+          fontSize: "11px",
+          fontWeight: "500",
+          backdropFilter: "blur(5px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          cursor: "pointer"
+        }}>
+          <span className="material-icons" style={{ fontSize: "14px", marginRight: "4px" }}>
+            touch_app
+          </span>
+          {t('tap_to_see_info')}
+        </div>
       )}
-    </div>
+
+      {/* Botones de acción */}
+      <div style={styles.actionButtonContainer}>
+        <ActionButton
+          icon="favorite"
+          color={isLike ? "#F91880" : "white"}
+          onClick={(e) => {
+            e.stopPropagation();
+            isLike ? handleUnLike() : handleLike();
+          }}
+          count={post.likes.length}
+          loading={loadLike}
+        />
+
+        <ActionButton
+          icon="visibility"
+          color="#00D4AA"
+          onClick={(e) => e.stopPropagation()}
+          count={viewsCount}
+        />
+
+        <ActionButton
+          icon="bookmark"
+          color={saved ? "#ff8c00" : "white"}
+          onClick={(e) => {
+            e.stopPropagation();
+            saved ? handleUnSavePost() : handleSavePost();
+          }}
+          loading={saveLoad}
+        />
+
+        <ActionButton
+          icon="share"
+          color="#4FC3F7"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleShare();
+          }}
+        />
+      </div>
+
+      <div className="card" style={{ height: "100%" }}>
+        <div
+          className="card__image"
+          onClick={navigateToDetail}
+          style={{ height: "100%", cursor: 'pointer' }}
+        >
+          <div style={{ height: "100%" }}>
+            <Carousel images={post.images} id={post._id} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-export default ImageOverlay;
+export default React.memo(ImageOverlay);

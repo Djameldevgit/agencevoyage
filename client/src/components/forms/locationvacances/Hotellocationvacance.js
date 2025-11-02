@@ -27,29 +27,7 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     
-                    {/* Tipo de Propiedad */}
-                    <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('tipoPropiedad', 'Tipo de Propiedad')} *
-                            </Form.Label>
-                            <Form.Select
-                                name="tipoPropiedad"
-                                value={postData.tipoPropiedad || ''}
-                                onChange={handleChangeInput}
-                                required
-                                className={isRTL ? 'text-end' : ''}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                            >
-                                <option value="">{t('selectTipoPropiedad', 'Seleccione tipo')}</option>
-                                {tiposPropiedades.map((tipo, index) => (
-                                    <option key={index} value={tipo.value}>
-                                        {tipo.label}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
+                    
 
                     {/* Capacidad */}
                     <Col xs={12} md={6}>
