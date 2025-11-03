@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { FaInfoCircle, FaComments, FaHeart, FaHotel, FaPlane, FaBus, FaHome, FaMapMarkerAlt, FaConciergeBell, FaMoneyBillWave, FaCalendarAlt, FaUsers, FaStar } from 'react-icons/fa';
+import { FaComments, FaHotel, FaPlane, FaBus, FaHome, FaMapMarkerAlt, FaConciergeBell, FaMoneyBillWave, FaCalendarAlt, FaUsers, FaStar } from 'react-icons/fa';
 
 const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const { t, i18n } = useTranslation('descripcion');
@@ -15,41 +15,54 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
-        return date.toLocaleDateString('fr-FR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
+        
+        if (i18n.language === 'ar') {
+            // Formato árabe
+            return date.toLocaleDateString('ar-EG', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        } else {
+            // Formato francés
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
     };
 
-    // Determinar la categoría del post
+    // Determinar la categoría del post con traducción
     const getCategoryInfo = () => {
+        const travelType = t(`travelTypes.${post.subCategory}`, { defaultValue: post.subCategory });
+        
         switch (post.subCategory) {
             case "hadj_Omra":
                 return {
                     icon: "🕋",
-                    type: "pèlerinage Hajj & Omra",
+                    type: travelType,
                     color: "#8B4513",
                     gradient: "linear-gradient(135deg, #8B4513 0%, #D2691E 100%)"
                 };
             case "Voyage Organise":
                 return {
                     icon: "✈️",
-                    type: "voyage organisé",
+                    type: travelType,
                     color: "#3498db",
                     gradient: "linear-gradient(135deg, #3498db 0%, #1abc9c 100%)"
                 };
             case "Location_Vacances":
                 return {
                     icon: "🏠",
-                    type: "location de vacances",
+                    type: travelType,
                     color: "#e74c3c",
                     gradient: "linear-gradient(135deg, #e74c3c 0%, #e67e22 100%)"
                 };
             default:
                 return {
                     icon: "🌟",
-                    type: "voyage",
+                    type: t('labels.exceptionalOffer'),
                     color: "#9b59b6",
                     gradient: "linear-gradient(135deg, #9b59b6 0%, #3498db 100%)"
                 };
@@ -77,22 +90,22 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         const sections = [];
 
         // 🔹 SECCIÓN 1: Información Principal
-        let mainInfo = `Notre agence vous propose un ${categoryInfo.type} exceptionnel `;
+        let mainInfo = t('sections.main', { type: categoryInfo.type });
 
         // Destino
-        if (post.subCategory === "hadj_Omra" && post.destinacionhadj) {
-            mainInfo += `vers ${post.destinacionhadj} `;
+        if (post.subCategory === "hadj_Omra" && post.destinacionvoyage) {
+            mainInfo += ` ${t('labels.towards', { defaultValue: 'vers' })} ${post.destinacionvoyage} `;
         } else if (post.subCategory === "Voyage Organise" && post.destinacionvoyage) {
-            mainInfo += `découvrant ${post.destinacionvoyage} `;
+            mainInfo += ` ${t('labels.discovering', { defaultValue: 'découvrant' })} ${post.destinacionvoyage} `;
         } else if (post.subCategory === "Location_Vacances" && post.ciudad) {
-            mainInfo += `à ${post.ciudad} `;
+            mainInfo += ` ${t('labels.in', { defaultValue: 'à' })} ${post.ciudad} `;
         }
 
         // Fechas
         if (post.datedepar) {
-            mainInfo += `à partir du ${formatDate(post.datedepar)}`;
+            mainInfo += ` ${t('labels.from', { defaultValue: 'à partir du' })} ${formatDate(post.datedepar)}`;
             if (post.horadudepar) {
-                mainInfo += ` (départ à ${post.horadudepar})`;
+                mainInfo += ` (${t('labels.departureAt', { defaultValue: 'départ à' })} ${post.horadudepar})`;
             }
         }
 
@@ -103,41 +116,42 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
         // HAJJ & OMRA
         if (post.subCategory === "hadj_Omra") {
-            if (post.categoriaHotelMeca) features.push(`Hôtel ${post.categoriaHotelMeca} à La Mecque`);
-            if (post.hotelMedina) features.push(`Hôtel ${post.hotelMedina} à Médine`);
-            if (post.typeTransport) features.push(`Transport en ${post.typeTransport}`);
-            if (post.compagnieAerienne) features.push(`Vols ${post.compagnieAerienne}`);
+            if (post.categoriaHotelMeca) features.push(`${t('specificFields.categoriaHotelMeca')} ${post.categoriaHotelMeca}`);
+            if (post.hotelMeca) features.push(`${t('specificFields.hotelMeca')} ${post.hotelMeca}`);
+            if (post.hotelMedina) features.push(`${t('specificFields.hotelMedina')} ${post.hotelMedina}`);
+            if (post.typeTransport) features.push(`${t('specificFields.typeTransport')} ${post.typeTransport}`);
+            if (post.compagnieAerienne) features.push(`${t('specificFields.compagnieAerienne')} ${post.compagnieAerienne}`);
         }
         // VOYAGE ORGANISE
         else if (post.subCategory === "Voyage Organise") {
-            if (post.categoriaAlojamiento) features.push(`Hébergement ${post.categoriaAlojamiento}`);
-            if (post.tipoHabitacion) features.push(`Chambres ${post.tipoHabitacion}`);
-            if (post.regimenComidas) features.push(`Régime ${post.regimenComidas}`);
-            if (post.modeTransport) features.push(`Transport ${post.modeTransport}`);
-            if (post.nombreHotel) features.push(`Hôtel ${post.nombreHotel}`);
+            if (post.categoriaAlojamiento) features.push(`${t('specificFields.categoriaAlojamiento')} ${post.categoriaAlojamiento}`);
+            if (post.tipoHabitacion) features.push(`${t('specificFields.tipoHabitacion')} ${post.tipoHabitacion}`);
+            if (post.regimenComidas) features.push(`${t('specificFields.regimenComidas')} ${post.regimenComidas}`);
+            if (post.modeTransport) features.push(`${t('specificFields.modeTransport')} ${post.modeTransport}`);
+            if (post.nombreHotel) features.push(`${t('specificFields.nombreHotel')} ${post.nombreHotel}`);
+            if (post.classeTransport) features.push(`${t('specificFields.classeTransport')} ${post.classeTransport}`);
         }
         // LOCATION VACANCES
         else if (post.subCategory === "Location_Vacances") {
-            if (post.tipoPropiedad) features.push(post.tipoPropiedad);
-            if (post.capacidad) features.push(`Capacité ${post.capacidad}`);
-            if (post.habitaciones) features.push(`${post.habitaciones} chambres`);
-            if (post.superficie) features.push(`${post.superficie} m²`);
-            if (post.nombrePropiedad) features.push(`"${post.nombrePropiedad}"`);
+            if (post.tipoPropiedad) features.push(`${t('specificFields.tipoPropiedad')} ${post.tipoPropiedad}`);
+            if (post.capacidad) features.push(`${t('specificFields.capacidad')} ${post.capacidad}`);
+            if (post.habitaciones) features.push(`${t('specificFields.habitaciones')} ${post.habitaciones}`);
+            if (post.superficie) features.push(`${t('specificFields.superficie')} ${post.superficie}`);
+            if (post.nombrePropiedad) features.push(`${t('specificFields.nombrePropiedad')} "${post.nombrePropiedad}"`);
         }
 
         if (features.length > 0) {
             sections.push({ 
                 type: 'features', 
-                content: `Comprenant : ${features.join(' • ')}` 
+                content: `${t('labels.including')} : ${features.join(' • ')}` 
             });
         }
 
         // 🔹 SECCIÓN 3: Duración
-        if (post.dureeSejour || post.duracionviaje) {
-            const duration = post.dureeSejour || post.duracionviaje;
+        if (post.dureeSejour) {
             sections.push({ 
                 type: 'duration', 
-                content: `Durée du séjour : ${duration}` 
+                content: `${t('labels.durationStay')} : ${post.dureeSejour}` 
             });
         }
 
@@ -146,23 +160,23 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             const limitedServices = post.servicios.slice(0, 5);
             sections.push({ 
                 type: 'services', 
-                content: `Services inclus : ${limitedServices.join(', ')}${post.servicios.length > 5 ? '...' : ''}` 
+                content: `${t('labels.servicesIncluded', { defaultValue: 'Services inclus' })} : ${limitedServices.join(', ')}${post.servicios.length > 5 ? '...' : ''}` 
             });
         }
 
         // 🔹 SECCIÓN 5: Precios
         let pricing = '';
         if (post.subCategory === "hadj_Omra" && post.precioBase) {
-            pricing = `Tarif à partir de ${post.precioBase} DA`;
+            pricing = `${t('labels.from')} ${post.precioBase} DA`;
             if (post.tipoPrecio) {
                 pricing += ` (${post.tipoPrecio})`;
             }
         } else if (post.price) {
-            pricing = `À partir de ${post.price} DA par personne`;
+            pricing = `${t('labels.from')} ${post.price} DA ${t('labels.perPerson')}`;
         } else if (post.prixAdulte) {
-            pricing = `Adulte: ${post.prixAdulte} DA`;
-            if (post.prixEnfant) pricing += ` • Enfant: ${post.prixEnfant} DA`;
-            if (post.prixBebe) pricing += ` • Bébé: ${post.prixBebe} DA`;
+            pricing = `${t('labels.adult')}: ${post.prixAdulte} DA`;
+            if (post.prixEnfant) pricing += ` • ${t('labels.child')}: ${post.prixEnfant} DA`;
+            if (post.prixBebe) pricing += ` • ${t('labels.baby')}: ${post.prixBebe} DA`;
         }
 
         if (pricing) {
@@ -173,7 +187,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.contacto) {
             sections.push({ 
                 type: 'contact', 
-                content: `Réservation : ${post.contacto}` 
+                content: `${t('labels.reservation')} : ${post.contacto}` 
             });
         }
 
@@ -189,7 +203,9 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             fontSize: '0.95rem',
             marginBottom: '0.5rem',
             padding: '0.5rem 0',
-            borderBottom: index < travelSections.length - 1 ? '1px solid #f0f0f0' : 'none'
+            borderBottom: index < travelSections.length - 1 ? '1px solid #f0f0f0' : 'none',
+            textAlign: isRTL ? 'right' : 'left',
+            direction: isRTL ? 'rtl' : 'ltr'
         };
 
         switch (section.type) {
@@ -210,7 +226,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'features':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaStar size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                        <FaStar size={14} style={{ 
+                            color: valueColor, 
+                            marginRight: isRTL ? '0' : '8px',
+                            marginLeft: isRTL ? '8px' : '0'
+                        }} />
                         <span style={{ color: '#555' }}>{section.content}</span>
                     </div>
                 );
@@ -218,7 +238,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'duration':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaCalendarAlt size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                        <FaCalendarAlt size={14} style={{ 
+                            color: valueColor, 
+                            marginRight: isRTL ? '0' : '8px',
+                            marginLeft: isRTL ? '8px' : '0'
+                        }} />
                         <Highlight>{section.content.split(': ')[1]}</Highlight>
                     </div>
                 );
@@ -226,7 +250,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'services':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaConciergeBell size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                        <FaConciergeBell size={14} style={{ 
+                            color: valueColor, 
+                            marginRight: isRTL ? '0' : '8px',
+                            marginLeft: isRTL ? '8px' : '0'
+                        }} />
                         <span style={{ color: '#555' }}>{section.content}</span>
                     </div>
                 );
@@ -234,7 +262,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'pricing':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaMoneyBillWave size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                        <FaMoneyBillWave size={14} style={{ 
+                            color: valueColor, 
+                            marginRight: isRTL ? '0' : '8px',
+                            marginLeft: isRTL ? '8px' : '0'
+                        }} />
                         <Highlight>{section.content}</Highlight>
                     </div>
                 );
@@ -242,7 +274,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'contact':
                 return (
                     <div key={index} style={{...baseStyle, borderBottom: 'none'}}>
-                        <FaUsers size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                        <FaUsers size={14} style={{ 
+                            color: valueColor, 
+                            marginRight: isRTL ? '0' : '8px',
+                            marginLeft: isRTL ? '8px' : '0'
+                        }} />
                         <span style={{ 
                             color: '#2e7d32', 
                             fontWeight: '600',
@@ -272,7 +308,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.wilaya && post.commune) {
             badges.push(
                 <Badge key="location" bg="light" text="dark" className="me-1 mb-1">
-                    <FaMapMarkerAlt className="me-1" style={{ color: valueColor }} />
+                    <FaMapMarkerAlt className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                     {post.commune}, {post.wilaya}
                 </Badge>
             );
@@ -281,7 +317,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.datedepar) {
             badges.push(
                 <Badge key="date" bg="light" text="dark" className="me-1 mb-1">
-                    <FaCalendarAlt className="me-1" style={{ color: valueColor }} />
+                    <FaCalendarAlt className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                     {formatDate(post.datedepar)}
                 </Badge>
             );
@@ -292,15 +328,15 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             if (post.categoriaHotelMeca) {
                 badges.push(
                     <Badge key="hotel-meca" bg="light" text="dark" className="me-1 mb-1">
-                        <FaHotel className="me-1" style={{ color: valueColor }} />
-                        Meca: {post.categoriaHotelMeca}
+                        <FaHotel className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
+                        {t('specificFields.categoriaHotelMeca')}: {post.categoriaHotelMeca}
                     </Badge>
                 );
             }
             if (post.typeTransport) {
                 badges.push(
                     <Badge key="transport" bg="light" text="dark" className="me-1 mb-1">
-                        <FaBus className="me-1" style={{ color: valueColor }} />
+                        <FaBus className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.typeTransport}
                     </Badge>
                 );
@@ -311,8 +347,16 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             if (post.categoriaAlojamiento) {
                 badges.push(
                     <Badge key="category" bg="light" text="dark" className="me-1 mb-1">
-                        <FaStar className="me-1" style={{ color: valueColor }} />
+                        <FaStar className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.categoriaAlojamiento}
+                    </Badge>
+                );
+            }
+            if (post.modeTransport) {
+                badges.push(
+                    <Badge key="transport-mode" bg="light" text="dark" className="me-1 mb-1">
+                        <FaPlane className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
+                        {post.modeTransport}
                     </Badge>
                 );
             }
@@ -322,8 +366,16 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             if (post.tipoPropiedad) {
                 badges.push(
                     <Badge key="property" bg="light" text="dark" className="me-1 mb-1">
-                        <FaHome className="me-1" style={{ color: valueColor }} />
+                        <FaHome className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.tipoPropiedad}
+                    </Badge>
+                );
+            }
+            if (post.capacidad) {
+                badges.push(
+                    <Badge key="capacity" bg="light" text="dark" className="me-1 mb-1">
+                        <FaUsers className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
+                        {post.capacidad} {t('labels.persons', { defaultValue: 'personnes' })}
                     </Badge>
                 );
             }
@@ -333,7 +385,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     };
 
     return (
-        <Card className="mb-3 border-0 shadow-sm" style={{ borderRadius: '12px', overflow: 'hidden' }}>
+        <Card className="mb-3 border-0 shadow-sm" style={{ 
+            borderRadius: '12px', 
+            overflow: 'hidden',
+            direction: isRTL ? 'rtl' : 'ltr'
+        }}>
             {/* Header Mejorado */}
             <Card.Header 
                 className="border-0 text-white d-flex align-items-center justify-content-between"
@@ -347,7 +403,8 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         background: 'rgba(255,255,255,0.2)',
                         borderRadius: '8px',
                         padding: '8px',
-                        marginRight: '12px'
+                        marginRight: isRTL ? '0' : '12px',
+                        marginLeft: isRTL ? '12px' : '0'
                     }}>
                         <span style={{ fontSize: '1.2rem' }}>{categoryInfo.icon}</span>
                     </div>
@@ -356,13 +413,13 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                             {categoryInfo.type.toUpperCase()}
                         </h6>
                         <small style={{ opacity: 0.9, fontSize: '0.8rem' }}>
-                            Offre exclusive • Publié le {formatDate(post.createdAt)}
+                            {t('labels.exclusiveOffer')} • {t('labels.publishedOn')} {formatDate(post.createdAt)}
                         </small>
                     </div>
                 </div>
                 {post.views > 0 && (
                     <Badge bg="light" text="dark" style={{ fontSize: '0.75rem' }}>
-                        👁️ {post.views} vues
+                        👁️ {post.views} {t('labels.views')}
                     </Badge>
                 )}
             </Card.Header>
@@ -390,16 +447,21 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         {readMore ? (
                             <>
                                 <div className="d-flex align-items-center mb-2">
-                                    <FaComments size={16} style={{ color: valueColor, marginRight: '8px' }} />
+                                    <FaComments size={16} style={{ 
+                                        color: valueColor, 
+                                        marginRight: isRTL ? '0' : '8px',
+                                        marginLeft: isRTL ? '8px' : '0'
+                                    }} />
                                     <small className="fw-bold" style={{ color: accentColor }}>
-                                        Description détaillée
+                                        {t('labels.detailedDescription')}
                                     </small>
                                 </div>
                                 <p style={{ 
                                     fontSize: '0.9rem', 
                                     lineHeight: '1.5',
                                     color: '#555',
-                                    marginBottom: '0.5rem'
+                                    marginBottom: '0.5rem',
+                                    textAlign: isRTL ? 'right' : 'left'
                                 }}>
                                     {post.description}
                                 </p>
@@ -409,7 +471,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     onClick={() => setReadMore(false)}
                                     style={{ fontSize: '0.8rem', padding: '0.25rem 0.75rem' }}
                                 >
-                                    Réduire
+                                    {t('labels.readLess')}
                                 </Button>
                             </>
                         ) : (
@@ -418,9 +480,9 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                 onClick={() => setReadMore(true)}
                                 style={{ color: valueColor }}
                             >
-                                <FaComments size={14} className="me-2" />
+                                <FaComments size={14} className={isRTL ? "ms-2" : "me-2"} />
                                 <small className="fw-bold">
-                                    Lire la description complète...
+                                    {t('labels.readMore')}
                                 </small>
                             </div>
                         )}
@@ -431,9 +493,13 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 {(post.servicios && post.servicios.length > 0) && (
                     <div className="p-3">
                         <div className="d-flex align-items-center mb-2">
-                            <FaConciergeBell size={14} style={{ color: valueColor, marginRight: '8px' }} />
+                            <FaConciergeBell size={14} style={{ 
+                                color: valueColor, 
+                                marginRight: isRTL ? '0' : '8px',
+                                marginLeft: isRTL ? '8px' : '0'
+                            }} />
                             <small className="fw-bold" style={{ color: accentColor }}>
-                                Services & Équipements
+                                {t('labels.servicesEquipment')}
                             </small>
                         </div>
                         <div className="d-flex flex-wrap gap-1">
@@ -457,7 +523,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     text="dark"
                                     style={{ fontSize: '0.75rem' }}
                                 >
-                                    +{post.servicios.length - 8} autres
+                                    +{post.servicios.length - 8} {t('labels.otherServices')}
                                 </Badge>
                             )}
                         </div>
@@ -470,7 +536,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                     borderTop: '1px solid #f0f0f0'
                 }}>
                     <small className="text-muted d-block mb-2">
-                        💫 Une expérience unique vous attend
+                        {t('labels.uniqueExperience')}
                     </small>
                     {post.contacto && (
                         <div style={{ 

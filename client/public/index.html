@@ -15,6 +15,7 @@
       name="description"
       content="Agence Voyage - Votre partenaire de confiance pour les voyages organisés, locations de vacances et pèlerinages"
     />
+    
     <!-- Usar rutas absolutas para los iconos -->
     <link rel="apple-touch-icon" href="/icon-web-01.png" />
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
@@ -51,6 +52,7 @@
         align-items: center;
         z-index: 9999;
         color: white;
+        transition: opacity 0.5s ease;
       }
       
       .loading-spinner {
@@ -66,6 +68,10 @@
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+
+      .pwa-standalone {
+        padding-top: env(safe-area-inset-top);
       }
     </style>
   </head>
@@ -93,42 +99,34 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Script PWA CORREGIDO Y OPTIMIZADO -->
+    <!-- Script PWA MEJORADO Y ESTABILIZADO -->
     <script>
-      // ==================== CONFIGURACIÓN PWA CORREGIDA ====================
+      // ==================== CONFIGURACIÓN PWA ESTABILIZADA ====================
       console.log('🚀 Inicializando PWA...');
       
       // Variables globales
       window.deferredPrompt = null;
       window.isPWAInstalled = false;
 
-      // 1. Ocultar loading screen cuando la app esté lista
+      // 1. Ocultar loading screen cuando la app esté lista - MEJORADO
       window.addEventListener('load', function() {
         console.log('📱 Página cargada completamente');
         
+        // Ocultar loading screen después de un tiempo mínimo
         setTimeout(function() {
           const loading = document.getElementById('pwa-loading');
           if (loading) {
             loading.style.opacity = '0';
-            loading.style.transition = 'opacity 0.5s ease';
             setTimeout(() => {
               if (loading.parentNode) {
                 loading.remove();
               }
             }, 500);
           }
-        }, 1000);
-
-        // Detectar si está en modo standalone PWA
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-          console.log('📱 Modo PWA detectado');
-          document.body.classList.add('pwa-standalone');
-          window.isPWAInstalled = true;
-          localStorage.setItem('pwaInstalled', 'true');
-        }
+        }, 800); // Reducido a 800ms para mejor UX
       });
 
-      // 2. Función global para instalar PWA - CORREGIDA
+      // 2. Función global para instalar PWA - ESTABILIZADA
       window.installPWA = function() {
         console.log('🔧 Ejecutando installPWA...');
         
@@ -143,7 +141,6 @@
                 console.log('🎉 Usuario aceptó la instalación');
                 window.isPWAInstalled = true;
                 localStorage.setItem('pwaInstalled', 'true');
-                // Disparar evento para React
                 window.dispatchEvent(new Event('pwaInstalled'));
               } else {
                 console.log('❌ Usuario rechazó la instalación');
@@ -159,20 +156,21 @@
             });
         } else {
           console.log('⚠️ No hay deferredPrompt disponible');
+          // Si no hay deferredPrompt pero estamos en modo instalable, redirigir
+          if (window.matchMedia('(display-mode: browser)').matches) {
+            // Mostrar instrucciones de instalación manual
+            alert('Para instalar la aplicación, use el menú de su navegador y seleccione "Agregar a pantalla de inicio"');
+          }
           return Promise.resolve(false);
         }
       };
 
-      // 3. Capturar beforeinstallprompt - UNA SOLA VEZ
+      // 3. Capturar beforeinstallprompt - MANEJO SIMPLIFICADO
       window.addEventListener('beforeinstallprompt', (e) => {
         console.log('🎯 Evento beforeinstallprompt capturado!');
         e.preventDefault();
         window.deferredPrompt = e;
-        
-        // Guardar en localStorage para persistencia
         localStorage.setItem('pwaInstallAvailable', 'true');
-        
-        // Disparar evento para que React lo capture
         window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
       });
 
@@ -183,106 +181,72 @@
         window.deferredPrompt = null;
         localStorage.setItem('pwaInstalled', 'true');
         localStorage.removeItem('pwaInstallAvailable');
-        
-        // Disparar evento para React
         window.dispatchEvent(new Event('pwaInstalled'));
       });
 
-      // 5. Registrar Service Worker con manejo de errores MEJORADO
+      // 5. Registrar Service Worker - VERSIÓN ESTABILIZADA
       if ('serviceWorker' in navigator) {
+        // Esperar a que la página esté completamente cargada
         window.addEventListener('load', function() {
           console.log('🔧 Registrando Service Worker...');
           
-          // Intentar diferentes rutas para el Service Worker
-          const swPaths = [
-            '/sw.js',
-            './sw.js',
-            `${window.location.origin}/sw.js`
-          ];
-          
-          let currentAttempt = 0;
-          
-          const tryRegisterSW = () => {
-            if (currentAttempt >= swPaths.length) {
-              console.error('❌ No se pudo registrar el SW en ninguna ruta');
-              return;
-            }
-            
-            const swPath = swPaths[currentAttempt];
-            console.log(`🔄 Intentando registrar SW en: ${swPath}`);
-            
-            navigator.serviceWorker.register(swPath)
+          // Solo registrar en producción y si el SW existe
+          const registerSW = () => {
+            navigator.serviceWorker.register('/sw.js')
               .then(function(registration) {
                 console.log('✅ SW registrado correctamente:', registration.scope);
                 
-                // Verificar estado del SW
-                if (registration.installing) {
-                  console.log('🔄 SW instalándose...');
-                  registration.installing.addEventListener('statechange', function(e) {
-                    console.log('📊 Estado SW:', e.target.state);
-                  });
-                }
-                
-                if (registration.waiting) {
-                  console.log('⏳ SW esperando...');
-                }
-                
-                if (registration.active) {
-                  console.log('🎯 SW activo y listo');
-                }
-                
-                // Escuchar actualizaciones
+                // Verificar si hay una nueva versión del SW
                 registration.addEventListener('updatefound', () => {
-                  console.log('🔄 Nueva versión de SW encontrada');
                   const newWorker = registration.installing;
+                  console.log('🔄 Nueva versión de SW encontrada:', newWorker.state);
+                  
                   newWorker.addEventListener('statechange', () => {
-                    console.log('📊 Nuevo SW estado:', newWorker.state);
+                    console.log('📊 Estado del nuevo SW:', newWorker.state);
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      // Nuevo contenido disponible
+                      console.log('🆕 Nuevo contenido disponible, por favor recargue.');
+                    }
                   });
                 });
               })
               .catch(function(error) {
-                console.error(`❌ Error registrando SW en ${swPath}:`, error);
-                currentAttempt++;
-                
-                // Intentar con la siguiente ruta después de un delay
-                setTimeout(tryRegisterSW, 1000);
+                console.error('❌ Error registrando SW:', error);
+                // No reintentar automáticamente para evitar bucles
               });
           };
-          
-          // Iniciar el proceso de registro
-          tryRegisterSW();
+
+          // Pequeño delay para evitar conflictos con la carga de la página
+          setTimeout(registerSW, 500);
         });
 
-        // Escuchar cambios de controlador
+        // Manejar cambios de controlador
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          console.log('🔄 Controller changed - SW actualizado');
+          console.log('🔄 Controller changed - posible actualización del SW');
         });
-      } else {
-        console.log('❌ Service Worker no soportado en este navegador');
       }
 
-      // 6. Verificar estado de PWA al cargar
+      // 6. Verificar estado de PWA al cargar - SIMPLIFICADO
       window.addEventListener('DOMContentLoaded', function() {
         console.log('🔍 Verificando estado PWA...');
         
         // Verificar si ya está instalada
         if (localStorage.getItem('pwaInstalled') === 'true') {
           window.isPWAInstalled = true;
-          console.log('📱 PWA marcada como instalada en localStorage');
-        }
-        
-        // Verificar si hay instalación disponible
-        if (localStorage.getItem('pwaInstallAvailable') === 'true' && !window.deferredPrompt) {
-          console.log('🔄 Recuperando estado de instalación disponible');
-          window.dispatchEvent(new CustomEvent('pwaInstallAvailable'));
         }
         
         // Verificar display mode
         if (window.matchMedia('(display-mode: standalone)').matches) {
           window.isPWAInstalled = true;
           localStorage.setItem('pwaInstalled', 'true');
+          document.body.classList.add('pwa-standalone');
           console.log('📱 PWA detectada por display mode');
         }
+      });
+
+      // 7. Manejar errores globales para diagnóstico
+      window.addEventListener('error', function(e) {
+        console.error('🚨 Error global capturado:', e.error);
       });
 
       console.log('✅ Configuración PWA completada');

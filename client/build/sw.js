@@ -1,5 +1,5 @@
-// sw.js - Service Worker optimizado para producción
-const CACHE_NAME = 'agence-voyage-v2.0';
+// sw.js - Service Worker optimizado y corregido
+const CACHE_NAME = 'agence-voyage-v2.1'; // Cambia la versión para forzar actualización
 const urlsToCache = [
   '/',
   '/static/js/bundle.js',
@@ -15,9 +15,19 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('📦 Cache abierto');
-        return cache.addAll(urlsToCache);
+        // Usamos addAll pero con manejo de errores para cada recurso
+        return Promise.all(
+          urlsToCache.map((url) => {
+            return cache.add(url).catch((error) => {
+              console.log(`❌ Error cacheando ${url}:`, error);
+            });
+          })
+        );
       })
-      .then(() => self.skipWaiting())
+      .then(() => {
+        console.log('✅ Todos los recursos cacheados');
+        return self.skipWaiting();
+      })
   );
 });
 
@@ -34,42 +44,82 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      // Reclamar clientes inmediatamente
+      return self.clients.claim();
+    })
   );
 });
 
-// Fetch - Estrategia Cache First con fallback a Network
+// Fetch - Estrategia mejorada
 self.addEventListener('fetch', (event) => {
   // Skip para requests que no son GET
   if (event.request.method !== 'GET') return;
 
-  // Para rutas de la API, usar Network First
+  // Para rutas de la API, usar Network First y no cachear
   if (event.request.url.includes('/api/')) {
     event.respondWith(
       fetch(event.request)
-        .catch(() => caches.match(event.request))
+        .catch(() => {
+          // Solo devolver cache para API si hay un error de red
+          return caches.match(event.request);
+        })
     );
     return;
   }
 
-  // Para recursos estáticos, usar Cache First
+  // Para navegación (HTML), usar Network First
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Verificar si la respuesta es válida
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseClone);
+              });
+          }
+          return response;
+        })
+        .catch(() => {
+          // Si falla la red, devolver la página de inicio del cache
+          return caches.match('/')
+            .then((cachedResponse) => {
+              if (cachedResponse) {
+                return cachedResponse;
+              }
+              // Si no hay nada en cache, devolver una página offline básica
+              return new Response('Offline', {
+                status: 503,
+                statusText: 'Service Unavailable',
+                headers: new Headers({ 'Content-Type': 'text/html' })
+              });
+            });
+        })
+    );
+    return;
+  }
+
+  // Para recursos estáticos (JS, CSS, imágenes), usar Cache First
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        // Devuelve del cache si existe
-        if (response) {
-          return response;
+      .then((cachedResponse) => {
+        // Si existe en cache, devolverlo
+        if (cachedResponse) {
+          return cachedResponse;
         }
 
-        // Si no está en cache, busca en network
+        // Si no está en cache, buscar en la red
         return fetch(event.request)
           .then((response) => {
-            // Verifica que la respuesta sea válida
+            // Verificar que la respuesta sea válida
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
-            // Clona la respuesta para guardarla en cache
+            // Clonar la respuesta para guardarla en cache
             const responseToCache = response.clone();
             caches.open(CACHE_NAME)
               .then((cache) => {
@@ -79,9 +129,13 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            // Fallback para páginas SPA
-            if (event.request.destination === 'document') {
-              return caches.match('/');
+            // Fallback para diferentes tipos de recursos
+            if (event.request.destination === 'image') {
+              // Puedes devolver una imagen placeholder aquí
+              return new Response('', {
+                status: 404,
+                statusText: 'Image Not Found'
+              });
             }
             return new Response('Offline', {
               status: 503,
