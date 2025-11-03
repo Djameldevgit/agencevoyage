@@ -9,25 +9,23 @@ const HoraDepart = ({ postData, handleChangeInput }) => {
 
   return (
     <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
-      <Col xs={12} md={6} lg={4}>
+ 
         <Form.Group className="mb-3">
           <Form.Label className={isRTL ? 'text-end d-block' : ''}>
             {t('horaDepart', 'Heure de Départ')} *
           </Form.Label>
           <Form.Control
             type="time"
-            name="horaDepart"
-            value={postData.horaDepart || ''}
+            name="horadudepar"
+            value={postData.horadudepar || ''}
             onChange={handleChangeInput}
             required
             className={isRTL ? 'text-end' : ''}
             dir={isRTL ? 'rtl' : 'ltr'}
           />
-          <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-            {t('selectDepartureTime', 'Sélectionnez l heure de départ')}
-          </Form.Text>
+         
         </Form.Group>
-      </Col>
+     
     </Row>
   );
 };

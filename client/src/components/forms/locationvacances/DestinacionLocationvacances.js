@@ -7,9 +7,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
     
     return (
         <Card className="mb-3">
-            <Card.Header>
-                <h6 className="mb-0">📍 {t('destino')} {destinationNumber} - {t('local')}</h6>
-            </Card.Header>
+  
             <Card.Body>
                 <Row>
                     <Col md={6}>
@@ -78,7 +76,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
                                 name={`voyage${destinationNumber}hotel${destinationNumber}`}
                                 value={postData[`voyage${destinationNumber}hotel${destinationNumber}`] || ''}
                                 onChange={handleChangeInput}
-                                placeholder={t('placeholderTipoAlojamiento')}
+                       
                             />
                         </Form.Group>
                     </Col>

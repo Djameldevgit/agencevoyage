@@ -88,7 +88,7 @@ const DestinationManager = ({ postData, handleChangeInput }) => {
                             name="voyage1nombrehotel1"
                             value={postData.voyage1nombrehotel1 || ''}
                             onChange={handleChangeInput}
-                            placeholder={t('placeholderNomHotel')}
+                            
                         />
                     </Form.Group>
                 </Card.Body>

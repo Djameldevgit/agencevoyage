@@ -7,9 +7,7 @@ const Destinacionvoyageorganise = ({ postData, handleChangeInput, destinationNum
     
     return (
         <Card className="mb-3">
-             <Card.Header>
-                <h6 className="mb-0">📍 {t('destino')} {destinationNumber} - {t('local')}</h6>
-            </Card.Header>
+            
             <Card>
                 <Form.Group className="mb-3">
                  

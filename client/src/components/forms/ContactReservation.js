@@ -41,11 +41,8 @@ const ContactReservation = ({ postData, handleChangeInput }) => {
     const contactTypes = detectContactType(postData.contacto || '');
 
     return (
-        <Form.Group className="mb-4">
-            <Form.Label className="fw-bold">
-                📞 {t('contactReservation')}
-                <span className="text-danger">*</span>
-            </Form.Label>
+        <Form.Group  >
+          
 
             {/* Badges de tipos de contacto detectados */}
             {contactTypes.length > 0 && (
@@ -76,7 +73,7 @@ const ContactReservation = ({ postData, handleChangeInput }) => {
                     name="contacto"
                     value={postData.contacto || ''}
                     onChange={handleChangeInput}
-                    placeholder={t('placeholderContact')}
+               
                     required
                     style={{ resize: 'vertical' }}
                 />

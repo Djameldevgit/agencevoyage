@@ -1,51 +1,98 @@
 import React from "react";
-import { Form, Card, Row, Col } from "react-bootstrap";
+import { Form, Card, Row, Col, Badge } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
   const { t, i18n } = useTranslation("categories");
   const isRTL = i18n.language === "ar";
 
-  const handleCheckboxChange = (value) => {
-    const newServicios = postData.servicios.includes(value)
-      ? postData.servicios.filter((item) => item !== value)
-      : [...postData.servicios, value];
-    handleChangeInput({ target: { name: "servicios", value: newServicios } });
+  const servicios = postData.servicios || [];
+
+  const handleCheckboxChange = (serviceValue) => {
+    const updatedServicios = servicios.includes(serviceValue)
+      ? servicios.filter(item => item !== serviceValue)
+      : [...servicios, serviceValue];
+    
+    handleChangeInput({ 
+      target: { 
+        name: "servicios", 
+        value: updatedServicios 
+      } 
+    });
   };
 
-  const services = [
-    "Visa",
-    "Hébergement à Makkah",
-    "Hébergement à Médine",
-    "Guide religieux",
-    "Transport interne",
-    "Assistance médicale",
-    "Vol inclus",
+  // Los 6 servicios más importantes para peregrinación
+  const serviciosPrincipales = [
+    { 
+      value: "visa_hajj_omra", 
+      label: t("visaService", "🛂 Visa Hajj/Omra"), 
+      description: t("visaDesc", "Traitement et obtention du visa officiel") 
+    },
+    { 
+      value: "hebergement_haram", 
+      label: t("hebergementHaram", "🏨 Hébergement près des Harams"), 
+      description: t("hebergementHaramDesc", "Hôtels à proximité des mosquées saintes") 
+    },
+    { 
+      value: "guide_religieux", 
+      label: t("guideReligieux", "🕋 Guide religieux"), 
+      description: t("guideReligieuxDesc", "Guide spécialisé francophone pour les rituels") 
+    },
+    { 
+      value: "transport_complet", 
+      label: t("transportComplet", "🚗 Transport complet"), 
+      description: t("transportCompletDesc", "Transferts aéroport, navettes, bus internes") 
+    },
+    { 
+      value: "assistance_medicale", 
+      label: t("assistanceMedicale", "🏥 Assistance médicale"), 
+      description: t("assistanceMedicaleDesc", "Équipe médicale et assurance santé") 
+    },
+    { 
+      value: "zamzam_kit", 
+      label: t("zamzamKit", "💧 Kit Zamzam & sac pèlerin"), 
+      description: t("zamzamKitDesc", "Eau Zamzam et équipement du pèlerin offerts") 
+    }
   ];
 
   return (
     <Card className="mb-4">
+      <Card.Header className="bg-primary text-white">
+        <h5 className="mb-0">
+          🎁 {t("servicesHadjOmra", "Services Essentiels Hajj & Omra")}
+        </h5>
+      </Card.Header>
       <Card.Body>
         <Row className={`${isRTL ? "rtl-direction" : ""}`}>
           <Col xs={12}>
-            <Form.Group>
-              <Form.Label className={isRTL ? "text-end d-block" : ""}>
-                {t("servicesInclus", "Services inclus")}
-              </Form.Label>
-              <div className={isRTL ? "text-end" : ""}>
-                {services.map((service, index) => (
-                  <Form.Check
-                    key={index}
-                    inline
-                    type="checkbox"
-                    label={service}
-                    checked={postData.servicios.includes(service)}
-                    onChange={() => handleCheckboxChange(service)}
-                    className={isRTL ? "ms-2" : "me-2"}
-                  />
-                ))}
-              </div>
-            </Form.Group>
+            <p className="text-muted mb-4">
+              {t("servicesDescription", "Sélectionnez les  dans votre package")}
+            </p>
+            
+            <Row>
+              {serviciosPrincipales.map((service, index) => (
+                <Col xs={12} md={6} lg={4} key={index} className="mb-3">
+                  <div className={`border rounded p-3 h-100 ${servicios.includes(service.value) ? 'border-primary bg-light' : ''}`}>
+                    <Form.Check
+                      type="checkbox"
+                      id={`service-${service.value}`}
+                      label={
+                        <div>
+                          <strong>{service.label}</strong>
+                          <br />
+                          <small className="text-muted">
+                            {service.description}
+                          </small>
+                        </div>
+                      }
+                      checked={servicios.includes(service.value)}
+                      onChange={() => handleCheckboxChange(service.value)}
+                      className={isRTL ? 'text-end' : ''}
+                    />
+                  </div>
+                </Col>
+              ))}
+            </Row>
           </Col>
         </Row>
       </Card.Body>

@@ -21,8 +21,8 @@ const AddressInput = ({
                     </Form.Label>
                     <Form.Control
                         type="text"
-                        name="villeDepart"
-                        value={postData.villeDepart || ''}
+                        name="commune"
+                        value={postData.commune || ''}
                         onChange={handleChangeInput}
                         placeholder={t('placeholderVilleDepart', 'Ex: Alger, Oran, Constantine...')}
                         required

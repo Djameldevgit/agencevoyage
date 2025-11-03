@@ -23,9 +23,7 @@ const DateDeparRetour = ({ postData, handleChangeInput }) => {
             className={isRTL ? 'text-end' : ''}
             dir={isRTL ? 'rtl' : 'ltr'}
           />
-          <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-            {t('selectDepartureDate', 'Sélectionnez la date de départ')}
-          </Form.Text>
+         
         </Form.Group>
       </Col>
       
@@ -43,9 +41,7 @@ const DateDeparRetour = ({ postData, handleChangeInput }) => {
             className={isRTL ? 'text-end' : ''}
             dir={isRTL ? 'rtl' : 'ltr'}
           />
-          <Form.Text className={`text-muted ${isRTL ? 'text-end d-block' : ''}`}>
-            {t('selectReturnDate', 'Sélectionnez la date de retour')}
-          </Form.Text>
+         
         </Form.Group>
       </Col>
     </Row>

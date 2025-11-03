@@ -19,11 +19,7 @@ const TransportHajjOmra = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header className="bg-primary text-white">
-                <h5 className="mb-0">
-                    🚗 {t('transportHajj', 'Transport Hajj/Omra')}
-                </h5>
-            </Card.Header>
+           
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
                     {/* Type de Transport */}
