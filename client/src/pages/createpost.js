@@ -53,7 +53,9 @@ const getInitialState = () => ({
   commune: "",
   contacto: "",
   images: [],
-  
+  destinacionlocacionvoyage: "",
+  destinacionomra: "",
+  destinacionvoyageorganise: "",
   // Fechas
   datedepar: "",
   horadudepar: "",
@@ -70,7 +72,7 @@ const getInitialState = () => ({
     'nombrePropiedad', 'direccionCompleta', 'ciudad', 'zonaBarrio', 'descripcionUbicacion',
     'transportInclus', 'categoriaAlojamiento', 'tipoHabitacion', 'regimenComidas', 'ubicacionHotel',
     'nombreHotel', 'ciudadHotel', 'direccionHotel', 'zonaRegion', 'modeTransport', 'classeTransport',
-    'typeVol', 'baggage', 'repasVol', 'destinacionvoyage', 'prixAdulte', 'prixEnfant', 'prixBebe'
+    'typeVol', 'baggage', 'repasVol',  'prixAdulte', 'prixEnfant', 'prixBebe'
   ].map(key => [key, ""]))
 });
 

@@ -1,206 +1,278 @@
-import React, { useRef } from 'react';
-import { useTranslation } from "react-i18next";
+// components/home/post_card/OptionsModal.js
+import React from 'react';
 
-const OptionsModal = ({
-  showOptionsModal,
-  setShowOptionsModal,
-  isPostOwner,
-  isAdmin,
-  handleEditPost,
-  handleDeleteClick,
-  handleContactSeller,
-  handleShare,
-  auth,
-  saved,
-  saveLoad,
-  handleSavePost,
-  handleUnSavePost,
-  
+const OptionsModal = ({ 
+  show, 
+  onClose, 
+  innerRef, 
+  isAdmin, 
+  isPostOwner, 
+  saved, 
+  saveLoad, 
+  t, 
+  onOptionClick,
+  onAprove,
+  onChatWithAdmin
 }) => {
-  const optionsModalRef = useRef(null);
-  const { t } = useTranslation(['cardbodycarousel', 'common']);
+  if (!show) return null;
 
-  if (!showOptionsModal) return null;
+  console.log("📍 OptionsModal está renderizándose, show:", show);
 
   return (
-    <div style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.8)",
-      display: "flex",
-      alignItems: "flex-end",
-      justifyContent: "center",
-      zIndex: 9999,
-      backdropFilter: "blur(10px)"
-    }}>
-      <div ref={optionsModalRef} style={{
-        background: "white",
-        width: "100%",
-        maxWidth: "500px",
-        borderTopLeftRadius: "20px",
-        borderTopRightRadius: "20px",
-        padding: "20px 0",
-        transform: "translateY(0)",
-        animation: "slideUp 0.3s ease",
-        boxShadow: "0 -4px 20px rgba(0, 0, 0, 0.15)"
-      }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          {(isPostOwner || isAdmin) && (
+    <div
+      ref={innerRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 9999,
+        animation: 'fadeIn 0.2s ease'
+      }}
+      onClick={(e) => {
+        // Cerrar solo si se hace click en el backdrop
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          padding: '8px 0',
+          minWidth: '200px',
+          maxWidth: '90%',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+          animation: 'slideUp 0.2s ease'
+        }}
+      >
+        {/* Opciones para el dueño del post */}
+        {isPostOwner && (
+          <>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditPost(e);
-                setShowOptionsModal(false);
-              }}
+              onClick={() => onOptionClick('edit')}
               style={{
-                background: "none",
-                border: "none",
-                padding: "16px 24px",
-                textAlign: "left",
-                fontSize: "16px",
-                color: "#333",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                transition: "background-color 0.2s ease",
-                backgroundColor: "rgba(255, 193, 7, 0.1)",
-                borderLeft: "3px solid #ffc107"
+                width: '100%',
+                padding: '12px 16px',
+                background: 'none',
+                border: 'none',
+                textAlign: 'left',
+                fontSize: '14px',
+                color: '#333',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
             >
-              <span className="material-icons" style={{ color: "#ffc107" }}>edit</span>
-              {isAdmin && !isPostOwner ? t('edit_post_admin') : t('edit_post')}
+              <span className="material-icons" style={{ fontSize: '18px' }}>edit</span>
+              {t('edit')}
             </button>
-          )}
+            
+            <button
+              onClick={() => onOptionClick('delete')}
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                background: 'none',
+                border: 'none',
+                textAlign: 'left',
+                fontSize: '14px',
+                color: '#e74c3c',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            >
+              <span className="material-icons" style={{ fontSize: '18px' }}>delete</span>
+              {t('delete')}
+            </button>
+          </>
+        )}
 
-          {(isPostOwner || isAdmin) && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteClick(e);
-                setShowOptionsModal(false);
-              }}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "16px 24px",
-                textAlign: "left",
-                fontSize: "16px",
-                color: "#e74c3c",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                transition: "background-color 0.2s ease"
-              }}
-            >
-              <span className="material-icons" style={{ color: "#e74c3c" }}>delete</span>
-              {isAdmin && !isPostOwner ? t('delete_post_admin') : t('delete_post')}
-            </button>
-          )}
+        {/* Opciones para admin */}
+        {isAdmin && !isPostOwner && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleContactSeller();
-              setShowOptionsModal(false);
-            }}
+            onClick={onAprove}
             style={{
-              background: "none",
-              border: "none",
-              padding: "16px 24px",
-              textAlign: "left",
-              fontSize: "16px",
-              color: "#333",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              transition: "background-color 0.2s ease"
+              width: '100%',
+              padding: '12px 16px',
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              fontSize: '14px',
+              color: '#27ae60',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <span className="material-icons" style={{ color: "#007bff" }}>chat</span>
-            {t('contact_seller')}
+            <span className="material-icons" style={{ fontSize: '18px' }}>check_circle</span>
+            {t('approve')}
           </button>
+        )}
+
+        {/* Opciones para todos los usuarios */}
+        {!isPostOwner && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleShare();
-              setShowOptionsModal(false);
-            }}
+            onClick={() => onOptionClick('contact')}
             style={{
-              background: "none",
-              border: "none",
-              padding: "16px 24px",
-              textAlign: "left",
-              fontSize: "16px",
-              color: "#333",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              transition: "background-color 0.2s ease"
+              width: '100%',
+              padding: '12px 16px',
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              fontSize: '14px',
+              color: '#333',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <span className="material-icons" style={{ color: "#007bff" }}>share</span>
-            {t('share')}
+            <span className="material-icons" style={{ fontSize: '18px' }}>message</span>
+            {t('contactSeller')}
           </button>
+        )}
 
-          {auth.user && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                saved ? handleUnSavePost() : handleSavePost();
-                setShowOptionsModal(false);
-              }}
-              disabled={saveLoad}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "16px 24px",
-                textAlign: "left",
-                fontSize: "16px",
-                color: saveLoad ? "#999" : "#333",
-                cursor: saveLoad ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                transition: "background-color 0.2s ease",
-                opacity: saveLoad ? 0.6 : 1
-              }}
-            >
-              <span className="material-icons" style={{ color: saved ? "#ff8c00" : "#666" }}>
-                {saved ? 'bookmark' : 'bookmark_border'}
-              </span>
-              {saveLoad ? t('saving') : (saved ? t('saved') : t('save'))}
-            </button>
-          )}
+        {/* Guardar/Desguardar */}
+        <button
+          onClick={() => onOptionClick('save')}
+          disabled={saveLoad}
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            background: 'none',
+            border: 'none',
+            textAlign: 'left',
+            fontSize: '14px',
+            color: saved ? '#e74c3c' : '#333',
+            cursor: saveLoad ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            opacity: saveLoad ? 0.6 : 1
+          }}
+          onMouseEnter={(e) => !saveLoad && (e.currentTarget.style.backgroundColor = '#f8f9fa')}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
+          <span className="material-icons" style={{ fontSize: '18px' }}>
+            {saved ? 'bookmark_remove' : 'bookmark_add'}
+          </span>
+          {saved ? t('unsave') : t('save')}
+        </button>
 
-          <div style={{ padding: "8px 16px", marginTop: "8px" }}>
-            <button
-              onClick={() => setShowOptionsModal(false)}
-              style={{
-                background: "rgba(0, 0, 0, 0.05)",
-                border: "none",
-                padding: "16px",
-                borderRadius: "12px",
-                fontSize: "16px",
-                color: "#333",
-                cursor: "pointer",
-                width: "100%",
-                fontWeight: "600",
-                transition: "background-color 0.2s ease"
-              }}
-            >
-              {t('cancel')}
-            </button>
-          </div>
-        </div>
+        {/* Compartir */}
+        <button
+          onClick={() => onOptionClick('share')}
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            background: 'none',
+            border: 'none',
+            textAlign: 'left',
+            fontSize: '14px',
+            color: '#333',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
+          <span className="material-icons" style={{ fontSize: '18px' }}>share</span>
+          {t('share')}
+        </button>
+
+        {/* Reportar (solo si no es el dueño) */}
+        {!isPostOwner && (
+          <button
+            onClick={() => onOptionClick('report')}
+            style={{
+              width: '100%',
+              padding: '12px 16px',
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              fontSize: '14px',
+              color: '#e74c3c',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <span className="material-icons" style={{ fontSize: '18px' }}>flag</span>
+            {t('report')}
+          </button>
+        )}
+
+        {/* Chat con Admin (solo para usuarios no admin) */}
+        {!isAdmin && (
+          <button
+            onClick={onChatWithAdmin}
+            style={{
+              width: '100%',
+              padding: '12px 16px',
+              background: 'none',
+              border: 'none',
+              textAlign: 'left',
+              fontSize: '14px',
+              color: '#333',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <span className="material-icons" style={{ fontSize: '18px' }}>admin_panel_settings</span>
+            {t('chatWithAdmin')}
+          </button>
+        )}
       </div>
+
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          
+          @keyframes slideUp {
+            from { 
+              opacity: 0;
+              transform: translateY(20px); 
+            }
+            to { 
+              opacity: 1;
+              transform: translateY(0); 
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
 
-export default React.memo(OptionsModal);
+export default OptionsModal;

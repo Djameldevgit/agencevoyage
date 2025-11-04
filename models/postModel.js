@@ -60,8 +60,7 @@ const postSchema = new mongoose.Schema({
     typeTransport: String,         // 🔷 NUEVO
     precioBase: String,            // 🔷 NUEVO
     tipoPrecio: String,            // 🔷 NUEVO
-    destinacionhadj: String,
-
+   
     // 🔷 CAMPOS ESPECÍFICOS DE LOCATION VACANCES
     tipoPropiedad: String,         // 🔷 NUEVO
     capacidad: String,             // 🔷 NUEVO
@@ -88,8 +87,7 @@ const postSchema = new mongoose.Schema({
     typeVol: String,               // 🔷 NUEVO
     baggage: String,               // 🔷 NUEVO
     repasVol: String,              // 🔷 NUEVO
-    destinacionvoyage: String,     // 🔷 NUEVO
-
+    
     // 🔷 CAMPOS DE PERIODO VIAJE
     mesInicio: String,
     mesFin: String,
@@ -138,15 +136,16 @@ const postSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-
+     
     // 🔷 TIPO Y CATEGORÍA
     typeVoyage: String,
     niveauConfort: String,
     publicCible: String,
 
     // 🔷 CAMPOS ESPECÍFICOS PARA VOYAGE ORGANISÉ (EXISTENTES)
-    destinacionvoyage1: String,
-    destinacionvoyage2: String,
+    destinacionlocacionvoyage: String,
+    destinacionomra: String,
+    destinacionvoyageorganise: String,
     paysDestination: String,
     voyage1hotel1: String,
     voyage1nombrehotel1: String,

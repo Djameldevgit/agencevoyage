@@ -12,8 +12,8 @@ const Destinacionvoyageorganise = ({ postData, handleChangeInput, destinationNum
                 <Form.Group className="mb-3">
                  
                     <Form.Select
-                        name={`destinacionvoyage${destinationNumber}`}
-                        value={postData[`destinacionvoyage${destinationNumber}`] || ''}
+                        name={`destinacionvoyageorganise${destinationNumber}`}
+                        value={postData[`destinacionvoyageorganise${destinationNumber}`] || ''}
                         onChange={handleChangeInput}
                     >
                      

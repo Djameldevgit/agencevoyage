@@ -11,8 +11,8 @@ const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 
        
                 <Form.Group className="mb-3">
                     <Form.Select
-                        name={`destinacionvoyage${destinationNumber}`}
-                        value={postData[`destinacionvoyage${destinationNumber}`] || ''}
+                        name={`destinacionomra${destinationNumber}`}
+                        value={postData[`destinacionomra${destinationNumber}`] || ''}
                         onChange={handleChangeInput}
                     >
                         <optgroup label={t('ciudadesSantas')}>

@@ -83,8 +83,10 @@ const postCtrl = {
                 typeVol: postData.typeVol || "",
                 baggage: postData.baggage || "",
                 repasVol: postData.repasVol || "",
-                destinacionvoyage: postData.destinacionvoyage || "",
-                
+              
+                destinacionlocacionvoyage: postData.destinacionlocacionvoyage || "",
+                destinacionomra: postData.destinacionomra || "",
+                destinacionvoyageorganise: postData.destinacionvoyageorganise || "",
                 // fechas y horarios
                 datedepar: postData.datedepar || "",
                 horadudepar: postData.horadudepar || "",
@@ -189,8 +191,9 @@ const postCtrl = {
                         typeVol: postData.typeVol || "",
                         baggage: postData.baggage || "",
                         repasVol: postData.repasVol || "",
-                        destinacionvoyage: postData.destinacionvoyage || "",
-                        
+                        destinacionlocacionvoyage: postData.destinacionlocacionvoyage || "",
+                        destinacionomra: postData.destinacionomra || "",
+                        destinacionvoyageorganise: postData.destinacionvoyageorganise || "",
                         // fechas y horarios
                         datedepar: postData.datedepar || "",
                         horadudepar: postData.horadudepar || "",
