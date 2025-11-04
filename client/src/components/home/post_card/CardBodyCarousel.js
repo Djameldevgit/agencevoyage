@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import LikeButton from '../../LikeButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { likePost, unLikePost, savePost, unSavePost, deletePost } from '../../../redux/actions/postAction';
@@ -11,6 +11,7 @@ import { BASE_URL } from '../../../utils/config'
 
 const CardBodyCarousel = ({ post }) => {
     const history = useHistory();
+    const location = useLocation();
     const [isLike, setIsLike] = useState(false);
     const [loadLike, setLoadLike] = useState(false);
     const { auth, socket } = useSelector(state => state);
@@ -23,6 +24,9 @@ const CardBodyCarousel = ({ post }) => {
     // Nuevos estados para edición y eliminación
     const [showOptions, setShowOptions] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    // Verificar si estamos en detailPost
+    const isDetailPage = location.pathname.includes('/post/');
 
     // Verificar si el usuario actual es el dueño del post
     const isPostOwner = auth.user && post.user && auth.user._id === post.user._id;
@@ -283,29 +287,25 @@ const CardBodyCarousel = ({ post }) => {
                         <div className="card__travel-details">
                             {/* Primera fila: Subcategoría con icono */}
                             <div className="card__subcategory">
-                                <span className="card__subcategory-icon">
-                                    {getSubCategoryIcon(post.subCategory)}
-                                </span>
+                               
                                 <span className="card__subcategory-text">
                                     {formatSubCategory(post.subCategory)}
                                 </span> Le
                                 <span className="card__travel-date">
                                     {formatDate(post.datedepar)}
                                 </span>
-
-
                             </div>
 
                             {/* Segunda fila: Fecha de départ → Wilaya → Destinación */}
                             <div className="card__travel-route">
-
                                 <span className="card__travel-arrow">→</span>
                                 <span className="card__travel-wilaya">
                                     {post.wilaya || 'Lieu de départ'}
                                 </span>
                                 <span className="card__travel-arrow">→</span>
                                 <span className="card__travel-destination">
-                                    {post.destinacionlocacionvoyage || post.destinacionomra || post.destinacionvoyageorganise}    </span>
+                                    {post.destinacionlocacionvoyage || post.destinacionomra || post.destinacionvoyageorganise}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -390,36 +390,38 @@ const CardBodyCarousel = ({ post }) => {
                     <Carousel images={post.images} id={post._id} />
                 </div>
 
-                {/* Acciones del post (likes, comentarios, share, save) */}
-                <div className="card__actions">
-                    <div className="card__actions-left">
-                        <LikeButton
-                            isLike={isLike}
-                            handleLike={handleLike}
-                            handleUnLike={handleUnLike}
-                        />
-                        <span className="card__action-count">{post.likes.length}</span>
+                {/* Acciones del post (likes, comentarios, share, save) - OCULTAS EN DETAILPOST */}
+                {!isDetailPage && (
+                    <div className="card__actions">
+                        <div className="card__actions-left">
+                            <LikeButton
+                                isLike={isLike}
+                                handleLike={handleLike}
+                                handleUnLike={handleUnLike}
+                            />
+                            <span className="card__action-count">{post.likes.length}</span>
 
-                        <i className="far fa-comment card__action-icon" onClick={handleCommentClick} />
-                        <span className="card__action-count">{post.comments.length}</span>
+                            <i className="far fa-comment card__action-icon" onClick={handleCommentClick} />
+                            <span className="card__action-count">{post.comments.length}</span>
 
-                        <i className="fas fa-share card__action-icon" onClick={() => setIsShare(!isShare)} />
+                            <i className="fas fa-share card__action-icon" onClick={() => setIsShare(!isShare)} />
+                        </div>
+
+                        <div className="card__actions-right">
+                            {saved
+                                ? <i className="fas fa-bookmark card__action-icon" onClick={handleUnSavePost} />
+                                : <i className="far fa-bookmark card__action-icon" onClick={handleSavePost} />
+                            }
+                            <span className="card__action-count">{post.saves || 0}</span>
+                        </div>
                     </div>
-
-                    <div className="card__actions-right">
-                        {saved
-                            ? <i className="fas fa-bookmark card__action-icon" onClick={handleUnSavePost} />
-                            : <i className="far fa-bookmark card__action-icon" onClick={handleSavePost} />
-                        }
-                        <span className="card__action-count">{post.saves || 0}</span>
-                    </div>
-                </div>
+                )}
 
                 {/* Modal de compartir */}
                 {isShare && <ShareModal url={`${BASE_URL}/post/${post._id}`} />}
 
-                {/* Footer del post */}
-                <CardFooterPost post={post} />
+                {/* Footer del post - OCULTO EN DETAILPOST */}
+                {!isDetailPage && <CardFooterPost post={post} />}
             </div>
 
             {/* Modal de autenticación */}
@@ -430,7 +432,7 @@ const CardBodyCarousel = ({ post }) => {
                 redirectToRegister={redirectToRegister}
             />
 
-            {/* Estilos CSS */}
+            {/* Estilos CSS ACTUALIZADOS */}
             <style jsx>{`
                 .card {
                     position: relative;
@@ -450,7 +452,7 @@ const CardBodyCarousel = ({ post }) => {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 12px 16px;
+                    padding: 16px 20px;
                     border-bottom: 1px solid #f0f0f0;
                 }
 
@@ -479,7 +481,7 @@ const CardBodyCarousel = ({ post }) => {
                 .card__travel-details {
                     display: flex;
                     flex-direction: column;
-                    gap: 4px;
+                    gap: 6px;
                     flex: 1;
                     min-width: 0;
                 }
@@ -487,61 +489,67 @@ const CardBodyCarousel = ({ post }) => {
                 .card__subcategory {
                     display: flex;
                     align-items: center;
-                    gap: 6px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #333;
+                    gap: 8px;
+                    font-size: 18px; /* AUMENTADO de 14px */
+                    font-weight: 700; /* AUMENTADO de 600 */
+                    color: #2c3e50;
                 }
 
                 .card__subcategory-icon {
-                    font-size: 16px;
+                    font-size: 20px; /* AUMENTADO de 16px */
                 }
 
                 .card__subcategory-text {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    font-size: 18px; /* AUMENTADO */
                 }
 
                 .card__travel-route {
                     display: flex;
                     align-items: center;
-                    gap: 6px;
-                    font-size: 12px;
-                    color: #666;
+                    gap: 8px;
+                    font-size: 16px; /* AUMENTADO de 12px */
+                    color: #555;
                     flex-wrap: wrap;
+                    font-weight: 500;
                 }
 
                 .card__travel-date {
-                    font-weight: 500;
+                    font-weight: 600;
                     color: #e74c3c;
                     background: #fdf2f2;
-                    padding: 2px 6px;
-                    border-radius: 4px;
+                    padding: 4px 8px;
+                    border-radius: 6px;
                     white-space: nowrap;
+                    font-size: 15px;
                 }
 
                 .card__travel-arrow {
                     color: #999;
                     font-weight: bold;
+                    font-size: 16px;
                 }
 
                 .card__travel-wilaya {
-                    font-weight: 500;
+                    font-weight: 600;
                     color: #3498db;
                     background: #f0f8ff;
-                    padding: 2px 6px;
-                    border-radius: 4px;
+                    padding: 4px 8px;
+                    border-radius: 6px;
                     white-space: nowrap;
+                    font-size: 15px;
                 }
 
                 .card__travel-destination {
-                    font-weight: 500;
+                    font-weight: 600;
                     color: #27ae60;
                     background: #f0f9f4;
-                    padding: 2px 6px;
-                    border-radius: 4px;
+                    padding: 4px 8px;
+                    border-radius: 6px;
                     white-space: nowrap;
+                    font-size: 15px;
                 }
 
                 .card__options-container {
@@ -712,16 +720,16 @@ const CardBodyCarousel = ({ post }) => {
                 /* Responsive */
                 @media (max-width: 768px) {
                     .card__header {
-                        padding: 10px 12px;
+                        padding: 14px 16px;
                     }
 
                     .card__travel-route {
-                        font-size: 11px;
-                        gap: 4px;
+                        font-size: 14px;
+                        gap: 6px;
                     }
 
                     .card__subcategory {
-                        font-size: 13px;
+                        font-size: 16px;
                     }
 
                     .card__actions {
@@ -746,7 +754,7 @@ const CardBodyCarousel = ({ post }) => {
                     .card__travel-route {
                         flex-direction: column;
                         align-items: flex-start;
-                        gap: 2px;
+                        gap: 4px;
                     }
 
                     .card__travel-arrow {
@@ -757,6 +765,11 @@ const CardBodyCarousel = ({ post }) => {
                     .card__travel-wilaya,
                     .card__travel-destination {
                         margin-right: 4px;
+                        font-size: 14px;
+                    }
+
+                    .card__subcategory {
+                        font-size: 15px;
                     }
                 }
             `}</style>

@@ -1,5 +1,67 @@
 {
+
+  
+      "hadj_Omra": "Pèlerinage Hajj & Omra",
+      "Voyage Organise": "Voyage Organisé",
+      "Location_Vacances": "Location de Vacances",
+   
+      "exceptionalOffer": "Offre Exceptionnelle",
+      "towards": "vers",
+      "discovering": "découvrant",
+      "in": "à",
+      "from": "à partir du",
+      "departureAt": "départ à",
+      "including": "Comprenant",
+      "durationStay": "Durée du séjour",
+      "servicesIncluded": "Services inclus",
+      "perPerson": "par personne",
+      "adult": "Adulte",
+      "child": "Enfant",
+      "baby": "Bébé",
+      "reservation": "Réservation",
+      "persons": "personnes",
+      "exclusiveOffer": "Offre Exclusive",
+      "publishedOn": "Publié le",
+      "views": "vues",
+      "detailedDescription": "Description Détaillée",
+      "readLess": "Lire moins",
+      "readMore": "Lire la suite",
+      "servicesEquipment": "Services & Équipements",
+      "otherServices": "autres services",
+      "uniqueExperience": "Une expérience unique vous attend",
+   
+    
+      "categoriaHotelMeca": "Hôtel à La Mecque",
+      "hotelMeca": "Hôtel Mecque",
+      "hotelMedina": "Hôtel Médine",
+      "typeTransport": "Transport",
+      "compagnieAerienne": "Compagnie aérienne",
+      "categoriaAlojamiento": "Catégorie",
+      "tipoHabitacion": "Chambre",
+      "regimenComidas": "Régime",
+      "modeTransport": "Transport",
+      "nombreHotel": "Hôtel",
+      "classeTransport": "Classe",
+      "tipoPropiedad": "Type de propriété",
+      "capacidad": "Capacité",
+      "habitaciones": "Chambres",
+      "superficie": "Surface",
+      "nombrePropiedad": "Propriété",
  
+    
+      
+        
+          "main": "استمتع بـ {{type}} استثنائي",
+     
+
+
+
+  "visa_hajj_omra": "تأشيرة الحج/العمرة",
+  "hebergement_haram": "الإقامة قرب الحرمين",
+  "guide_religieux": "مرشد ديني", 
+  "transport_complet": "النقل الكامل",
+  "assistance_medicale": "المساعدة الطبية",
+  "zamzam_kit": "طرد زمزم وحقيبة الحاج",
     "alojamientoVoyage": "الإقامة للرحلات المنظمة",
     "serviciosHotel": "خدمات الفندق",
   

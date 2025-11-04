@@ -3,7 +3,7 @@ import { Form, Row, Col, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const DuracionDelViaje = ({ postData }) => {
-  const { t, i18n } = useTranslation('categories');
+  const { t, i18n } = useTranslation(["categories"]);
   const isRTL = i18n.language === 'ar';
 
   // Función para calcular los días de diferencia
@@ -30,7 +30,14 @@ const DuracionDelViaje = ({ postData }) => {
     <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
       <Col xs={12}>
         {days !== null && (
-          <Alert variant="info" className="py-2">
+          <Alert 
+            variant="info" 
+            className="py-2"
+            style={{ 
+              direction: isRTL ? 'rtl' : 'ltr',
+              textAlign: isRTL ? 'right' : 'left'
+            }}
+          >
             <strong>
               {t('duration', 'Durée du voyage')}: {days} {days === 1 ? t('day', 'jour') : t('days', 'jours')}
             </strong>

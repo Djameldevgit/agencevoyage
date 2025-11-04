@@ -3,7 +3,7 @@ import { Form, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const CategorySelector = ({ postData, handleChangeInput }) => {
-    const { t } = useTranslation('categories');
+    const { t, i18n } = useTranslation([ "categories"]);
 
     const categorias = [
         { value: "Voyage Organise", emoji: "🗺️", color: "primary" },

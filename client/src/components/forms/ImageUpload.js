@@ -3,7 +3,7 @@ import { Card, Form, Button, Row, Col, Badge } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const ImageUpload = ({ images, handleChangeImages, deleteImages, theme }) => {
-    const { t } = useTranslation('categories');
+    const { t, i18n } = useTranslation([  "categories"]);
 
     // Mostrar solo imágenes
     const imageShow = (src, index) => (

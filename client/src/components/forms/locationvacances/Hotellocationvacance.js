@@ -3,7 +3,7 @@ import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const Hotellocationvacance = ({ postData, handleChangeInput }) => {
-    const { t, i18n } = useTranslation('categories');
+    const { t, i18n } = useTranslation([ "categories"]);
     const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     const tiposPropiedades = [
@@ -94,9 +94,7 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
                                     </option>
                                 ))}
                             </Form.Select>
-                            <Form.Text className="text-muted" style={{ textAlign: isRTL ? 'right' : 'left' }}>
-                                {t('descTipoPropiedad', 'Seleccione el tipo de alojamiento que mejor describe su propiedad')}
-                            </Form.Text>
+                            
                         </Form.Group>
                     </Col>
 

@@ -3,7 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const DurationInput = ({ postData, handleChangeInput }) => {
-    const { t } = useTranslation('categories');
+    const { t, i18n } = useTranslation([  "categories"]);
     
     return (
         <Row>

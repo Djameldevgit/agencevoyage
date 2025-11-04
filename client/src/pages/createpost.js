@@ -75,7 +75,7 @@ const Createpost = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { t, i18n } = useTranslation('createpost');
+  const { t, i18n } = useTranslation('categories');
 
   const isEdit = location.state?.isEdit || false;
   const postToEdit = location.state?.postData || null;

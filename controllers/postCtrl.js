@@ -35,82 +35,17 @@ const postCtrl = {
                 return res.status(400).json({msg: "La catégorie est requise."})
             }
     
-            if (!postData.wilaya || !postData.commune) {
-                return res.status(400).json({msg: "La wilaya et la commune sont requises."})
-            }
-    
-            // 🔥 CREAR NUEVO POST OPTIMIZADO CON TODOS LOS CAMPOS
+            
+            // 🔥 CREAR NUEVO POST SIMPLIFICADO
             const newPost = new Posts({
-                ...postData, // ✅ TODOS los campos del frontend automáticamente
+                ...postData, // ✅ TODOS los campos automáticamente
                 images,
                 user: req.user._id,
                 
-                // Campos críticos con valores por defecto
-                category: postData.category || "Agence de Voyage",
-                description: postData.description || postData.content || "",
-                
-                // 🔷 CAMPOS ESPECÍFICOS DE CADA CATEGORÍA
-                // hadj omra
-                categoriaHotelMeca: postData.categoriaHotelMeca || "",
-                compagnieAerienne: postData.compagnieAerienne || "",
-                typeTransport: postData.typeTransport || "",
-                precioBase: postData.precioBase || "",
-                tipoPrecio: postData.tipoPrecio || "",
-                
-                // location vacances
-                tipoPropiedad: postData.tipoPropiedad || "",
-                capacidad: postData.capacidad || "",
-                habitaciones: postData.habitaciones || "",
-                superficie: postData.superficie || "",
-                nombrePropiedad: postData.nombrePropiedad || "",
-                direccionCompleta: postData.direccionCompleta || "",
-                ciudad: postData.ciudad || "",
-                zonaBarrio: postData.zonaBarrio || "",
-                descripcionUbicacion: postData.descripcionUbicacion || "",
-                transportInclus: postData.transportInclus || "",
-              
-                // voyage organisé
-                categoriaAlojamiento: postData.categoriaAlojamiento || "",
-                tipoHabitacion: postData.tipoHabitacion || "",
-                regimenComidas: postData.regimenComidas || "",
-                ubicacionHotel: postData.ubicacionHotel || "",
-                nombreHotel: postData.nombreHotel || "",
-                ciudadHotel: postData.ciudadHotel || "",
-                direccionHotel: postData.direccionHotel || "",
-                zonaRegion: postData.zonaRegion || "",
-                modeTransport: postData.modeTransport || "",
-                classeTransport: postData.classeTransport || "",
-                typeVol: postData.typeVol || "",
-                baggage: postData.baggage || "",
-                repasVol: postData.repasVol || "",
-              
-                destinacionlocacionvoyage: postData.destinacionlocacionvoyage || "",
-                destinacionomra: postData.destinacionomra || "",
-                destinacionvoyageorganise: postData.destinacionvoyageorganise || "",
-                // fechas y horarios
-                datedepar: postData.datedepar || "",
-                horadudepar: postData.horadudepar || "",
-                dateretour: postData.dateretour || "",
-                dureeSejour: postData.dureeSejour || "",
-                
-                // precios
-                prixAdulte: postData.prixAdulte || "",
-                prixEnfant: postData.prixEnfant || "",
-                prixBebe: postData.prixBebe || "",
-                price: postData.price || "",
-                
+               
                 // Arrays que deben estar inicializados
                 servicios: postData.servicios || [],
-                serviciosTr: postData.serviciosTr || [],
-                specifications: postData.specifications || [],
-                tipodehabutaciones: postData.tipodehabutaciones || [],
-                wifi: postData.wifi || [],
-                language: postData.language || [],
-                servicesInclus: postData.servicesInclus || [],
-                activites: postData.activites || [],
-                documentsRequises: postData.documentsRequises || [],
-                optionsPaiement: postData.optionsPaiement || [],
-                excursions: postData.excursions || []
+                images: images || []
             })
     
             await newPost.save()
@@ -128,9 +63,10 @@ const postCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+  
     updatePost: async (req, res) => {
         try {
-            const { postData, images, status } = req.body
+            const { postData, images } = req.body
     
             if (!postData) {
                 return res.status(400).json({msg: "Données du post manquantes."})
@@ -141,74 +77,24 @@ const postCtrl = {
                 return res.status(400).json({msg: "La catégorie est requise."})
             }
     
-            if (!postData.wilaya || !postData.commune) {
-                return res.status(400).json({msg: "La wilaya et la commune sont requises."})
+            if (!postData.wilaya || !postData.vile) {
+                return res.status(400).json({msg: "La wilaya et la ville sont requises."})
             }
     
-            // Buscar el post existente
+            // Buscar y actualizar el post
             const post = await Posts.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     $set: {
-                        // ✅ ACTUALIZAR TODOS LOS CAMPOS DEL FRONTEND
-                        ...postData,
+                        ...postData, // ✅ TODOS los campos automáticamente
                         images: images || postData.images,
                         
-                        // Campos específicos para asegurar consistencia
+                        // Solo campos críticos
                         category: postData.category || "Agence de Voyage",
-                        description: postData.description || postData.content || "",
-                        
-                        // hadj omra
-                        categoriaHotelMeca: postData.categoriaHotelMeca || "",
-                        compagnieAerienne: postData.compagnieAerienne || "",
-                        typeTransport: postData.typeTransport || "",
-                        precioBase: postData.precioBase || "",
-                        tipoPrecio: postData.tipoPrecio || "",
-                        
-                        // location vacances
-                        tipoPropiedad: postData.tipoPropiedad || "",
-                        capacidad: postData.capacidad || "",
-                        habitaciones: postData.habitaciones || "",
-                        superficie: postData.superficie || "",
-                        nombrePropiedad: postData.nombrePropiedad || "",
-                        direccionCompleta: postData.direccionCompleta || "",
-                        ciudad: postData.ciudad || "",
-                        zonaBarrio: postData.zonaBarrio || "",
-                        descripcionUbicacion: postData.descripcionUbicacion || "",
-                        transportInclus: postData.transportInclus || "",
-                      
-                        // voyage organisé
-                        categoriaAlojamiento: postData.categoriaAlojamiento || "",
-                        tipoHabitacion: postData.tipoHabitacion || "",
-                        regimenComidas: postData.regimenComidas || "",
-                        ubicacionHotel: postData.ubicacionHotel || "",
-                        nombreHotel: postData.nombreHotel || "",
-                        ciudadHotel: postData.ciudadHotel || "",
-                        direccionHotel: postData.direccionHotel || "",
-                        zonaRegion: postData.zonaRegion || "",
-                        modeTransport: postData.modeTransport || "",
-                        classeTransport: postData.classeTransport || "",
-                        typeVol: postData.typeVol || "",
-                        baggage: postData.baggage || "",
-                        repasVol: postData.repasVol || "",
-                        destinacionlocacionvoyage: postData.destinacionlocacionvoyage || "",
-                        destinacionomra: postData.destinacionomra || "",
-                        destinacionvoyageorganise: postData.destinacionvoyageorganise || "",
-                        // fechas y horarios
-                        datedepar: postData.datedepar || "",
-                        horadudepar: postData.horadudepar || "",
-                        dateretour: postData.dateretour || "",
-                        dureeSejour: postData.dureeSejour || "",
-                        
-                        // precios
-                        prixAdulte: postData.prixAdulte || "",
-                        prixEnfant: postData.prixEnfant || "",
-                        prixBebe: postData.prixBebe || "",
-                        price: postData.price || "",
+                        description: postData.description || "",
                         
                         // Arrays
-                        servicios: postData.servicios || [],
-                        serviciosTr: postData.serviciosTr || []
+                        servicios: postData.servicios || []
                     }
                 },
                 { new: true, runValidators: true }

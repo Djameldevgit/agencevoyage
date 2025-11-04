@@ -3,7 +3,7 @@ import { Form, Card, Badge, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const ContactReservation = ({ postData, handleChangeInput }) => {
-    const { t } = useTranslation('categories');
+    const { t, i18n } = useTranslation([  "categories"]);
  
     // Detectar tipo de contacto para mostrar badges
     const detectContactType = (contactText) => {

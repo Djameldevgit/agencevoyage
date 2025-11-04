@@ -3,7 +3,7 @@ import { Card, Form, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const TransporteViajehadj = ({ postData = {}, handleChangeInput }) => {
-    const { t } = useTranslation('categories');
+    const { t } = useTranslation([ "categories"]);
 
     // 🔷 VALIDACIÓN DEFENSIVA - asegurar que los arrays existan
     const serviciosTransporte = Array.isArray(postData.serviciosTransporte) ? postData.serviciosTransporte : [];

@@ -4,7 +4,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const PriceInput = ({ postData, setPostData }) => {
-  const { t } = useTranslation('categories');
+  const { t  } = useTranslation([  "categories"]);
 
   const handleChange = (e) => {
     const value = parseInt(e.target.value) || 0;

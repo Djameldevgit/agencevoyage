@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const PensionSelect = ({ postData, handleChangeInput }) => {
-    const { t } = useTranslation('categories');
+    const { t  } = useTranslation([  "categories"]);
     
     return (
         <Form.Group className="mb-3">

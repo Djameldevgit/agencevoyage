@@ -3,7 +3,7 @@ import { Form, Row, Col, Card } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const TransportVoyagesOrganises = ({ postData, handleChangeInput }) => {
-  const { t, i18n } = useTranslation("categories");
+  const { t, i18n } = useTranslation([  "categories"]);
   const isRTL = i18n.language === "ar" || i18n.language === "ara";
 
   // Usar el array servicios existente

@@ -2,8 +2,8 @@ import React from 'react';
 import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
-    const { t, i18n } = useTranslation('categories');
+const TarifasYprecios = ({ postData, handleChangeInput }) => {
+    const { t, i18n } = useTranslation([  "categories"]);
     const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Opciones de descuentos y ofertas

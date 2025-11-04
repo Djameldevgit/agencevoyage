@@ -1,5 +1,10 @@
 {
- 
+  "visa_hajj_omra": "Visa Hajj/Omra",
+  "hebergement_haram": "Hébergement près des Harams", 
+  "guide_religieux": "Guide religieux",
+  "transport_complet": "Transport complet",
+  "assistance_medicale": "Assistance médicale",
+  "zamzam_kit": "Kit Zamzam & sac pèlerin",
  
     "alojamientoVoyage": "Hébergement pour Voyages Organisés",
     "serviciosHotel": "Services de l'Hôtel",

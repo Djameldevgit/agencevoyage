@@ -4,12 +4,23 @@ import { useTranslation } from 'react-i18next';
 import { FaComments, FaHotel, FaPlane, FaBus, FaHome, FaMapMarkerAlt, FaConciergeBell, FaMoneyBillWave, FaCalendarAlt, FaUsers, FaStar } from 'react-icons/fa';
 
 const DescriptionPost = ({ post, readMore, setReadMore }) => {
-    const { t, i18n } = useTranslation('descripcion');
+    const { t, i18n } = useTranslation(["descripcion", "categories", "createpost"]);
     const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Color azul claro para valores destacados
     const valueColor = "#1e88e5";
     const accentColor = "#1565c0";
+
+    // Servicios conocidos para traducción
+    const knownServices = ['visa_hajj_omra', 'hebergement_haram', 'guide_religieux', 'transport_complet', 'assistance_medicale', 'zamzam_kit'];
+
+    // Función para traducir servicios
+    const translateService = (service) => {
+        if (knownServices.includes(service)) {
+            return t(service, { ns: "categories" });
+        }
+        return service;
+    };
 
     // Función para formatear fechas
     const formatDate = (dateString) => {
@@ -35,7 +46,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
     // Determinar la categoría del post con traducción
     const getCategoryInfo = () => {
-        const travelType = t(`travelTypes.${post.subCategory}`, { defaultValue: post.subCategory });
+        const travelType = t(`travelTypes.${post.subCategory}`, { ns: "descripcion" });
         
         switch (post.subCategory) {
             case "hadj_Omra":
@@ -62,7 +73,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             default:
                 return {
                     icon: "🌟",
-                    type: t('labels.exceptionalOffer'),
+                    type: t('labels.exceptionalOffer', { ns: "descripcion" }),
                     color: "#9b59b6",
                     gradient: "linear-gradient(135deg, #9b59b6 0%, #3498db 100%)"
                 };
@@ -75,12 +86,12 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const Highlight = ({ children }) => (
         <span style={{ 
             color: valueColor, 
-            fontWeight: '700', // Aumentado de 600 a 700
+            fontWeight: '700',
             backgroundColor: '#e3f2fd',
-            padding: '3px 8px', // Aumentado padding
+            padding: '3px 8px',
             borderRadius: '6px',
             margin: '0 3px',
-            fontSize: '1rem' // Añadido tamaño de fuente
+            fontSize: '1rem'
         }}>
             {children}
         </span>
@@ -91,22 +102,25 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         const sections = [];
 
         // 🔹 SECCIÓN 1: Información Principal
-        let mainInfo = t('sections.main', { type: categoryInfo.type });
+        let mainInfo = t('sections.main', { 
+            ns: "descripcion", 
+            type: categoryInfo.type 
+        });
 
         // Destino
         if (post.subCategory === "hadj_Omra" && post.destinacionvoyage) {
-            mainInfo += ` ${t('labels.towards', { defaultValue: 'vers' })} ${post.destinacionvoyage} `;
+            mainInfo += ` ${t('labels.towards', { ns: "descripcion" })} ${post.destinacionvoyage} `;
         } else if (post.subCategory === "Voyage Organise" && post.destinacionvoyage) {
-            mainInfo += ` ${t('labels.discovering', { defaultValue: 'découvrant' })} ${post.destinacionvoyage} `;
+            mainInfo += ` ${t('labels.discovering', { ns: "descripcion" })} ${post.destinacionvoyage} `;
         } else if (post.subCategory === "Location_Vacances" && post.ciudad) {
-            mainInfo += ` ${t('labels.in', { defaultValue: 'à' })} ${post.ciudad} `;
+            mainInfo += ` ${t('labels.in', { ns: "descripcion" })} ${post.ciudad} `;
         }
 
         // Fechas
         if (post.datedepar) {
-            mainInfo += ` ${t('labels.from', { defaultValue: 'à partir du' })} ${formatDate(post.datedepar)}`;
+            mainInfo += ` ${t('labels.from', { ns: "descripcion" })} ${formatDate(post.datedepar)}`;
             if (post.horadudepar) {
-                mainInfo += ` (${t('labels.departureAt', { defaultValue: 'départ à' })} ${post.horadudepar})`;
+                mainInfo += ` (${t('labels.departureAt', { ns: "descripcion" })} ${post.horadudepar})`;
             }
         }
 
@@ -117,34 +131,34 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
         // HAJJ & OMRA
         if (post.subCategory === "hadj_Omra") {
-            if (post.categoriaHotelMeca) features.push(`${t('specificFields.categoriaHotelMeca')} ${post.categoriaHotelMeca}`);
-            if (post.hotelMeca) features.push(`${t('specificFields.hotelMeca')} ${post.hotelMeca}`);
-            if (post.hotelMedina) features.push(`${t('specificFields.hotelMedina')} ${post.hotelMedina}`);
-            if (post.typeTransport) features.push(`${t('specificFields.typeTransport')} ${post.typeTransport}`);
-            if (post.compagnieAerienne) features.push(`${t('specificFields.compagnieAerienne')} ${post.compagnieAerienne}`);
+            if (post.categoriaHotelMeca) features.push(`${t('specificFields.categoriaHotelMeca', { ns: "descripcion" })} ${post.categoriaHotelMeca}`);
+            if (post.hotelMeca) features.push(`${t('specificFields.hotelMeca', { ns: "descripcion" })} ${post.hotelMeca}`);
+            if (post.hotelMedina) features.push(`${t('specificFields.hotelMedina', { ns: "descripcion" })} ${post.hotelMedina}`);
+            if (post.typeTransport) features.push(`${t('specificFields.typeTransport', { ns: "descripcion" })} ${post.typeTransport}`);
+            if (post.compagnieAerienne) features.push(`${t('specificFields.compagnieAerienne', { ns: "descripcion" })} ${post.compagnieAerienne}`);
         }
         // VOYAGE ORGANISE
         else if (post.subCategory === "Voyage Organise") {
-            if (post.categoriaAlojamiento) features.push(`${t('specificFields.categoriaAlojamiento')} ${post.categoriaAlojamiento}`);
-            if (post.tipoHabitacion) features.push(`${t('specificFields.tipoHabitacion')} ${post.tipoHabitacion}`);
-            if (post.regimenComidas) features.push(`${t('specificFields.regimenComidas')} ${post.regimenComidas}`);
-            if (post.modeTransport) features.push(`${t('specificFields.modeTransport')} ${post.modeTransport}`);
-            if (post.nombreHotel) features.push(`${t('specificFields.nombreHotel')} ${post.nombreHotel}`);
-            if (post.classeTransport) features.push(`${t('specificFields.classeTransport')} ${post.classeTransport}`);
+            if (post.categoriaAlojamiento) features.push(`${t('specificFields.categoriaAlojamiento', { ns: "descripcion" })} ${post.categoriaAlojamiento}`);
+            if (post.tipoHabitacion) features.push(`${t('specificFields.tipoHabitacion', { ns: "descripcion" })} ${post.tipoHabitacion}`);
+            if (post.regimenComidas) features.push(`${t('specificFields.regimenComidas', { ns: "descripcion" })} ${post.regimenComidas}`);
+            if (post.modeTransport) features.push(`${t('specificFields.modeTransport', { ns: "descripcion" })} ${post.modeTransport}`);
+            if (post.nombreHotel) features.push(`${t('specificFields.nombreHotel', { ns: "descripcion" })} ${post.nombreHotel}`);
+            if (post.classeTransport) features.push(`${t('specificFields.classeTransport', { ns: "descripcion" })} ${post.classeTransport}`);
         }
         // LOCATION VACANCES
         else if (post.subCategory === "Location_Vacances") {
-            if (post.tipoPropiedad) features.push(`${t('specificFields.tipoPropiedad')} ${post.tipoPropiedad}`);
-            if (post.capacidad) features.push(`${t('specificFields.capacidad')} ${post.capacidad}`);
-            if (post.habitaciones) features.push(`${t('specificFields.habitaciones')} ${post.habitaciones}`);
-            if (post.superficie) features.push(`${t('specificFields.superficie')} ${post.superficie}`);
-            if (post.nombrePropiedad) features.push(`${t('specificFields.nombrePropiedad')} "${post.nombrePropiedad}"`);
+            if (post.tipoPropiedad) features.push(`${t('specificFields.tipoPropiedad', { ns: "descripcion" })} ${post.tipoPropiedad}`);
+            if (post.capacidad) features.push(`${t('specificFields.capacidad', { ns: "descripcion" })} ${post.capacidad}`);
+            if (post.habitaciones) features.push(`${t('specificFields.habitaciones', { ns: "descripcion" })} ${post.habitaciones}`);
+            if (post.superficie) features.push(`${t('specificFields.superficie', { ns: "descripcion" })} ${post.superficie}`);
+            if (post.nombrePropiedad) features.push(`${t('specificFields.nombrePropiedad', { ns: "descripcion" })} "${post.nombrePropiedad}"`);
         }
 
         if (features.length > 0) {
             sections.push({ 
                 type: 'features', 
-                content: `${t('labels.including')} : ${features.join(' • ')}` 
+                content: `${t('labels.including', { ns: "descripcion" })} : ${features.join(' • ')}` 
             });
         }
 
@@ -152,32 +166,33 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.dureeSejour) {
             sections.push({ 
                 type: 'duration', 
-                content: `${t('labels.durationStay')} : ${post.dureeSejour}` 
+                content: `${t('labels.durationStay', { ns: "descripcion" })} : ${post.dureeSejour}` 
             });
         }
 
         // 🔹 SECCIÓN 4: Servicios Incluidos
         if (post.servicios && post.servicios.length > 0) {
-            const limitedServices = post.servicios.slice(0, 5);
+            const translatedServices = post.servicios.map(service => translateService(service));
+            const limitedServices = translatedServices.slice(0, 5);
             sections.push({ 
                 type: 'services', 
-                content: `${t('labels.servicesIncluded', { defaultValue: 'Services inclus' })} : ${limitedServices.join(', ')}${post.servicios.length > 5 ? '...' : ''}` 
+                content: `${t('labels.servicesIncluded', { ns: "descripcion" })} : ${limitedServices.join(', ')}${post.servicios.length > 5 ? '...' : ''}` 
             });
         }
 
         // 🔹 SECCIÓN 5: Precios
         let pricing = '';
         if (post.subCategory === "hadj_Omra" && post.precioBase) {
-            pricing = `${t('labels.from')} ${post.precioBase} DA`;
+            pricing = `${t('labels.from', { ns: "descripcion" })} ${post.precioBase} DA`;
             if (post.tipoPrecio) {
                 pricing += ` (${post.tipoPrecio})`;
             }
         } else if (post.price) {
-            pricing = `${t('labels.from')} ${post.price} DA ${t('labels.perPerson')}`;
+            pricing = `${t('labels.from', { ns: "descripcion" })} ${post.price} DA ${t('labels.perPerson', { ns: "descripcion" })}`;
         } else if (post.prixAdulte) {
-            pricing = `${t('labels.adult')}: ${post.prixAdulte} DA`;
-            if (post.prixEnfant) pricing += ` • ${t('labels.child')}: ${post.prixEnfant} DA`;
-            if (post.prixBebe) pricing += ` • ${t('labels.baby')}: ${post.prixBebe} DA`;
+            pricing = `${t('labels.adult', { ns: "descripcion" })}: ${post.prixAdulte} DA`;
+            if (post.prixEnfant) pricing += ` • ${t('labels.child', { ns: "descripcion" })}: ${post.prixEnfant} DA`;
+            if (post.prixBebe) pricing += ` • ${t('labels.baby', { ns: "descripcion" })}: ${post.prixBebe} DA`;
         }
 
         if (pricing) {
@@ -188,7 +203,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.contacto) {
             sections.push({ 
                 type: 'contact', 
-                content: `${t('labels.reservation')} : ${post.contacto}` 
+                content: `${t('labels.reservation', { ns: "descripcion" })} : ${post.contacto}` 
             });
         }
 
@@ -200,10 +215,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     // Función para renderizar cada sección con su estilo correspondiente
     const renderSection = (section, index) => {
         const baseStyle = {
-            lineHeight: '1.6', // Aumentado de 1.5
-            fontSize: '1.05rem', // Aumentado de 0.95rem
-            marginBottom: '0.75rem', // Aumentado de 0.5rem
-            padding: '0.75rem 0', // Aumentado de 0.5rem
+            lineHeight: '1.6',
+            fontSize: '1.05rem',
+            marginBottom: '0.75rem',
+            padding: '0.75rem 0',
             borderBottom: index < travelSections.length - 1 ? '1px solid #f0f0f0' : 'none',
             textAlign: isRTL ? 'right' : 'left',
             direction: isRTL ? 'rtl' : 'ltr'
@@ -214,10 +229,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 return (
                     <div key={index} style={baseStyle}>
                         <div style={{ 
-                            fontSize: '1.25rem', // Aumentado de 1.1rem
-                            fontWeight: '700', // Aumentado de 600
+                            fontSize: '1.25rem',
+                            fontWeight: '700',
                             color: accentColor,
-                            marginBottom: '0.5rem' // Aumentado de 0.25rem
+                            marginBottom: '0.5rem'
                         }}>
                             {section.content}
                         </div>
@@ -227,9 +242,9 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'features':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaStar size={16} style={{ // Aumentado de 14
+                        <FaStar size={16} style={{
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                            marginRight: isRTL ? '0' : '10px',
                             marginLeft: isRTL ? '10px' : '0'
                         }} />
                         <span style={{ color: '#555', fontSize: '1rem' }}>{section.content}</span>
@@ -239,7 +254,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'duration':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaCalendarAlt size={16} style={{ // Aumentado de 14
+                        <FaCalendarAlt size={16} style={{
                             color: valueColor, 
                             marginRight: isRTL ? '0' : '10px',
                             marginLeft: isRTL ? '10px' : '0'
@@ -251,7 +266,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'services':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaConciergeBell size={16} style={{ // Aumentado de 14
+                        <FaConciergeBell size={16} style={{
                             color: valueColor, 
                             marginRight: isRTL ? '0' : '10px',
                             marginLeft: isRTL ? '10px' : '0'
@@ -263,7 +278,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'pricing':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaMoneyBillWave size={16} style={{ // Aumentado de 14
+                        <FaMoneyBillWave size={16} style={{
                             color: valueColor, 
                             marginRight: isRTL ? '0' : '10px',
                             marginLeft: isRTL ? '10px' : '0'
@@ -275,18 +290,18 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'contact':
                 return (
                     <div key={index} style={{...baseStyle, borderBottom: 'none'}}>
-                        <FaUsers size={16} style={{ // Aumentado de 14
+                        <FaUsers size={16} style={{
                             color: valueColor, 
                             marginRight: isRTL ? '0' : '10px',
                             marginLeft: isRTL ? '10px' : '0'
                         }} />
                         <span style={{ 
                             color: '#2e7d32', 
-                            fontWeight: '700', // Aumentado de 600
+                            fontWeight: '700',
                             backgroundColor: '#e8f5e9',
-                            padding: '6px 12px', // Aumentado padding
+                            padding: '6px 12px',
                             borderRadius: '6px',
-                            fontSize: '1.05rem' // Añadido tamaño
+                            fontSize: '1.05rem'
                         }}>
                             {section.content}
                         </span>
@@ -309,7 +324,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         // Información común
         if (post.wilaya && post.commune) {
             badges.push(
-                <Badge key="location" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}> {/* Aumentado de 0.75rem */}
+                <Badge key="location" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                     <FaMapMarkerAlt className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                     {post.commune}, {post.wilaya}
                 </Badge>
@@ -331,7 +346,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 badges.push(
                     <Badge key="hotel-meca" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaHotel className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
-                        {t('specificFields.categoriaHotelMeca')}: {post.categoriaHotelMeca}
+                        {t('specificFields.categoriaHotelMeca', { ns: "descripcion" })}: {post.categoriaHotelMeca}
                     </Badge>
                 );
             }
@@ -377,7 +392,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 badges.push(
                     <Badge key="capacity" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaUsers className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
-                        {post.capacidad} {t('labels.persons', { defaultValue: 'personnes' })}
+                        {post.capacidad} {t('labels.persons', { ns: "descripcion" })}
                     </Badge>
                 );
             }
@@ -397,31 +412,31 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 className="border-0 text-white d-flex align-items-center justify-content-between"
                 style={{ 
                     background: categoryInfo.gradient,
-                    padding: '1rem 1.25rem' // Aumentado padding
+                    padding: '1rem 1.25rem'
                 }}
             >
                 <div className="d-flex align-items-center">
                     <div style={{
                         background: 'rgba(255,255,255,0.2)',
-                        borderRadius: '10px', // Aumentado de 8px
-                        padding: '10px', // Aumentado de 8px
-                        marginRight: isRTL ? '0' : '15px', // Aumentado de 12px
+                        borderRadius: '10px',
+                        padding: '10px',
+                        marginRight: isRTL ? '0' : '15px',
                         marginLeft: isRTL ? '15px' : '0'
                     }}>
-                        <span style={{ fontSize: '1.4rem' }}>{categoryInfo.icon}</span> {/* Aumentado de 1.2rem */}
+                        <span style={{ fontSize: '1.4rem' }}>{categoryInfo.icon}</span>
                     </div>
                     <div>
-                        <h6 className="mb-0 fw-bold" style={{ fontSize: '1.1rem' }}> {/* Aumentado de 0.95rem */}
+                        <h6 className="mb-0 fw-bold" style={{ fontSize: '1.1rem' }}>
                             {categoryInfo.type.toUpperCase()}
                         </h6>
-                        <small style={{ opacity: 0.9, fontSize: '0.9rem' }}> {/* Aumentado de 0.8rem */}
-                            {t('labels.exclusiveOffer')} • {t('labels.publishedOn')} {formatDate(post.createdAt)}
+                        <small style={{ opacity: 0.9, fontSize: '0.9rem' }}>
+                            {t('labels.exclusiveOffer', { ns: "descripcion" })} • {t('labels.publishedOn', { ns: "descripcion" })} {formatDate(post.createdAt)}
                         </small>
                     </div>
                 </div>
                 {post.views > 0 && (
-                    <Badge bg="light" text="dark" style={{ fontSize: '0.85rem' }}> {/* Aumentado de 0.75rem */}
-                        👁️ {post.views} {t('labels.views')}
+                    <Badge bg="light" text="dark" style={{ fontSize: '0.85rem' }}>
+                        👁️ {post.views} {t('labels.views', { ns: "descripcion" })}
                     </Badge>
                 )}
             </Card.Header>
@@ -449,20 +464,20 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         {readMore ? (
                             <>
                                 <div className="d-flex align-items-center mb-2">
-                                    <FaComments size={18} style={{ // Aumentado de 16
+                                    <FaComments size={18} style={{
                                         color: valueColor, 
-                                        marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                                        marginRight: isRTL ? '0' : '10px',
                                         marginLeft: isRTL ? '10px' : '0'
                                     }} />
-                                    <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}> {/* Aumentado tamaño */}
-                                        {t('labels.detailedDescription')}
+                                    <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}>
+                                        {t('labels.detailedDescription', { ns: "descripcion" })}
                                     </small>
                                 </div>
                                 <p style={{ 
-                                    fontSize: '1rem', // Aumentado de 0.9rem
-                                    lineHeight: '1.6', // Aumentado de 1.5
+                                    fontSize: '1rem',
+                                    lineHeight: '1.6',
                                     color: '#555',
-                                    marginBottom: '0.75rem', // Aumentado de 0.5rem
+                                    marginBottom: '0.75rem',
                                     textAlign: isRTL ? 'right' : 'left'
                                 }}>
                                     {post.description}
@@ -471,9 +486,9 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     variant="outline-primary" 
                                     size="sm"
                                     onClick={() => setReadMore(false)}
-                                    style={{ fontSize: '0.9rem', padding: '0.4rem 1rem' }} // Aumentado tamaño y padding
+                                    style={{ fontSize: '0.9rem', padding: '0.4rem 1rem' }}
                                 >
-                                    {t('labels.readLess')}
+                                    {t('labels.readLess', { ns: "descripcion" })}
                                 </Button>
                             </>
                         ) : (
@@ -482,9 +497,9 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                 onClick={() => setReadMore(true)}
                                 style={{ color: valueColor }}
                             >
-                                <FaComments size={16} className={isRTL ? "ms-2" : "me-2"} /> {/* Aumentado de 14 */}
-                                <small className="fw-bold" style={{ fontSize: '0.95rem' }}> {/* Aumentado tamaño */}
-                                    {t('labels.readMore')}
+                                <FaComments size={16} className={isRTL ? "ms-2" : "me-2"} />
+                                <small className="fw-bold" style={{ fontSize: '0.95rem' }}>
+                                    {t('labels.readMore', { ns: "descripcion" })}
                                 </small>
                             </div>
                         )}
@@ -495,13 +510,13 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 {(post.servicios && post.servicios.length > 0) && (
                     <div className="p-3">
                         <div className="d-flex align-items-center mb-2">
-                            <FaConciergeBell size={16} style={{ // Aumentado de 14
+                            <FaConciergeBell size={16} style={{
                                 color: valueColor, 
-                                marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                                marginRight: isRTL ? '0' : '10px',
                                 marginLeft: isRTL ? '10px' : '0'
                             }} />
-                            <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}> {/* Aumentado tamaño */}
-                                {t('labels.servicesEquipment')}
+                            <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}>
+                                {t('labels.servicesEquipment', { ns: "descripcion" })}
                             </small>
                         </div>
                         <div className="d-flex flex-wrap gap-1">
@@ -511,21 +526,21 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     bg="light" 
                                     text="dark"
                                     style={{ 
-                                        fontSize: '0.85rem', // Aumentado de 0.75rem
+                                        fontSize: '0.85rem',
                                         border: `1px solid ${valueColor}20`,
                                         backgroundColor: `${valueColor}08`
                                     }}
                                 >
-                                    {service}
+                                    {translateService(service)}
                                 </Badge>
                             ))}
                             {post.servicios.length > 8 && (
                                 <Badge 
                                     bg="light" 
                                     text="dark"
-                                    style={{ fontSize: '0.85rem' }} // Aumentado de 0.75rem
+                                    style={{ fontSize: '0.85rem' }}
                                 >
-                                    +{post.servicios.length - 8} {t('labels.otherServices')}
+                                    +{post.servicios.length - 8} {t('labels.otherServices', { ns: "descripcion" })}
                                 </Badge>
                             )}
                         </div>
@@ -537,14 +552,14 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                     backgroundColor: '#f8f9fa',
                     borderTop: '1px solid #f0f0f0'
                 }}>
-                    <small className="text-muted d-block mb-2" style={{ fontSize: '0.95rem' }}> {/* Aumentado tamaño */}
-                        {t('labels.uniqueExperience')}
+                    <small className="text-muted d-block mb-2" style={{ fontSize: '0.95rem' }}>
+                        {t('labels.uniqueExperience', { ns: "descripcion" })}
                     </small>
                     {post.contacto && (
                         <div style={{ 
                             color: valueColor, 
-                            fontWeight: '700', // Aumentado de 600
-                            fontSize: '1.05rem' // Aumentado de 0.9rem
+                            fontWeight: '700',
+                            fontSize: '1.05rem'
                         }}>
                             📞 {post.contacto}
                         </div>

@@ -1,7 +1,438 @@
 {
+  
  
+    "servicess": {
+      "servicesHadjOmra": "Services Essentiels Hajj & Omra",
+      "servicesDescription": "Sélectionnez les services inclus dans votre package",
+      "serviciosSeleccionados": "Services sélectionnés",
+      
+      "visa_hajj_omra": "Visa Hajj/Omra",
+      "visaDesc": "Traitement et obtention du visa officiel",
+      
+      "hebergement_haram": "Hébergement près des Harams",
+      "hebergementHaramDesc": "Hôtels à proximité des mosquées saintes",
+      
+      "guide_religieux": "Guide religieux",
+      "guideReligieuxDesc": "Guide spécialisé francophone pour les rituels",
+      
+      "transport_complet": "Transport complet",
+      "transportCompletDesc": "Transferts aéroport, navettes, bus internes",
+      
+      "assistance_medicale": "Assistance médicale",
+      "assistanceMedicaleDesc": "Équipe médicale et assurance santé",
+      
+      "zamzam_kit": "Kit Zamzam & sac pèlerin",
+      "zamzamKitDesc": "Eau Zamzam et équipement du pèlerin offerts"
+    },
+  
+  
+    "citiessss": {
+      "La Meca": "La Mecque",
+      "Medina": "Médine",
+      "La Meca y Medina": "La Mecque et Médine",
+      "Meca - Medina - Yeda": "Mecque - Médine - Djeddah",
+      "Yeda": "Djeddah",
+      "Taif": "Taïf",
+      "Riad": "Riyad",
+      "Dammam": "Dammam",
+      "Jizan": "Jizan",
+      "Abha": "Abha",
+      "Al Khobar": "Al Khobar",
+      "Dhahran": "Dhahran",
+      "Al Hofuf": "Al Hofuf",
+      "Tabuk": "Tabuk",
+      "Al Ula": "Al Ula",
+      "Najran": "Najran",
+      "Al Baha": "Al Baha",
+      "Hail": "Hail",
+      "Jubail": "Jubail",
+      "Yanbu": "Yanbu",
+      "Al Qassim": "Al Qassim",
+      "Al Jouf": "Al Jouf",
+      "Asir": "Asir",
+      "Makkah Region": "Région de La Mecque",
+      "Medina Region": "Région de Médine"
+    },
  
-        "placeholderPrecio": "En Dinars",
+    
+    "citiesss": {
+      "Alger": "Alger",
+      "Oran": "Oran",
+      "Constantine": "Constantine",
+      "Annaba": "Annaba",
+      "Blida": "Blida",
+      "Batna": "Batna",
+      "Djelfa": "Djelfa",
+      "Sétif": "Sétif",
+      "Sidi Bel Abbès": "Sidi Bel Abbès",
+      "Biskra": "Biskra",
+      "Tébessa": "Tébessa",
+      "El Oued": "El Oued",
+      "Skikda": "Skikda",
+      "Tizi Ouzou": "Tizi Ouzou",
+      "Béjaïa": "Béjaïa",
+      "Tlemcen": "Tlemcen",
+      "Ghardaïa": "Ghardaïa",
+      "Mostaganem": "Mostaganem",
+      "MSila": "M'Sila",
+      "Saïda": "Saïda",
+      
+      "Tamanrasset": "Tamanrasset",
+      "Djanet": "Djanet",
+      "Illizi": "Illizi",
+      "Adrar": "Adrar",
+      "Timimoun": "Timimoun",
+      "Béchar": "Béchar",
+      "El Menia": "El Menia",
+      "In Salah": "In Salah",
+      "Taghit": "Taghit",
+      "Beni Abbes": "Beni Abbes",
+      
+      "Tipaza": "Tipaza",
+      "Cherchell": "Cherchell",
+      "Aïn Taya": "Aïn Taya",
+      "Zéralda": "Zéralda",
+      "Sidi Fredj": "Sidi Fredj",
+      "Tichy": "Tichy",
+      "Azeffoun": "Azeffoun",
+      "Jijel": "Jijel",
+      "Collo": "Collo",
+      "El Kala": "El Kala"
+    },
+ 
+
+  "addressTitlee": "Lieu de Rassemblement",
+  "addressSubtitle": "Lieu de rencontre des voyageurs",
+  "villeRassemblement": "Ville de rassemblement",
+  "placeholderVilleRassemblement": "Ex: Alger, Oran, Constantine, Tizi Ouzou...",
+  "villeRassemblementHelp": "Lieu principal de rencontre des voyageurs",
+  "provenance": "Provenance",
+  "placeholderProvenance": "Ex: Wilaya, région...",
+  "provenanceHelp": "Région ou wilaya d'origine (optionnel)",
+
+  
+    "destinosNorte": "Destinations Nord Algérien",
+    "destinosCentro": "Destinations Centre Algérien",
+    "destinosSur": "Destinations Sud Algérien",
+    "destinosCosta": "Destinations Côtières",
+    "destinosSahara": "Destinations Sahariennes",
+    
+    "citiess": {
+      "Argel": "Alger",
+      "Orán": "Oran",
+      "Constantina": "Constantine",
+      "Annaba": "Annaba",
+      "Blida": "Blida",
+      "Bugía": "Béjaïa",
+      "Sétif": "Sétif",
+      "Chlef": "Chlef",
+      "Mostaganem": "Mostaganem",
+      "Tlemecén": "Tlemcen",
+      "Tipasa": "Tipaza",
+      "Boumerdés": "Boumerdès",
+      "Tizi Ouzou": "Tizi Ouzou",
+      "Béni Saf": "Béni Saf",
+      "Skikda": "Skikda",
+      "Jijel": "Jijel",
+      "Médéa": "Médéa",
+      "Aïn Defla": "Aïn Defla",
+      
+      "Laghouat": "Laghouat",
+      "MSila": "M'Sila",
+      "Bordj Bou Arreridj": "Bordj Bou Arreridj",
+      "Bouira": "Bouira",
+      "Tissemsilt": "Tissemsilt",
+      "Djelfa": "Djelfa",
+      "Mascara": "Mascara",
+      "Relizane": "Relizane",
+      "Saida": "Saïda",
+      "Tiaret": "Tiaret",
+      
+      "Ghardaía": "Ghardaïa",
+      "Ouargla": "Ouargla",
+      "Tamanrasset": "Tamanrasset",
+      "Adrar": "Adrar",
+      "Béchar": "Béchar",
+      "El Oued": "El Oued",
+      "Illizi": "Illizi",
+      "Tindouf": "Tindouf",
+      "Djanet": "Djanet",
+      "In Salah": "In Salah",
+      "Timimoun": "Timimoun",
+      "Béni Abbès": "Béni Abbès",
+      
+      "Cherchell": "Cherchell",
+      "Ténès": "Ténès",
+      "Béni Haoua": "Béni Haoua",
+      "Gouraya": "Gouraya",
+      "Zemmouri": "Zemmouri",
+      "Sidi Fredj": "Sidi Fredj",
+      "Tigzirt": "Tigzirt",
+      "Azeffoun": "Azeffoun",
+      "Collo": "Collo",
+      "El Kala": "El Kala",
+      
+      "Hoggar": "Hoggar",
+      "Tassili nAjjer": "Tassili n'Ajjer",
+      "Guerrara": "Guerrara",
+      "Metlili": "Metlili",
+      "El Goléa": "El Goléa",
+      "In Guezzam": "In Guezzam",
+      "Bordj Badji Mokhtar": "Bordj Badji Mokhtar"
+    },
+ 
+  
+    
+    "cities": {
+      "Dubai": "Dubaï",
+      "Abu Dhabi": "Abou Dhabi",
+      "Sharjah": "Charjah",
+      "El Cairo": "Le Caire",
+      "Sharm El Sheikh": "Charm el-Cheikh",
+      "Alejandría": "Alexandrie",
+      "Túnez": "Tunis",
+      "Sousse": "Sousse",
+      "Djerba": "Djerba",
+      "Hammamet": "Hammamet",
+      "Amán": "Amman",
+      "Aqaba": "Aqaba",
+      "Petra": "Pétra",
+      "Doha": "Doha",
+      "Manama": "Manama",
+      "Mascate": "Mascate",
+      "Salalah": "Salalah",
+      "Beirut": "Beyrouth",
+      "Trípoli": "Tripoli",
+      
+      "Estambul": "Istanbul",
+      "Ankara": "Ankara",
+      "Esmirna": "Izmir",
+      "Antalya": "Antalya",
+      "Bursa": "Bursa",
+      "Konya": "Konya",
+      "Trabzon": "Trabzon",
+      "Capadocia": "Cappadoce",
+      "Pamukkale": "Pamukkale",
+      "Éfeso": "Éphèse",
+      
+      "Kuala Lumpur": "Kuala Lumpur",
+      "Langkawi": "Langkawi",
+      "Penang": "Penang",
+      "Bangkok": "Bangkok",
+      "Phuket": "Phuket",
+      "Chiang Mai": "Chiang Mai",
+      "Singapur": "Singapour",
+      "Bali": "Bali",
+      "Yakarta": "Jakarta",
+      "Seúl": "Séoul",
+      
+      "París": "Paris",
+      "Lyon": "Lyon",
+      "Marsella": "Marseille",
+      "Londres": "Londres",
+      "Manchester": "Manchester",
+      "Roma": "Rome",
+      "Milán": "Milan",
+      "Venecia": "Venise",
+      "Madrid": "Madrid",
+      "Barcelona": "Barcelone",
+      "Berlín": "Berlin",
+      "Múnich": "Munich",
+      "Ámsterdam": "Amsterdam",
+      "Bruselas": "Bruxelles",
+      "Ginebra": "Genève",
+      "Zúrich": "Zurich",
+      
+      "Nueva York": "New York",
+      "Los Ángeles": "Los Angeles",
+      "Miami": "Miami",
+      "Las Vegas": "Las Vegas",
+      "Toronto": "Toronto",
+      "Montreal": "Montréal",
+      "Vancouver": "Vancouver",
+      
+      "Casablanca": "Casablanca",
+      "Marrakech": "Marrakech",
+      "Tánger": "Tanger",
+      "Dakar": "Dakar",
+      "Nairobi": "Nairobi",
+      "Ciudad del Cabo": "Le Cap"
+    },
+  
+   
+    "title": "Voyage Magnifique vers Istanbul - 7 Jours de Rêve",
+    "subCategory": "voyage organise",
+    
+    "transporte": "Avion",
+    "duracionviaje": "7 jours / 6 nuits",
+    
+    "commune": "Hydra",
+    "horadudepar": "08:00",
+    "datedepar": "2024-06-15",
+    "fecharegreso": "2024-06-22",
+    "destinacionvoyage1": "Istanbul, Turquie",
+    "voyage1hotel1": "Hôtel 4 étoiles",
+    "voyage1nombrehotel1": "Sultan Palace Hotel",
+    "destinacionvoyage2": "Cappadoce, Turquie",
+    "voyage2hotel2": "Hôtel cave",
+    "alquilergeneral": "Hôtel 4 étoiles",
+    "serviciosdelhotel": "Petit déjeuner inclus",
+ 
+    "incluidoenelprecio": "Vol A/R, hébergement 4*, petits déjeuners, visites guidées, transferts aéroport",
+    
+    "cancelarreserva": "Annulation blessa jusqu'à 15 jours avant le départ",
+    "specifications": ["Guide yahder français", "Assurance voyage", "Taxes d'aéroport incluses", "Navette blessa"],
+ 
+  
+    "select_option": "Choisir une option",
+    "prix_adulte": "Prix adulte",
+    "prix_enfant": "Prix enfant",
+    "prix_bebe": "Prix bébé",
+    "prix_adulte_placeholder": "Prix pour adulte",
+    "prix_enfant_placeholder": "Prix pour enfant",
+    "prix_bebe_placeholder": "Prix pour bébé",
+ 
+    "superficie_placeholder": "Superficie en mètres carrés",
+    "etage": "Étage",
+    "etage_placeholder": "Numéro d'étage",
+    "capacite_personnes": "Capacité (personnes)",
+    "capacite_placeholder": "Nombre de personnes",
+    "nombre_chambres": "Nombre de chambres",
+    "nombre_chambres_placeholder": "Nombre de chambres",
+    "nombre_salles_bain": "Nombre de salles de bain",
+    "nombre_salles_bain_placeholder": "Nombre de salles de bain",
+    "check_in": "Heure d'arrivée",
+    "check_out": "Heure de départ",
+    "tarif_nuit": "Tarif par nuit (€)",
+    "tarif_nuit_placeholder": "Tarif par nuit",
+    "langues_guide": "Langue du guide",
+  
+    "voyage": {
+      "destinations_internationales": "Destinations internationales",
+      "dates_duree": "Dates et durée du voyage",
+      "transport_deplacements": "Transport et déplacements",
+      "hebergement_pension": "Hébergement et pension",
+      "activites_services": "Activités et services inclus",
+      "tarifs_conditions": "Tarifs et conditions",
+      "services_inclus": "Services inclus dans le forfait",
+      "activites_proposees": "Activités proposées"
+    },
+  
+    "location": {
+      "informations_logement": "Informations sur le logement",
+      "equipements_services": "Équipements et services",
+      "chambres_salles_bain": "Chambres et salles de bain",
+      "disponibilite_tarifs": "Disponibilité et tarifs"
+    },
+  
+    "hadj": {
+      "destination_peletinage": "Destination du pèlerinage",
+      "dates_peletinage": "Dates du pèlerinage",
+      "transport_hebergement": "Transport et hébergement",
+      "services_spirituels": "Services spirituels",
+      "services_religieux": "Services religieux inclus",
+      "documents_requis": "Documents requis",
+      "documents_necessaires": "Documents nécessaires",
+      "tarifs_conditions": "Tarifs et conditions",
+      "type_peletinage": "Type de pèlerinage",
+      "niveau_confort": "Niveau de confort"
+    },
+  
+  
+    "activites": {
+      "excursion": "Excursions",
+      "plongee": "Plongée",
+      "randonnee": "Randonnée",
+      "shopping": "Shopping",
+      "culture": "Visites culturelles"
+    },
+  
+    "langues": {
+      "arabe": "Arabe",
+      "francais": "Français",
+      "anglais": "Anglais",
+      "berbere": "Berbère"
+    },
+  
+    "documents": {
+      "passeport": "Passeport",
+      "photos_identite": "Photos d'identité",
+      "certificat_vaccination": "Certificat de vaccination",
+      "reservation_hotel": "Réservation d'hôtel",
+      "billet_avion": "Billet d'avion"
+    },
+  
+    "equipements": {
+      "wifi_gratuit": "Wi-Fi gratuit",
+      "climatisation": "Climatisation",
+      "cuisine_equipee": "Cuisine équipée",
+      "television": "Télévision",
+      "piscine": "Piscine",
+   
+      "animaux_acceptes": "Animaux acceptés",
+      "menage_inclus": "Ménage inclus"
+    },
+  
+    "types_voyage": {
+      "hadj": "Hadj",
+      "omra": "Omra",
+      "hadj_omra": "Hadj et Omra"
+    },
+  
+    "niveaux_confort": {
+      "economique": "Économique",
+      "standard": "Standard",
+      "confort": "Confort",
+      "luxe": "Luxe"
+    },
+  
+    "select_category_title": "📋 Choisir une catégorie",
+    "select_category_message": "Choisissez entre voyage organisé, location de vacances ou hadj et omra",
+  
+   
+    "button_cancel": "Annuler",
+  
+ 
+  
+    "service_visite_guidee": "Visite guidée",
+    "service_repas": "Repas inclus",
+    "service_transfert": "Transfert aéroport",
+    "service_assistance": "Assistance 24/7",
+    "service_assurance": "Assurance voyage",
+    "service_guide_religieux": "Guide religieux",
+    "service_cours_rituels": "Cours de rituels",
+    "service_assistance_ihram": "Assistance Ihram",
+    "service_groupe_etude": "Groupe d'étude",
+    "service_prieres_collectives": "Prières collectives",
+  
+    "activite_excursion": "Excursions",
+    "activite_plongee": "Plongée",
+    "activite_randonnee": "Randonnée",
+    "activite_shopping": "Shopping",
+    "activite_culture": "Activités culturelles",
+  
+    "langue_arabe": "Arabe",
+    "langue_francais": "Français",
+    "langue_anglais": "Anglais",
+    "langue_berbere": "Berbère",
+  
+    "document_passeport": "Passeport",
+    "document_photos_identite": "Photos d'identité",
+    "document_certificat_vaccination": "Certificat de vaccination",
+    "document_reservation_hotel": "Réservation d'hôtel",
+    "document_billet_avion": "Billet d'avion",
+
+
+
+
+
+
+
+
+
+
+    
+ 
         "precioBaseHelp": "Prix de base par personne pour le forfait complet",
        
      
@@ -9,7 +440,12 @@
         "placeholderNinos": "Enfants (2-12 ans) - En Dinars",
         "placeholderBebes": "Bébés (0-2 ans) - En Dinars",
         
-
+        "visa_hajj_omra": "Visa Hajj/Omra",
+        "hebergement_haram": "Hébergement près des Harams", 
+        "guide_religieux": "Guide religieux",
+        "transport_complet": "Transport complet",
+        "assistance_medicale": "Assistance médicale",
+        "zamzam_kit": "Kit Zamzam & sac pèlerin",
 
 
 
@@ -354,7 +790,9 @@
         "volLowCost_desc": "Compagnie low cost",
         "volAffaire": "💼 Classe affaires",
         "volAffaire_desc": "Siège classe affaires inclus",
-    
+        "duration": "Durée du voyage",
+        "day": "jour",
+        "days": "jours",
       
         "create_title": "Créer une Nouvelle Publication",
         "edit_title": "Modifier la Publication",
@@ -398,7 +836,7 @@
         "Croisiere": "Croisière",
         "Autre": "Autre"
     },
-    "title": "Titre",
+    
     "description": "Description",
     "price": "Prix",
     "phone": "Téléphone",
