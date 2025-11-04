@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const HoraDepart = ({ postData, handleChangeInput }) => {
@@ -8,25 +8,27 @@ const HoraDepart = ({ postData, handleChangeInput }) => {
   const isRTL = i18n.language === 'ar';
 
   return (
-    <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
- 
-        <Form.Group className="mb-3">
-          <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-            {t('horaDepart', 'Heure de Départ')} *
-          </Form.Label>
+    <Card>
+      <Card.Header  >
+        <h5 className="mb-0">
+          ⏰ {t('horaDepart', 'Hora de Salida')}
+        </h5>
+      </Card.Header>
+      <Card.Body className="p-3">
+        <Form.Group className="w-100">
           <Form.Control
             type="time"
             name="horadudepar"
             value={postData.horadudepar || ''}
             onChange={handleChangeInput}
             required
-            className={isRTL ? 'text-end' : ''}
+            className={`w-100 ${isRTL ? 'text-end' : ''}`}
             dir={isRTL ? 'rtl' : 'ltr'}
+            size="lg"
           />
-         
         </Form.Group>
-     
-    </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

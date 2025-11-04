@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const AddressInput = ({ 
@@ -12,48 +12,51 @@ const AddressInput = ({
     const isRTL = i18n.language === 'ar';
 
     return (
-        <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
-            {/* Ville de départ - Input de texto */}
-            <Col xs={12} md={6}>
-                <Form.Group className="mb-3">
-                    <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                        {t('villeDepart', 'Ville de Départ')} *
-                    </Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="commune"
-                        value={postData.commune || ''}
-                        onChange={handleChangeInput}
-                        placeholder={t('placeholderVilleDepart', 'Ex: Alger, Oran, Constantine...')}
-                        required
-                        className={isRTL ? 'text-end' : ''}
-                        dir={isRTL ? 'rtl' : 'ltr'}
-                    />
-                   
-                </Form.Group>
-            </Col>
-            
-            {/* Wilaya - Select option */}
-            <Col xs={12} md={6}>
-                <Form.Group className="mb-3">
-                    <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                        {t('wilaya', 'Wilaya')} *
-                    </Form.Label>
-                    <Form.Select
-                        name="wilaya"
-                        value={postData.wilaya || ''}
-                        onChange={handleWilayaChange}
-                        required
-                        className={isRTL ? 'text-end' : ''}
-                        dir={isRTL ? 'rtl' : 'ltr'}
-                    >
-                        <option value="">{t('selectionnezWilaya', 'Sélectionnez une wilaya')}</option>
-                        {wilayasOptions}
-                    </Form.Select>
-                 
-                </Form.Group>
-            </Col>
-        </Row>
+        <Card>
+            <Card.Header  >
+                <h5 className="mb-0">
+                    📍 {t('addressTitle', 'Dirección de Salida')}
+                </h5>
+            </Card.Header>
+            <Card.Body className="p-3">
+                <Row className={`${isRTL ? 'rtl-direction' : ''} g-3`}>
+                    {/* Ville de départ - Input de texto */}
+                    <Col xs={12} md={6}>
+                        <Form.Group className="w-100">
+                            <Form.Control
+                                type="text"
+                                name="vile"
+                                value={postData.vile || ''}
+                                onChange={handleChangeInput}
+                                placeholder={t('placeholderVilleDepart', 'Ej: Alger, Oran, Constantine...')}
+                                required
+                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
+                                dir={isRTL ? 'rtl' : 'ltr'}
+                                size="lg"
+                            />
+                        </Form.Group>
+                    </Col>
+                    
+                    {/* Wilaya - Select option */}
+                    <Col xs={12} md={6}>
+                        <Form.Group className="w-100">
+                            <Form.Select
+                                name="wilaya"
+                                value={postData.wilaya || ''}
+                                onChange={handleWilayaChange}
+                                required
+                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
+                                dir={isRTL ? 'rtl' : 'ltr'}
+                                size="lg"
+                            >
+                                <option value="">{t('selectionnezWilaya', 'Seleccione una wilaya')}</option>
+                                {wilayasOptions}
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+            </Card.Body>
+        </Card>
     );
 };
 

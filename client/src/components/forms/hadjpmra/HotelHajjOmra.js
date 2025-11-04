@@ -92,22 +92,28 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            
+            <Card.Header  >
+                <h5 className="mb-0">
+                    🏨 {t('hotelesHajjOmra', 'Hoteles para Hajj & Omra')}
+                </h5>
+            </Card.Header>
             <Card.Body>
-                <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
-                    {/* Hotel en La Meca */}
+                <Row className={`${isRTL ? 'rtl-direction' : ''} g-3`}>
+                    
+                    {/* Hotel en La Meca - Mitad izquierda */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('hotelMeca', 'Hotel en La Meca')} *
+                        <Form.Group className="h-100">
+                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
+                                🕋 {t('hotelMeca', 'Hotel en La Meca')} *
                             </Form.Label>
                             <Form.Select
                                 name="hotelMeca"
                                 value={postData.hotelMeca || ''}
                                 onChange={handleChangeInput}
                                 required
-                                className={isRTL ? 'text-end' : ''}
+                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
                                 dir={isRTL ? 'rtl' : 'ltr'}
+                                size="lg"
                             >
                                 <option value="">{t('selectHotelMeca', 'Seleccione hotel en La Meca')}</option>
                                 {hotelesMeca.map((grupo, index) => (
@@ -120,22 +126,24 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                                     </optgroup>
                                 ))}
                             </Form.Select>
+                         
                         </Form.Group>
                     </Col>
 
-                    {/* Hotel en Medina */}
+                    {/* Hotel en Medina - Mitad derecha */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="mb-3">
-                            <Form.Label className={isRTL ? 'text-end d-block' : ''}>
-                                {t('hotelMedina', 'Hotel en Medina')} *
+                        <Form.Group className="h-100">
+                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
+                                🕌 {t('hotelMedina', 'Hotel en Medina')} *
                             </Form.Label>
                             <Form.Select
                                 name="hotelMedina"
                                 value={postData.hotelMedina || ''}
                                 onChange={handleChangeInput}
                                 required
-                                className={isRTL ? 'text-end' : ''}
+                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
                                 dir={isRTL ? 'rtl' : 'ltr'}
+                                size="lg"
                             >
                                 <option value="">{t('selectHotelMedina', 'Seleccione hotel en Medina')}</option>
                                 {hotelesMedina.map((grupo, index) => (
@@ -148,11 +156,14 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                                     </optgroup>
                                 ))}
                             </Form.Select>
+                            
                         </Form.Group>
                     </Col>
- 
-                     
+
                 </Row>
+
+                
+ 
             </Card.Body>
         </Card>
     );

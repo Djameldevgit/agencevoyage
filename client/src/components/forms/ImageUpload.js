@@ -19,13 +19,13 @@ const ImageUpload = ({ images, handleChangeImages, deleteImages, theme }) => {
                 }}
             />
             <Badge
-                bg="success"
+                
                 className="position-absolute top-0 start-0 m-1"
             >
                 🖼️
             </Badge>
             <Badge
-                bg="secondary"
+                
                 className="position-absolute top-0 end-0 m-1"
             >
                 #{index + 1}

@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { FaInfoCircle, FaImage, FaEdit, FaPlane, FaSave, FaTimes, FaHotel, FaMapMarkerAlt, FaBus, FaConciergeBell, FaMoneyBillWave, FaPhone } from 'react-icons/fa';
+import { FaSave, FaTimes } from 'react-icons/fa';
 
-// 🔷 IMPORTS OPTIMIZADOS - Agrupados por funcionalidad
+// 🔷 IMPORTS OPTIMIZADOS
 import CategorySelector from '../components/forms/CategorySelector';
 import DescriptionTextarea from '../components/forms/DescriptionTextarea';
 import AddressInput from '../components/forms/AddressInput';
@@ -43,41 +43,34 @@ import communesjson from "../json/communes.json";
 
 // 🔷 ESTADO INICIAL OPTIMIZADO
 const getInitialState = () => ({
-  // Campos comunes
   category: "Agence de Voyage",
   subCategory: "",
   title: "",
   description: "",
   price: "",
   wilaya: "",
-  commune: "",
+  vile: "",
   contacto: "",
   images: [],
   destinacionlocacionvoyage: "",
   destinacionomra: "",
   destinacionvoyageorganise: "",
-  // Fechas
   datedepar: "",
   horadudepar: "",
   dateretour: "",
   dureeSejour: "",
-  
-  // Servicios
   servicios: [],
-  
-  // Campos específicos - inicializados vacíos
   ...Object.fromEntries([
     'categoriaHotelMeca', 'compagnieAerienne', 'typeTransport', 'precioBase', 'tipoPrecio',
     'hotelMedina', 'hotelMeca', 'tipoPropiedad', 'capacidad', 'habitaciones', 'superficie',
     'nombrePropiedad', 'direccionCompleta', 'ciudad', 'zonaBarrio', 'descripcionUbicacion',
     'transportInclus', 'categoriaAlojamiento', 'tipoHabitacion', 'regimenComidas', 'ubicacionHotel',
     'nombreHotel', 'ciudadHotel', 'direccionHotel', 'zonaRegion', 'modeTransport', 'classeTransport',
-    'typeVol', 'baggage', 'repasVol',  'prixAdulte', 'prixEnfant', 'prixBebe'
+    'typeVol', 'baggage', 'repasVol', 'prixAdulte', 'prixEnfant', 'prixBebe'
   ].map(key => [key, ""]))
 });
 
 const Createpost = () => {
-  // 🔷 HOOKS Y ESTADOS GLOBALES
   const { auth, theme, languageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -88,7 +81,6 @@ const Createpost = () => {
   const postToEdit = location.state?.postData || null;
   const isRTL = i18n.language === 'ar';
 
-  // 🔷 ESTADOS LOCALES OPTIMIZADOS
   const [postData, setPostData] = useState(getInitialState);
   const [images, setImages] = useState([]);
   const [selectedWilaya, setSelectedWilaya] = useState("");
@@ -96,7 +88,6 @@ const Createpost = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertVariant, setAlertVariant] = useState("info");
 
-  // 🔷 EFFECTS OPTIMIZADOS
   useEffect(() => {
     const lang = languageReducer?.language || 'fr';
     if (i18n.language !== lang) {
@@ -104,7 +95,6 @@ const Createpost = () => {
     }
   }, [languageReducer?.language, i18n]);
 
-  // 🔷 CARGA DE DATOS DE EDICIÓN - OPTIMIZADO
   useEffect(() => {
     if (isEdit && postToEdit) {
       const sanitizedData = sanitizePostData(postToEdit);
@@ -120,7 +110,6 @@ const Createpost = () => {
 
       setPostData(finalPostData);
 
-      // Manejo optimizado de imágenes existentes
       if (postToEdit.images?.length > 0) {
         const existingImages = postToEdit.images
           .map(img => {
@@ -138,7 +127,6 @@ const Createpost = () => {
     }
   }, [isEdit, postToEdit]);
 
-  // 🔷 FUNCIONES OPTIMIZADAS CON useCallback
   const sanitizePostData = useCallback((data) => {
     return data ? { ...data } : {};
   }, []);
@@ -197,7 +185,6 @@ const Createpost = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    // Validaciones optimizadas
     if (!postData.subCategory) {
       showAlertMessage(t('validation_category_required'), "danger");
       return;
@@ -218,8 +205,8 @@ const Createpost = () => {
         postData: { ...postData },
         images,
         auth,
-        ...(isEdit && postToEdit && { 
-          status: { _id: postToEdit._id, ...postToEdit } 
+        ...(isEdit && postToEdit && {
+          status: { _id: postToEdit._id, ...postToEdit }
         })
       };
 
@@ -244,211 +231,44 @@ const Createpost = () => {
     setShowAlert(true);
   }, []);
 
-  // 🔷 RENDERIZADO DE SECCIONES - OPTIMIZADO
   const renderVoyageOrganise = useMemo(() => (
     <>
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaPlane className="me-2 text-primary" />
-            {t('dates_times', 'Fechas y Horarios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
-          <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
-          <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMapMarkerAlt className="me-2 text-info" />
-            {t('destination', 'Destination')}
-          </h6>
-        </Card.Header>
-        <DestinationVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaBus className="me-2 text-warning" />
-            {t('transport', 'Transporte')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <TransportVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaHotel className="me-2 text-success" />
-            {t('accommodation', 'Alojamiento')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <NombreLugarVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-          <AlojamientoVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMoneyBillWave className="me-2 text-primary" />
-            {t('pricing', 'Precios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="voyagesorganises" />
-        </Card.Body>
-      </Card>
+      <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
+      <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
+      <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
+      <DestinationVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      <TransportVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      <NombreLugarVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      <AlojamientoVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="voyagesorganises" />
     </>
-  ), [postData, handleChangeInput, t]);
+  ), [postData, handleChangeInput]);
 
   const renderLocationVacances = useMemo(() => (
     <>
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaPlane className="me-2 text-primary" />
-            {t('dates_times', 'Fechas y Horarios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
-          <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
-          <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMapMarkerAlt className="me-2 text-info" />
-            {t('destination', 'Destino')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <DestinationLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Body>
-          <AlojamientoLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaConciergeBell className="me-2 text-danger" />
-            {t('services', 'Servicios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <ServiciosLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMoneyBillWave className="me-2 text-primary" />
-            {t('pricing', 'Precios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="locationvacances" />
-        </Card.Body>
-      </Card>
+      <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
+      <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
+      <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
+      <DestinationLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
+      <AlojamientoLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
+      <ServiciosLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
+      <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="locationvacances" />
     </>
-  ), [postData, handleChangeInput, t]);
+  ), [postData, handleChangeInput]);
 
   const renderHadjOmra = useMemo(() => (
     <>
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaPlane className="me-2 text-primary" />
-            {t('dates_times', 'Fechas y Horarios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
-          <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
-          <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMapMarkerAlt className="me-2 text-info" />
-            {t('destination', 'Destino')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <DestinationHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaBus className="me-2 text-warning" />
-            {t('transport', 'Transporte')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <TransportHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaHotel className="me-2 text-success" />
-            {t('accommodation', 'Alojamiento')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <AlojamientoHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaConciergeBell className="me-2 text-danger" />
-            {t('services', 'Servicios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <ServiciosHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
-
-      <Card className="mb-3">
-        <Card.Header className="bg-light">
-          <h6 className="mb-0 d-flex align-items-center">
-            <FaMoneyBillWave className="me-2 text-primary" />
-            {t('pricing', 'Precios')}
-          </h6>
-        </Card.Header>
-        <Card.Body>
-          <TarifasYpreciosomra postData={postData} handleChangeInput={handleChangeInput} />
-        </Card.Body>
-      </Card>
+      <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
+      <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
+      <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
+      <DestinationHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      <TransportHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      <AlojamientoHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      <ServiciosHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      <TarifasYpreciosomra postData={postData} handleChangeInput={handleChangeInput} />
     </>
-  ), [postData, handleChangeInput, t]);
+  ), [postData, handleChangeInput]);
 
-  // 🔷 RENDERIZADO DINÁMICO OPTIMIZADO
   const renderCategoryFields = useMemo(() => {
     switch (postData.subCategory) {
       case "Voyage Organise": return renderVoyageOrganise;
@@ -458,68 +278,30 @@ const Createpost = () => {
     }
   }, [postData.subCategory, renderVoyageOrganise, renderLocationVacances, renderHadjOmra]);
 
-  const renderCommonComponents = useMemo(() => (
-    <Card className="mb-3">
-      <Card.Header className="bg-light">
-        <h6 className="mb-0 d-flex align-items-center">
-          <FaPhone className="me-2 text-info" />
-          {t('contact_reservation', 'Contact et Réservation')}
-        </h6>
-      </Card.Header>
-      <Card.Body>
-        <ContactReservation postData={postData} handleChangeInput={handleChangeInput} />
-      </Card.Body>
-    </Card>
-  ), [postData, handleChangeInput, t]);
-
-  // 🔷 DATOS MEMOIZADOS
-  const wilayasOptions = useMemo(() => 
+  const wilayasOptions = useMemo(() =>
     communesjson.map((wilaya, index) => (
       <option key={index} value={wilaya.wilaya}>{wilaya.wilaya}</option>
     )), []);
 
-  const communesOptions = useMemo(() => 
+  const communesOptions = useMemo(() =>
     selectedWilaya
       ? communesjson
-          .find((wilaya) => wilaya.wilaya === selectedWilaya)
-          ?.commune?.map((commune, index) => (
-            <option key={index} value={commune}>{commune}</option>
-          )) || []
+        .find((wilaya) => wilaya.wilaya === selectedWilaya)
+        ?.commune?.map((commune, index) => (
+          <option key={index} value={commune}>{commune}</option>
+        )) || []
       : [], [selectedWilaya]);
 
-  // 🔷 ESTILOS FIJOS - Sacados del render para evitar recreación
-  const fixedStyles = `
-    .form-select { position: relative; z-index: 1000; }
-    .dropdown-menu { z-index: 1050 !important; }
-    img { transform: none !important; transition: none !important; }
-    .image-hover-zoom, .image-hover-zoom:hover { transform: none !important; }
-    .form-control, .form-select, .form-check-input { border-radius: 0.375rem; }
-    .card-body.px-2 .form-control,
-    .card-body.px-2 .form-select { padding-left: 0.5rem; padding-right: 0.5rem; }
-    .card-header.bg-light { background-color: #f8f9fa !important; border-bottom: 1px solid #dee2e6; }
-  `;
-
   return (
-    <Container fluid className="p-0" dir={isRTL ? "rtl" : "ltr"}>
+    <Container fluid className="p-2" dir={isRTL ? "rtl" : "ltr"}>
       <Row className="g-0">
         <Col xs={12}>
-          {/* Header Principal Optimizado */}
           <Card className="border-0 rounded-0">
             <Card.Header className={`${isEdit ? "bg-warning text-dark" : "my-2 text-white"} ps-3`}>
               <Row className="align-items-center g-0">
                 <Col>
-                  <h2 className="mb-1 fs-6 d-flex align-items-center">
-                    {isEdit ? (
-                      <>
-                        <FaEdit size={16} color="#6c757d" className="me-2" />
-                        {t('edit_title', 'Modifier la Publication')}
-                      </>
-                    ) : (
-                      <>
-                        <FaInfoCircle size={16} color="white" className="me-2" />
-                        {t('create_title', 'Créer une Nouvelle Publication')}
-                      </>
-                    )}
+                  <h2 className="mb-1 fs-6">
+                    {isEdit ? t('edit_title', 'Modifier la Publication') : t('create_title', 'Créer une Nouvelle Publication')}
                   </h2>
                   {isEdit && postToEdit?.title && (
                     <p className="mb-0 opacity-75 small">
@@ -531,7 +313,6 @@ const Createpost = () => {
             </Card.Header>
           </Card>
 
-          {/* Alertas */}
           {showAlert && (
             <Alert variant={alertVariant} dismissible onClose={() => setShowAlert(false)} className="mb-0 rounded-0 border-0">
               <Alert.Heading className="fs-6">
@@ -541,7 +322,6 @@ const Createpost = () => {
             </Alert>
           )}
 
-          {/* Formulario Principal Optimizado */}
           <Card className="shadow-none border-0 rounded-0">
             <Card.Body className="p-0">
               <Form onSubmit={handleSubmit} className="p-0">
@@ -551,86 +331,61 @@ const Createpost = () => {
 
                 {postData.subCategory && (
                   <>
-                    {/* Información Básica */}
-                    <Card className="mb-3 border-0">
-                      <Card.Body className="px-2">
-                        <DescriptionTextarea postData={postData} handleChangeInput={handleChangeInput} />
-                        <AddressInput
-                          postData={postData}
-                          handleChangeInput={handleChangeInput}
-                          wilayasOptions={wilayasOptions}
-                          communesOptions={communesOptions}
-                          handleWilayaChange={handleWilayaChange}
-                          handleCommuneChange={handleCommuneChange}
-                        />
-                      </Card.Body>
-                    </Card>
+                    <div className="px-2">
+                      <DescriptionTextarea postData={postData} handleChangeInput={handleChangeInput} />
+                      <AddressInput
+                        postData={postData}
+                        handleChangeInput={handleChangeInput}
+                        wilayasOptions={wilayasOptions}
+                        communesOptions={communesOptions}
+                        handleWilayaChange={handleWilayaChange}
+                        handleCommuneChange={handleCommuneChange}
+                      />
+                    </div>
 
-                    {/* Campos Específicos */}
                     {renderCategoryFields}
 
-                    {/* Componentes Comunes */}
-                    {renderCommonComponents}
+                    <div className="px-2">
+                      <ContactReservation postData={postData} handleChangeInput={handleChangeInput} />
+                    </div>
 
-                    {/* Subida de Imágenes */}
-                    <Card className="mb-3 border-0">
-                      <Card.Header className="bg-light">
-                        <h6 className="mb-0 d-flex align-items-center">
-                          <FaImage className="me-2 text-success" />
-                          {t('common.images', 'Images de l\'Annonce')}
-                        </h6>
-                      </Card.Header>
-                      <Card.Body className="px-2">
-                        <ImageUpload
-                          images={images}
-                          handleChangeImages={handleChangeImages}
-                          deleteImages={deleteImages}
-                          theme={theme}
-                          disableZoom={true}
-                        />
-                      </Card.Body>
-                    </Card>
+                    <div className="px-2">
+                      <ImageUpload
+                        images={images}
+                        handleChangeImages={handleChangeImages}
+                        deleteImages={deleteImages}
+                        theme={theme}
+                      />
+                    </div>
 
-                    {/* Botones de Acción */}
-                    <Card className="border-0 bg-transparent">
-                      <Card.Body className="px-2">
-                        <Row className={`g-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Col xs={8}>
-                            <div className="d-grid gap-1">
-                              <Button
-                                variant={isEdit ? "warning" : "success"}
-                                type="submit"
-                                size="lg"
-                                className="fw-bold py-2 d-flex align-items-center justify-content-center"
-                              >
-                                {isEdit ? (
-                                  <>
-                                    <FaSave size={16} className="me-2" />
-                                    {t('button_update', 'Mettre à jour')}
-                                  </>
-                                ) : (
-                                  <>
-                                    <FaInfoCircle size={16} className="me-2" />
-                                    {t('button_publish', 'Publier')}
-                                  </>
-                                )}
-                              </Button>
-                            </div>
-                          </Col>
-                          <Col xs={4}>
+                    <div className="px-2">
+                      <Row className={`g-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <Col xs={8}>
+                          <div className="d-grid gap-1">
                             <Button
-                              variant="outline-secondary"
+                              variant={isEdit ? "warning" : "success"}
+                              type="submit"
                               size="lg"
-                              className="w-100 py-2 d-flex align-items-center justify-content-center"
-                              onClick={() => history.goBack()}
+                              className="fw-bold py-2"
                             >
-                              <FaTimes size={16} className="me-2" />
-                              {t('common.cancel', 'Annuler')}
+                              <FaSave className="me-2" />
+                              {isEdit ? t('button_update', 'Mettre à jour') : t('button_publish', 'Publier')}
                             </Button>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
+                          </div>
+                        </Col>
+                        <Col xs={4}>
+                          <Button
+                            variant="outline-secondary"
+                            size="lg"
+                            className="w-100 py-2"
+                            onClick={() => history.goBack()}
+                          >
+                            <FaTimes className="me-2" />
+                            {t('common.cancel', 'Annuler')}
+                          </Button>
+                        </Col>
+                      </Row>
+                    </div>
                   </>
                 )}
 
@@ -649,8 +404,6 @@ const Createpost = () => {
           </Card>
         </Col>
       </Row>
-
-      <style>{fixedStyles}</style>
     </Container>
   );
 };

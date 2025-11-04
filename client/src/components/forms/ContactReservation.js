@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Alert, InputGroup, Badge } from 'react-bootstrap';
+import React from 'react';
+import { Form, Card, Badge, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const ContactReservation = ({ postData, handleChangeInput }) => {
@@ -41,54 +41,57 @@ const ContactReservation = ({ postData, handleChangeInput }) => {
     const contactTypes = detectContactType(postData.contacto || '');
 
     return (
-        <Form.Group  >
-          
+        <Card>
+            <Card.Header >
+                <h5 className="mb-0">
+                    📞 {t('contacto', 'Información de Contacto')}
+                </h5>
+            </Card.Header>
+            <Card.Body className="p-3">
+                <Form.Group className="w-100">
+                    {/* Badges de tipos de contacto detectados */}
+                    {contactTypes.length > 0 && (
+                        <div className="mb-3">
+                            <small className="text-muted me-2">{t('typesDetectes', 'Tipos detectados')}:</small>
+                            {contactTypes.map((type, index) => (
+                                <Badge 
+                                    key={index} 
+                                    bg={
+                                        type === 'phone' ? 'success' :
+                                        type === 'email' ? 'primary' :
+                                        type === 'website' ? 'info' :
+                                        type === 'social' ? 'warning' :
+                                        'secondary'
+                                    } 
+                                    className="me-1 mb-1"
+                                >
+                                    {t(`type_${type}`, type)}
+                                </Badge>
+                            ))}
+                        </div>
+                    )}
 
-            {/* Badges de tipos de contacto detectados */}
-            {contactTypes.length > 0 && (
-                <div className="mb-2">
-                    <small className="text-muted me-2">{t('typesDetectes')}:</small>
-                    {contactTypes.map((type, index) => (
-                        <Badge 
-                            key={index} 
-                            bg={
-                                type === 'phone' ? 'success' :
-                                type === 'email' ? 'primary' :
-                                type === 'website' ? 'info' :
-                                type === 'social' ? 'warning' :
-                                'secondary'
-                            } 
-                            className="me-1 mb-1"
-                        >
-                            {t(`type_${type}`)}
-                        </Badge>
-                    ))}
-                </div>
-            )}
+                    <InputGroup>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            name="contacto"
+                            value={postData.contacto || ''}
+                            onChange={handleChangeInput}
+                            placeholder={t('placeholderContacto', 'Teléfono, email, WhatsApp, dirección...')}
+                            required
+                            className="w-100"
+                            style={{ resize: 'vertical' }}
+                        />
+                    </InputGroup>
 
-            <InputGroup>
-                <Form.Control
-                    as="textarea"
-                    rows={3}
-                    name="contacto"
-                    value={postData.contacto || ''}
-                    onChange={handleChangeInput}
-               
-                    required
-                    style={{ resize: 'vertical' }}
-                />
-            </InputGroup>
- 
-
-            {/* Contador de caracteres */}
-            <div className="text-end small text-muted mt-1">
-                {(postData.contacto || '').length} {t('caracteres')}
-            </div>
-
-          
-
-            
-        </Form.Group>
+                    {/* Contador de caracteres */}
+                    <div className="text-end small text-muted mt-2">
+                        {(postData.contacto || '').length} {t('caracteres', 'caracteres')}
+                    </div>
+                </Form.Group>
+            </Card.Body>
+        </Card>
     );
 };
 

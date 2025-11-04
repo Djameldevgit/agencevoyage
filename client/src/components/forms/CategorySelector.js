@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Badge } from 'react-bootstrap';
+import { Form, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const CategorySelector = ({ postData, handleChangeInput }) => {
@@ -15,39 +15,33 @@ const CategorySelector = ({ postData, handleChangeInput }) => {
         { value: "Autre", emoji: "🔖", color: "dark" }
     ];
 
-    const getCategoriaActual = () => {
-        return categorias.find(cat => cat.value === postData.subCategory);
-    };
-
     return (
-        <Form.Group >
-            <Form.Label className="fw-bold">📂 {t('categoriaPublicacion')}</Form.Label>
-            
-            {/* Mostrar categoría seleccionada */}
-            {postData.subCategory && (
-                <div className="mb-3">
-                    <Badge bg={getCategoriaActual()?.color || 'primary'} className="fs-6 p-2">
-                        {getCategoriaActual()?.emoji} {t(`categoriass.${postData.subCategory}`)}
-                    </Badge>
-                </div>
-            )}
-
-            <Form.Select 
-                name="subCategory" 
-                value={postData.subCategory || ''} 
-                onChange={handleChangeInput}
-                size="lg"
-                required
-                className="border-2"
-            >
-                <option value="">{t('seleccionarCategoria')}</option>
-                {categorias.map((categoria) => (
-                    <option key={categoria.value} value={categoria.value}>
-                        {categoria.emoji} {t(`categoriass.${categoria.value}`)}
-                    </option>
-                ))}
-            </Form.Select>
-        </Form.Group>
+        <Card>
+            <Card.Header >
+                <h5 className="mb-0">
+                    📂 {t('categoriaPublicacion', 'Categoría de Publicación')}
+                </h5>
+            </Card.Header>
+            <Card.Body className="p-3">
+                <Form.Group className="w-100">
+                    <Form.Select 
+                        name="subCategory" 
+                        value={postData.subCategory || ''} 
+                        onChange={handleChangeInput}
+                        size="lg"
+                        required
+                        className="w-100"
+                    >
+                        <option value="">{t('seleccionarCategoria', 'Seleccione una categoría')}</option>
+                        {categorias.map((categoria) => (
+                            <option key={categoria.value} value={categoria.value}>
+                                {categoria.emoji} {t(`categoriass.${categoria.value}`, categoria.value)}
+                            </option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+            </Card.Body>
+        </Card>
     );
 };
 

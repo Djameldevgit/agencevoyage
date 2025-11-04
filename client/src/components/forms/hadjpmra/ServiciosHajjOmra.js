@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Card, Row, Col, Badge } from "react-bootstrap";
+import { Form, Card, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
@@ -25,39 +25,33 @@ const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
   const serviciosPrincipales = [
     { 
       value: "visa_hajj_omra", 
-      label: t("visaService", "🛂 Visa Hajj/Omra"), 
-      description: t("visaDesc", "Traitement et obtention du visa officiel") 
+      label: "🛂 " + t("visaService", "Visa Hajj/Omra"),
     },
     { 
       value: "hebergement_haram", 
-      label: t("hebergementHaram", "🏨 Hébergement près des Harams"), 
-      description: t("hebergementHaramDesc", "Hôtels à proximité des mosquées saintes") 
+      label: "🏨 " + t("hebergementHaram", "Hébergement près des Harams"),
     },
     { 
       value: "guide_religieux", 
-      label: t("guideReligieux", "🕋 Guide religieux"), 
-      description: t("guideReligieuxDesc", "Guide spécialisé francophone pour les rituels") 
+      label: "🕋 " + t("guideReligieux", "Guide religieux"),
     },
     { 
       value: "transport_complet", 
-      label: t("transportComplet", "🚗 Transport complet"), 
-      description: t("transportCompletDesc", "Transferts aéroport, navettes, bus internes") 
+      label: "🚗 " + t("transportComplet", "Transport complet"),
     },
     { 
       value: "assistance_medicale", 
-      label: t("assistanceMedicale", "🏥 Assistance médicale"), 
-      description: t("assistanceMedicaleDesc", "Équipe médicale et assurance santé") 
+      label: "🏥 " + t("assistanceMedicale", "Assistance médicale"),
     },
     { 
       value: "zamzam_kit", 
-      label: t("zamzamKit", "💧 Kit Zamzam & sac pèlerin"), 
-      description: t("zamzamKitDesc", "Eau Zamzam et équipement du pèlerin offerts") 
+      label: "💧 " + t("zamzamKit", "Kit Zamzam & sac pèlerin"),
     }
   ];
 
   return (
-    <Card className="mb-4">
-      <Card.Header className="bg-primary text-white">
+    <Card>
+      <Card.Header  >
         <h5 className="mb-0">
           🎁 {t("servicesHadjOmra", "Services Essentiels Hajj & Omra")}
         </h5>
@@ -65,34 +59,41 @@ const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
       <Card.Body>
         <Row className={`${isRTL ? "rtl-direction" : ""}`}>
           <Col xs={12}>
-            <p className="text-muted mb-4">
-              {t("servicesDescription", "Sélectionnez les  dans votre package")}
-            </p>
-            
-            <Row>
-              {serviciosPrincipales.map((service, index) => (
-                <Col xs={12} md={6} lg={4} key={index} className="mb-3">
-                  <div className={`border rounded p-3 h-100 ${servicios.includes(service.value) ? 'border-primary bg-light' : ''}`}>
-                    <Form.Check
-                      type="checkbox"
-                      id={`service-${service.value}`}
-                      label={
-                        <div>
-                          <strong>{service.label}</strong>
-                          <br />
-                          <small className="text-muted">
-                            {service.description}
-                          </small>
-                        </div>
-                      }
-                      checked={servicios.includes(service.value)}
-                      onChange={() => handleCheckboxChange(service.value)}
-                      className={isRTL ? 'text-end' : ''}
-                    />
+            <Form.Group>
+              <div className="border rounded p-3 bg-light">
+                {serviciosPrincipales.map((service) => (
+                  <div key={service.value} className="mb-3">
+                    <div className={`d-flex align-items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      {/* Checkbox simple */}
+                      <input
+                        type="checkbox"
+                        id={`service-${service.value}`}
+                        name="servicios"
+                        checked={servicios.includes(service.value)}
+                        onChange={() => handleCheckboxChange(service.value)}
+                        className={`form-check-input flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`}
+                        style={{
+                          marginTop: '0.25rem',
+                          width: '1.2em',
+                          height: '1.2em'
+                        }}
+                      />
+                      
+                      {/* Label y descripción */}
+                      <div className="flex-grow-1">
+                        <label 
+                          htmlFor={`service-${service.value}`}
+                          className="form-label mb-1 fw-bold"
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {service.label}
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                </Col>
-              ))}
-            </Row>
+                ))}
+              </div>
+            </Form.Group>
           </Col>
         </Row>
       </Card.Body>

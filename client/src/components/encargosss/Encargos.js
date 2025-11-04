@@ -206,7 +206,7 @@ const Encargos = () => {
       <Row className="mb-5">
         <Col lg={8} className="mx-auto">
           <Card className="border-info">
-            <Card.Header className="bg-info text-white">
+            <Card.Header  >
               <h4 className="mb-0">
                 <FaClock className="me-2" />
                 {t('delivery.title')}
