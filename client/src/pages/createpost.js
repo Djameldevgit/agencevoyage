@@ -394,7 +394,7 @@ const Createpost = () => {
                     <Card.Body className="py-4">
                       <div className="fs-1 mb-2">🏁</div>
                       <h5 className="text-muted fs-6">
-                        {t('common.select_category_first', 'Sélectionnez d\'abord une catégorie pour commencer')}
+                        {t('select_category_first')}
                       </h5>
                     </Card.Body>
                   </Card>

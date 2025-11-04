@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const ServiciosLocationVacances = ({ postData, handleChangeInput }) => {
     const { t, i18n } = useTranslation('categories');
-    const isRTL = i18n.language === 'ar';
+    const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Usar el array servicios existente de postData
     const servicios = postData.servicios || [];
@@ -40,13 +40,13 @@ const ServiciosLocationVacances = ({ postData, handleChangeInput }) => {
 
     return (
         <Card>
-            <Card.Header  >
+            <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                 <h5 className="mb-0">
                     🏡 {t('serviciosLocation', 'Servicios Location Vacances')}
                 </h5>
             </Card.Header>
             <Card.Body>
-                <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
+                <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                     <Col xs={12}>
                         <Form.Group>
                             <div className="border rounded p-3 bg-light">
@@ -69,7 +69,7 @@ const ServiciosLocationVacances = ({ postData, handleChangeInput }) => {
                                             />
                                             
                                             {/* Label y descripción */}
-                                            <div className="flex-grow-1">
+                                            <div className="flex-grow-1" style={{ textAlign: isRTL ? 'right' : 'left' }}>
                                                 <label 
                                                     htmlFor={`service-${servicio.value}`}
                                                     className="form-label mb-1 fw-bold"

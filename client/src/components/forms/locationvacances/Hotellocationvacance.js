@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const Hotellocationvacance = ({ postData, handleChangeInput }) => {
     const { t, i18n } = useTranslation('categories');
-    const isRTL = i18n.language === 'ar';
+    const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     const tiposPropiedades = [
         { value: 'villa_lujo', label: '🏠 ' + t('villa_lujo', 'Villa de Lujo'), description: t('villa_lujo_desc', '4+ habitaciones | Piscina privada') },
@@ -64,13 +64,13 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
 
     return (
         <Card className="mb-4">
-            <Card.Header >
+            <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                 <h5 className="mb-0">
                     🏡 {t('caracteristicasAlojamiento', 'Características del Alojamiento')}
                 </h5>
             </Card.Header>
             <Card.Body>
-                <Row className={`${isRTL ? 'rtl-direction' : ''} g-3`}>
+                <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }} className="g-3">
                     
                     {/* PRIMERA FILA: Tipo de Propiedad y Categoría */}
                     <Col xs={12} md={6}>
@@ -94,7 +94,7 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
                                     </option>
                                 ))}
                             </Form.Select>
-                            <Form.Text className="text-muted">
+                            <Form.Text className="text-muted" style={{ textAlign: isRTL ? 'right' : 'left' }}>
                                 {t('descTipoPropiedad', 'Seleccione el tipo de alojamiento que mejor describe su propiedad')}
                             </Form.Text>
                         </Form.Group>

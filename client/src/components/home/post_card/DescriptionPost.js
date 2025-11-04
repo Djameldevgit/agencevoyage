@@ -5,7 +5,7 @@ import { FaComments, FaHotel, FaPlane, FaBus, FaHome, FaMapMarkerAlt, FaConcierg
 
 const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const { t, i18n } = useTranslation('descripcion');
-    const isRTL = i18n.language === 'ar';
+    const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Color azul claro para valores destacados
     const valueColor = "#1e88e5";
@@ -16,7 +16,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (!dateString) return '';
         const date = new Date(dateString);
         
-        if (i18n.language === 'ar') {
+        if (isRTL) {
             // Formato árabe
             return date.toLocaleDateString('ar-EG', {
                 day: 'numeric',
@@ -75,11 +75,12 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const Highlight = ({ children }) => (
         <span style={{ 
             color: valueColor, 
-            fontWeight: '600',
+            fontWeight: '700', // Aumentado de 600 a 700
             backgroundColor: '#e3f2fd',
-            padding: '2px 6px',
-            borderRadius: '4px',
-            margin: '0 2px'
+            padding: '3px 8px', // Aumentado padding
+            borderRadius: '6px',
+            margin: '0 3px',
+            fontSize: '1rem' // Añadido tamaño de fuente
         }}>
             {children}
         </span>
@@ -199,10 +200,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     // Función para renderizar cada sección con su estilo correspondiente
     const renderSection = (section, index) => {
         const baseStyle = {
-            lineHeight: '1.5',
-            fontSize: '0.95rem',
-            marginBottom: '0.5rem',
-            padding: '0.5rem 0',
+            lineHeight: '1.6', // Aumentado de 1.5
+            fontSize: '1.05rem', // Aumentado de 0.95rem
+            marginBottom: '0.75rem', // Aumentado de 0.5rem
+            padding: '0.75rem 0', // Aumentado de 0.5rem
             borderBottom: index < travelSections.length - 1 ? '1px solid #f0f0f0' : 'none',
             textAlign: isRTL ? 'right' : 'left',
             direction: isRTL ? 'rtl' : 'ltr'
@@ -213,10 +214,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 return (
                     <div key={index} style={baseStyle}>
                         <div style={{ 
-                            fontSize: '1.1rem', 
-                            fontWeight: '600', 
+                            fontSize: '1.25rem', // Aumentado de 1.1rem
+                            fontWeight: '700', // Aumentado de 600
                             color: accentColor,
-                            marginBottom: '0.25rem'
+                            marginBottom: '0.5rem' // Aumentado de 0.25rem
                         }}>
                             {section.content}
                         </div>
@@ -226,22 +227,22 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'features':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaStar size={14} style={{ 
+                        <FaStar size={16} style={{ // Aumentado de 14
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '8px',
-                            marginLeft: isRTL ? '8px' : '0'
+                            marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                            marginLeft: isRTL ? '10px' : '0'
                         }} />
-                        <span style={{ color: '#555' }}>{section.content}</span>
+                        <span style={{ color: '#555', fontSize: '1rem' }}>{section.content}</span>
                     </div>
                 );
 
             case 'duration':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaCalendarAlt size={14} style={{ 
+                        <FaCalendarAlt size={16} style={{ // Aumentado de 14
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '8px',
-                            marginLeft: isRTL ? '8px' : '0'
+                            marginRight: isRTL ? '0' : '10px',
+                            marginLeft: isRTL ? '10px' : '0'
                         }} />
                         <Highlight>{section.content.split(': ')[1]}</Highlight>
                     </div>
@@ -250,22 +251,22 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'services':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaConciergeBell size={14} style={{ 
+                        <FaConciergeBell size={16} style={{ // Aumentado de 14
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '8px',
-                            marginLeft: isRTL ? '8px' : '0'
+                            marginRight: isRTL ? '0' : '10px',
+                            marginLeft: isRTL ? '10px' : '0'
                         }} />
-                        <span style={{ color: '#555' }}>{section.content}</span>
+                        <span style={{ color: '#555', fontSize: '1rem' }}>{section.content}</span>
                     </div>
                 );
 
             case 'pricing':
                 return (
                     <div key={index} style={baseStyle}>
-                        <FaMoneyBillWave size={14} style={{ 
+                        <FaMoneyBillWave size={16} style={{ // Aumentado de 14
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '8px',
-                            marginLeft: isRTL ? '8px' : '0'
+                            marginRight: isRTL ? '0' : '10px',
+                            marginLeft: isRTL ? '10px' : '0'
                         }} />
                         <Highlight>{section.content}</Highlight>
                     </div>
@@ -274,17 +275,18 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             case 'contact':
                 return (
                     <div key={index} style={{...baseStyle, borderBottom: 'none'}}>
-                        <FaUsers size={14} style={{ 
+                        <FaUsers size={16} style={{ // Aumentado de 14
                             color: valueColor, 
-                            marginRight: isRTL ? '0' : '8px',
-                            marginLeft: isRTL ? '8px' : '0'
+                            marginRight: isRTL ? '0' : '10px',
+                            marginLeft: isRTL ? '10px' : '0'
                         }} />
                         <span style={{ 
                             color: '#2e7d32', 
-                            fontWeight: '600',
+                            fontWeight: '700', // Aumentado de 600
                             backgroundColor: '#e8f5e9',
-                            padding: '4px 8px',
-                            borderRadius: '4px'
+                            padding: '6px 12px', // Aumentado padding
+                            borderRadius: '6px',
+                            fontSize: '1.05rem' // Añadido tamaño
                         }}>
                             {section.content}
                         </span>
@@ -307,7 +309,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         // Información común
         if (post.wilaya && post.commune) {
             badges.push(
-                <Badge key="location" bg="light" text="dark" className="me-1 mb-1">
+                <Badge key="location" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}> {/* Aumentado de 0.75rem */}
                     <FaMapMarkerAlt className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                     {post.commune}, {post.wilaya}
                 </Badge>
@@ -316,7 +318,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
         if (post.datedepar) {
             badges.push(
-                <Badge key="date" bg="light" text="dark" className="me-1 mb-1">
+                <Badge key="date" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                     <FaCalendarAlt className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                     {formatDate(post.datedepar)}
                 </Badge>
@@ -327,7 +329,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.subCategory === "hadj_Omra") {
             if (post.categoriaHotelMeca) {
                 badges.push(
-                    <Badge key="hotel-meca" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="hotel-meca" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaHotel className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {t('specificFields.categoriaHotelMeca')}: {post.categoriaHotelMeca}
                     </Badge>
@@ -335,7 +337,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             }
             if (post.typeTransport) {
                 badges.push(
-                    <Badge key="transport" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="transport" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaBus className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.typeTransport}
                     </Badge>
@@ -346,7 +348,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.subCategory === "Voyage Organise") {
             if (post.categoriaAlojamiento) {
                 badges.push(
-                    <Badge key="category" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="category" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaStar className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.categoriaAlojamiento}
                     </Badge>
@@ -354,7 +356,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             }
             if (post.modeTransport) {
                 badges.push(
-                    <Badge key="transport-mode" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="transport-mode" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaPlane className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.modeTransport}
                     </Badge>
@@ -365,7 +367,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (post.subCategory === "Location_Vacances") {
             if (post.tipoPropiedad) {
                 badges.push(
-                    <Badge key="property" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="property" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaHome className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.tipoPropiedad}
                     </Badge>
@@ -373,7 +375,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             }
             if (post.capacidad) {
                 badges.push(
-                    <Badge key="capacity" bg="light" text="dark" className="me-1 mb-1">
+                    <Badge key="capacity" bg="light" text="dark" className="me-1 mb-1" style={{ fontSize: '0.9rem' }}>
                         <FaUsers className={isRTL ? "ms-1" : "me-1"} style={{ color: valueColor }} />
                         {post.capacidad} {t('labels.persons', { defaultValue: 'personnes' })}
                     </Badge>
@@ -395,30 +397,30 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 className="border-0 text-white d-flex align-items-center justify-content-between"
                 style={{ 
                     background: categoryInfo.gradient,
-                    padding: '0.75rem 1rem'
+                    padding: '1rem 1.25rem' // Aumentado padding
                 }}
             >
                 <div className="d-flex align-items-center">
                     <div style={{
                         background: 'rgba(255,255,255,0.2)',
-                        borderRadius: '8px',
-                        padding: '8px',
-                        marginRight: isRTL ? '0' : '12px',
-                        marginLeft: isRTL ? '12px' : '0'
+                        borderRadius: '10px', // Aumentado de 8px
+                        padding: '10px', // Aumentado de 8px
+                        marginRight: isRTL ? '0' : '15px', // Aumentado de 12px
+                        marginLeft: isRTL ? '15px' : '0'
                     }}>
-                        <span style={{ fontSize: '1.2rem' }}>{categoryInfo.icon}</span>
+                        <span style={{ fontSize: '1.4rem' }}>{categoryInfo.icon}</span> {/* Aumentado de 1.2rem */}
                     </div>
                     <div>
-                        <h6 className="mb-0 fw-bold" style={{ fontSize: '0.95rem' }}>
+                        <h6 className="mb-0 fw-bold" style={{ fontSize: '1.1rem' }}> {/* Aumentado de 0.95rem */}
                             {categoryInfo.type.toUpperCase()}
                         </h6>
-                        <small style={{ opacity: 0.9, fontSize: '0.8rem' }}>
+                        <small style={{ opacity: 0.9, fontSize: '0.9rem' }}> {/* Aumentado de 0.8rem */}
                             {t('labels.exclusiveOffer')} • {t('labels.publishedOn')} {formatDate(post.createdAt)}
                         </small>
                     </div>
                 </div>
                 {post.views > 0 && (
-                    <Badge bg="light" text="dark" style={{ fontSize: '0.75rem' }}>
+                    <Badge bg="light" text="dark" style={{ fontSize: '0.85rem' }}> {/* Aumentado de 0.75rem */}
                         👁️ {post.views} {t('labels.views')}
                     </Badge>
                 )}
@@ -447,20 +449,20 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         {readMore ? (
                             <>
                                 <div className="d-flex align-items-center mb-2">
-                                    <FaComments size={16} style={{ 
+                                    <FaComments size={18} style={{ // Aumentado de 16
                                         color: valueColor, 
-                                        marginRight: isRTL ? '0' : '8px',
-                                        marginLeft: isRTL ? '8px' : '0'
+                                        marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                                        marginLeft: isRTL ? '10px' : '0'
                                     }} />
-                                    <small className="fw-bold" style={{ color: accentColor }}>
+                                    <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}> {/* Aumentado tamaño */}
                                         {t('labels.detailedDescription')}
                                     </small>
                                 </div>
                                 <p style={{ 
-                                    fontSize: '0.9rem', 
-                                    lineHeight: '1.5',
+                                    fontSize: '1rem', // Aumentado de 0.9rem
+                                    lineHeight: '1.6', // Aumentado de 1.5
                                     color: '#555',
-                                    marginBottom: '0.5rem',
+                                    marginBottom: '0.75rem', // Aumentado de 0.5rem
                                     textAlign: isRTL ? 'right' : 'left'
                                 }}>
                                     {post.description}
@@ -469,7 +471,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     variant="outline-primary" 
                                     size="sm"
                                     onClick={() => setReadMore(false)}
-                                    style={{ fontSize: '0.8rem', padding: '0.25rem 0.75rem' }}
+                                    style={{ fontSize: '0.9rem', padding: '0.4rem 1rem' }} // Aumentado tamaño y padding
                                 >
                                     {t('labels.readLess')}
                                 </Button>
@@ -480,8 +482,8 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                 onClick={() => setReadMore(true)}
                                 style={{ color: valueColor }}
                             >
-                                <FaComments size={14} className={isRTL ? "ms-2" : "me-2"} />
-                                <small className="fw-bold">
+                                <FaComments size={16} className={isRTL ? "ms-2" : "me-2"} /> {/* Aumentado de 14 */}
+                                <small className="fw-bold" style={{ fontSize: '0.95rem' }}> {/* Aumentado tamaño */}
                                     {t('labels.readMore')}
                                 </small>
                             </div>
@@ -493,12 +495,12 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 {(post.servicios && post.servicios.length > 0) && (
                     <div className="p-3">
                         <div className="d-flex align-items-center mb-2">
-                            <FaConciergeBell size={14} style={{ 
+                            <FaConciergeBell size={16} style={{ // Aumentado de 14
                                 color: valueColor, 
-                                marginRight: isRTL ? '0' : '8px',
-                                marginLeft: isRTL ? '8px' : '0'
+                                marginRight: isRTL ? '0' : '10px', // Aumentado de 8px
+                                marginLeft: isRTL ? '10px' : '0'
                             }} />
-                            <small className="fw-bold" style={{ color: accentColor }}>
+                            <small className="fw-bold" style={{ color: accentColor, fontSize: '1rem' }}> {/* Aumentado tamaño */}
                                 {t('labels.servicesEquipment')}
                             </small>
                         </div>
@@ -509,7 +511,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     bg="light" 
                                     text="dark"
                                     style={{ 
-                                        fontSize: '0.75rem',
+                                        fontSize: '0.85rem', // Aumentado de 0.75rem
                                         border: `1px solid ${valueColor}20`,
                                         backgroundColor: `${valueColor}08`
                                     }}
@@ -521,7 +523,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                 <Badge 
                                     bg="light" 
                                     text="dark"
-                                    style={{ fontSize: '0.75rem' }}
+                                    style={{ fontSize: '0.85rem' }} // Aumentado de 0.75rem
                                 >
                                     +{post.servicios.length - 8} {t('labels.otherServices')}
                                 </Badge>
@@ -535,14 +537,14 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                     backgroundColor: '#f8f9fa',
                     borderTop: '1px solid #f0f0f0'
                 }}>
-                    <small className="text-muted d-block mb-2">
+                    <small className="text-muted d-block mb-2" style={{ fontSize: '0.95rem' }}> {/* Aumentado tamaño */}
                         {t('labels.uniqueExperience')}
                     </small>
                     {post.contacto && (
                         <div style={{ 
                             color: valueColor, 
-                            fontWeight: '600',
-                            fontSize: '0.9rem'
+                            fontWeight: '700', // Aumentado de 600
+                            fontSize: '1.05rem' // Aumentado de 0.9rem
                         }}>
                             📞 {post.contacto}
                         </div>

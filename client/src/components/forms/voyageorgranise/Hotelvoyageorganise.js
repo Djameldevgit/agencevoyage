@@ -3,8 +3,8 @@ import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
-    const { t, i18n } = useTranslation('categories');
-    const isRTL = i18n.language === 'ar';
+    const { t, i18n } = useTranslation(["descripcion", "categories"]);
+    const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Usar el array servicios existente
     const servicios = postData.servicios || [];
@@ -76,17 +76,20 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
         <>
             {/* Card principal para información básica del hotel */}
             <Card className="mb-3">
-                <Card.Header  >
+                <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                     <h5 className="mb-0">
                         🏨 {t('alojamientoVoyage', 'Alojamiento para Viajes Organizados')}
                     </h5>
                 </Card.Header>
                 <Card.Body className="p-3">
-                    <Row className={`${isRTL ? 'rtl-direction' : ''} g-3`}>
+                    <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }} className="g-3">
                         
                         {/* Categoría del Alojamiento */}
                         <Col xs={12}>
                             <Form.Group className="w-100">
+                                <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`} style={{ fontSize: '1rem' }}>
+                                    {t('categoriaAlojamientoLabel', 'Categoría del Alojamiento')} *
+                                </Form.Label>
                                 <Form.Select
                                     name="categoriaAlojamiento"
                                     value={postData.categoriaAlojamiento || ''}
@@ -109,6 +112,9 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
                         {/* Tipo de Habitación */}
                         <Col xs={12}>
                             <Form.Group className="w-100">
+                                <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`} style={{ fontSize: '1rem' }}>
+                                    {t('tipoHabitacionLabel', 'Tipo de Habitación')} *
+                                </Form.Label>
                                 <Form.Select
                                     name="tipoHabitacion"
                                     value={postData.tipoHabitacion || ''}
@@ -131,6 +137,9 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
                         {/* Régimen de Comidas */}
                         <Col xs={12}>
                             <Form.Group className="w-100">
+                                <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`} style={{ fontSize: '1rem' }}>
+                                    {t('regimenComidasLabel', 'Régimen de Comidas')} *
+                                </Form.Label>
                                 <Form.Select
                                     name="regimenComidas"
                                     value={postData.regimenComidas || ''}
@@ -153,6 +162,9 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
                         {/* Ubicación del Hotel */}
                         <Col xs={12}>
                             <Form.Group className="w-100">
+                                <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`} style={{ fontSize: '1rem' }}>
+                                    {t('ubicacionHotelLabel', 'Ubicación del Hotel')}
+                                </Form.Label>
                                 <Form.Select
                                     name="ubicacionHotel"
                                     value={postData.ubicacionHotel || ''}
@@ -176,10 +188,16 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
 
             {/* Card separado para servicios del hotel */}
             <Card className="mb-3">
-                <Card.Header  >
+                <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                     <h5 className="mb-0">
                         🛠️ {t('serviciosHotel', 'Servicios del Hotel')}
                     </h5>
+                    <small className="text-muted" style={{ 
+                        textAlign: isRTL ? 'right' : 'left',
+                        fontSize: '0.85rem'
+                    }}>
+                        {t('serviciosSeleccionados', 'Servicios seleccionados')}: {servicios.length}
+                    </small>
                 </Card.Header>
                 <Card.Body className="p-3">
                     <Form.Group>
@@ -203,11 +221,11 @@ const Hotelvoyageorganise = ({ postData, handleChangeInput }) => {
                                         />
                                         
                                         {/* Label y descripción */}
-                                        <div className="flex-grow-1">
+                                        <div className="flex-grow-1" style={{ textAlign: isRTL ? 'right' : 'left' }}>
                                             <label 
                                                 htmlFor={`service-${servicio.value}`}
-                                                className="form-label mb-1 fw-bold"
-                                                style={{ cursor: 'pointer' }}
+                                                className="form-label mb-1 fw-bold d-block"
+                                                style={{ cursor: 'pointer', fontSize: '1rem' }}
                                             >
                                                 {servicio.label}
                                             </label>

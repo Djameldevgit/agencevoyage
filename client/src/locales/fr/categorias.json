@@ -1,4 +1,9 @@
 {
+
+  
+
+
+
   "sectionTitles": {
     "basicInfo": "Informations de base de l'œuvre",
     "artisticDetails": "Détails artistiques",
@@ -462,7 +467,7 @@
   "descriptionInvalidChars": "Caractères non autorisés détectés",
   "descriptionNotEmpty": "La description ne peut pas être vide",
   "descriptionTooManySpecialChars": "Trop de caractères spéciaux (30% maximum)",
-  "caracteres": "caractères",
+ 
   "delLimite": "de la limite autorisée",
   "sugerencias": "Suggestions pour une bonne description :",
   "sugerencia1": "Décrivez les matériaux utilisés",

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
     const { t, i18n } = useTranslation('categories');
-    const isRTL = i18n.language === 'ar';
+    const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Opciones de descuentos y ofertas
     const opcionesDescuentos = [
@@ -35,13 +35,13 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
 
     return (
         <Card>
-            <Card.Header  >
+            <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
                 <h5 className="mb-0">
                     💰 {t('tarifasPrecios', 'Tarifas y Precios')}
                 </h5>
             </Card.Header>
             <Card.Body>
-                <Row className={`${isRTL ? 'rtl-direction' : ''}`}>
+                <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
 
                     {/* PRIMERA FILA: Precio Base - Ocupa todo el ancho */}
                     <Col xs={12}>
@@ -51,7 +51,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                                 name="precioBase"
                                 value={postData.precioBase || ''}
                                 onChange={handleChangeInput}
-                                placeholder="En Dinars"
+                                placeholder={t('placeholderPrecioBase', 'En Dinars')}
                                 min="0"
                                 required
                                 className={`w-100 ${isRTL ? 'text-end' : ''}`}
@@ -69,7 +69,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                                 name="tarifaNinos"
                                 value={postData.tarifaNinos || ''}
                                 onChange={handleChangeInput}
-                                placeholder="Niños (2-12 años) - En Dinars"
+                                placeholder={t('placeholderNinos', 'Niños (2-12 años) - En Dinars')}
                                 min="0"
                                 className={`w-100 ${isRTL ? 'text-end' : ''}`}
                                 dir={isRTL ? 'rtl' : 'ltr'}
@@ -86,7 +86,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                                 name="tarifaBebes"
                                 value={postData.tarifaBebes || ''}
                                 onChange={handleChangeInput}
-                                placeholder="Bebés (0-2 años) - En Dinars"
+                                placeholder={t('placeholderBebes', 'Bebés (0-2 años) - En Dinars')}
                                 min="0"
                                 className={`w-100 ${isRTL ? 'text-end' : ''}`}
                                 dir={isRTL ? 'rtl' : 'ltr'}
@@ -118,7 +118,7 @@ const TarifasYprecios = ({ postData, handleChangeInput, category }) => {
                                             />
                                             
                                             {/* Label y descripción */}
-                                            <div className="flex-grow-1">
+                                            <div className="flex-grow-1" style={{ textAlign: isRTL ? 'right' : 'left' }}>
                                                 <label 
                                                     htmlFor={opcion.id}
                                                     className="form-label mb-1 fw-bold"

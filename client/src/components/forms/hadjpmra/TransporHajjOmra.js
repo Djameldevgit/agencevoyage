@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Card, Badge } from 'react-bootstrap';
+import { Form, Row, Col, Card  } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const TransportHajjOmra = ({ postData, handleChangeInput }) => {
@@ -143,61 +143,10 @@ const TransportHajjOmra = ({ postData, handleChangeInput }) => {
                         </Form.Group>
                     </Col>
 
-                    
+                    </Row> 
 
-                </Row>
-
-                {/* Información adicional sobre servicios seleccionados */}
-                {(postData.typeTransport || postData.compagnieAerienne || postData.classeVol || postData.transportTerrestre) && (
-                    <div className="mt-4 p-3 bg-info-light rounded">
-                        <h6 className="fw-bold">📋 {t('resumeTransport', 'Résumé des services de transport')}</h6>
-                        <Row className="g-2">
-                            {postData.typeTransport && (
-                                <Col xs={12} sm={6}>
-                                    <Badge bg="primary" className="p-2 w-100 text-start">
-                                        <strong>{t('typeTransport', 'Type de Transport')}:</strong><br />
-                                        {transportTypes.find(t => t.value === postData.typeTransport)?.icon} 
-                                        {transportTypes.find(t => t.value === postData.typeTransport)?.label}
-                                    </Badge>
-                                </Col>
-                            )}
-                            {postData.compagnieAerienne && (
-                                <Col xs={12} sm={6}>
-                                    <Badge bg="success" className="p-2 w-100 text-start">
-                                        <strong>{t('compagnieAerienne', 'Compagnie Aérienne')}:</strong><br />
-                                        ✈️ {postData.compagnieAerienne}
-                                    </Badge>
-                                </Col>
-                            )}
-                            {postData.classeVol && (
-                                <Col xs={12} sm={6}>
-                                    <Badge bg="warning" className="p-2 w-100 text-start">
-                                        <strong>{t('classeVol', 'Classe de Vol')}:</strong><br />
-                                        {classesVol.find(c => c.value === postData.classeVol)?.icon} 
-                                        {classesVol.find(c => c.value === postData.classeVol)?.label}
-                                    </Badge>
-                                </Col>
-                            )}
-                            {postData.transportTerrestre && (
-                                <Col xs={12} sm={6}>
-                                    <Badge bg="info" className="p-2 w-100 text-start">
-                                        <strong>{t('transportTerrestre', 'Transport Terrestre')}:</strong><br />
-                                        {transportsTerrestres.find(t => t.value === postData.transportTerrestre)?.icon} 
-                                        {transportsTerrestres.find(t => t.value === postData.transportTerrestre)?.label}
-                                    </Badge>
-                                </Col>
-                            )}
-                            {postData.transfertsAeroport && (
-                                <Col xs={12}>
-                                    <Badge bg="success" className="p-2 w-100 text-start mt-2">
-                                        <strong>✅ {t('transfertsInclus', 'Transferts inclus')}</strong><br />
-                                        {t('transfertsAeroport_desc', 'Transferts aller-retour entre aéroport et hôtel')}
-                                    </Badge>
-                                </Col>
-                            )}
-                        </Row>
-                    </div>
-                )}
+             
+               
             </Card.Body>
         </Card>
     );

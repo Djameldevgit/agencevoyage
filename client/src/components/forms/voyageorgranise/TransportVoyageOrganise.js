@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const TransportVoyagesOrganises = ({ postData, handleChangeInput }) => {
   const { t, i18n } = useTranslation("categories");
-  const isRTL = i18n.language === "ar";
+  const isRTL = i18n.language === "ar" || i18n.language === "ara";
 
   // Usar el array servicios existente
   const servicios = postData.servicios || [];
@@ -72,13 +72,13 @@ const TransportVoyagesOrganises = ({ postData, handleChangeInput }) => {
 
   return (
     <Card>
-      <Card.Header >
+      <Card.Header style={{ direction: isRTL ? "rtl" : "ltr" }}>
         <h5 className="mb-0">
           🚗 {t("transportVoyages", "Transport pour Voyages Organisés")}
         </h5>
       </Card.Header>
       <Card.Body>
-        <Row className={`${isRTL ? "rtl-direction" : ""}`}>
+        <Row style={{ direction: isRTL ? "rtl" : "ltr" }}>
   
           {/* Modo de transporte principal */}
           <Col xs={12}>
@@ -171,7 +171,7 @@ const TransportVoyagesOrganises = ({ postData, handleChangeInput }) => {
                       />
                       
                       {/* Label y descripción */}
-                      <div className="flex-grow-1">
+                      <div className="flex-grow-1" style={{ textAlign: isRTL ? "right" : "left" }}>
                         <label 
                           htmlFor={`service-${service.value}`}
                           className="form-label mb-1 fw-bold"
