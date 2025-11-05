@@ -37,7 +37,7 @@ import TarifasYpreciosomra from '../components/forms/hadjpmra/TarifasYpreciosomr
 
 // 🔷 REDUX Y DATOS
 import { createPost, updatePost } from '../redux/actions/postAction';
-import communesjson from "../json/communes.json";
+
 const getInitialState = () => ({
   // ✅ CAMPOS COMUNES A TODAS LAS CATEGORÍAS
   category: "Agence de Voyage",
@@ -100,6 +100,7 @@ const getInitialState = () => ({
   classeVol: "",
   transportTerrestre: ""
 });
+
 const Createpost = () => {
   const { auth, theme, languageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -113,7 +114,6 @@ const Createpost = () => {
 
   const [postData, setPostData] = useState(getInitialState);
   const [images, setImages] = useState([]);
-  const [selectedWilaya, setSelectedWilaya] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertVariant, setAlertVariant] = useState("info");
@@ -167,8 +167,6 @@ const Createpost = () => {
       } else {
         setImages([]);
       }
-
-      setSelectedWilaya(postToEdit.wilaya || "");
     }
   }, [isEdit, postToEdit]);
 
@@ -192,23 +190,9 @@ const Createpost = () => {
     }));
   }, []);
 
-  const handleWilayaChange = useCallback((event) => {
-    const selectedWilaya = event.target.value;
-    setSelectedWilaya(selectedWilaya);
-    const wilayaEncontrada = communesjson.find((wilaya) => wilaya.wilaya === selectedWilaya);
-    const communes = wilayaEncontrada?.commune || [];
-
-    setPostData(prev => ({
-      ...prev,
-      wilaya: selectedWilaya,
-      commune: communes[0] || "",
-    }));
-  }, []);
-
-  const handleCommuneChange = useCallback((event) => {
-    const selectedCommune = event.target.value;
-    setPostData(prev => ({ ...prev, commune: selectedCommune }));
-  }, []);
+  // ✅ ELIMINADO: handleWilayaChange y handleCommuneChange
+  // ✅ ELIMINADO: selectedWilaya state
+  // ✅ ELIMINADO: communesjson import
 
   const handleChangeImages = useCallback((e) => {
     const files = [...e.target.files];
@@ -394,20 +378,6 @@ const Createpost = () => {
     }
   }, [postData.subCategory, renderVoyageOrganise, renderLocationVacances, renderHadjOmra]);
 
-  const wilayasOptions = useMemo(() =>
-    communesjson.map((wilaya, index) => (
-      <option key={index} value={wilaya.wilaya}>{wilaya.wilaya}</option>
-    )), []);
-
-  const communesOptions = useMemo(() =>
-    selectedWilaya
-      ? communesjson
-        .find((wilaya) => wilaya.wilaya === selectedWilaya)
-        ?.commune?.map((commune, index) => (
-          <option key={index} value={commune}>{commune}</option>
-        )) || []
-      : [], [selectedWilaya]);
-
   return (
     <Container fluid className="p-2" dir={isRTL ? "rtl" : "ltr"}>
       <Row className="g-0">
@@ -449,13 +419,10 @@ const Createpost = () => {
                   <>
                     <div className="px-2">
                       <DescriptionTextarea postData={postData} handleChangeInput={handleChangeInput} />
+                      {/* ✅ ADDRESSINPUT SIMPLIFICADO - SIN LÓGICA DE WILAYAS/COMMUNES */}
                       <AddressInput
                         postData={postData}
                         handleChangeInput={handleChangeInput}
-                        wilayasOptions={wilayasOptions}
-                        communesOptions={communesOptions}
-                        handleWilayaChange={handleWilayaChange}
-                        handleCommuneChange={handleCommuneChange}
                       />
                     </div>
 

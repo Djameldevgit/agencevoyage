@@ -20,7 +20,6 @@ import {
   FaBell,
   FaShareAlt,
   FaGlobe,
-  FaCheckCircle,
   FaDownload
 } from 'react-icons/fa';
 
@@ -73,9 +72,6 @@ const Navbar2 = () => {
     };
   }, []);
 
-  
-
-
   // 🔥 FORZAR MOSTRAR BOTÓN EN DESARROLLO (para testing)
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -119,7 +115,6 @@ const Navbar2 = () => {
     dispatch(logout());
   };
 
- 
   // 🔥 DETECCIÓN PWA MEJORADA
   useEffect(() => {
     // Verificar si ya está instalada
@@ -225,11 +220,16 @@ const Navbar2 = () => {
         margin: '2px 8px',
         display: 'flex',
         alignItems: 'center',
-        fontWeight: '500'
+        fontWeight: '500',
+        width: 'calc(100% - 16px)',
+        boxSizing: 'border-box',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
       }}
     >
-      <Icon className="me-3" style={{ color: iconColor, fontSize: '1.1rem' }} />
-      <span>{children}</span>
+      <Icon className="me-3" style={{ color: iconColor, fontSize: '1.1rem', flexShrink: 0 }} />
+      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{children}</span>
     </NavDropdown.Item>
   );
 
@@ -243,13 +243,13 @@ const Navbar2 = () => {
           background: settings.style
             ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
             : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-          padding: isMobile ? '4px 0' : '2px 0',
+          padding: isMobile ? '8px 0' : '8px 0',
           boxShadow: '0 2px 20px rgba(0,0,0,0.08)'
         }}
         className={settings.style ? "navbar-dark" : "navbar-light"}
       >
-        <Container fluid className="align-items-center justify-content-between">
-          <div className="d-flex align-items-center">
+        <Container fluid className="align-items-center justify-content-between" style={{ padding: isMobile ? '0 8px' : '0 16px' }}>
+          <div className="d-flex align-items-center" style={{ minWidth: 0, flex: '0 1 auto' }}>
             <Link
               to="/"
               className="btn"
@@ -259,14 +259,15 @@ const Navbar2 = () => {
                 justifyContent: 'center',
                 width: isMobile ? '40px' : '55px',
                 height: isMobile ? '40px' : '55px',
-                marginLeft: '8px',
+                marginLeft: '0',
                 padding: isMobile ? '2px' : '0',
                 marginRight: isMobile ? '6px' : '12px',
                 background: 'transparent',
                 border: 'none',
                 borderRadius: '10px',
                 transition: 'all 0.3s ease',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                flexShrink: 0
               }}
             >
               <img
@@ -284,7 +285,7 @@ const Navbar2 = () => {
               />
             </Link>
 
-            <Navbar.Brand href="/" className="py-2 d-none d-lg-block mb-0">
+            <Navbar.Brand href="/" className="py-2 d-none d-lg-block mb-0" style={{ flexShrink: 0 }}>
               <Card.Title
                 className="mb-0"
                 style={{
@@ -294,7 +295,8 @@ const Navbar2 = () => {
                   WebkitTextFillColor: 'transparent',
                   fontWeight: 'bold',
                   fontSize: '1.5rem',
-                  letterSpacing: '0.5px'
+                  letterSpacing: '0.5px',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 {t('appName')}
@@ -302,7 +304,7 @@ const Navbar2 = () => {
             </Navbar.Brand>
           </div>
 
-          <div className="d-flex align-items-center" style={{ gap: isMobile ? '12px' : '16px' }}>
+          <div className="d-flex align-items-center" style={{ gap: isMobile ? '8px' : '12px', flexShrink: 0, marginLeft: 'auto' }}>
             {/* Selector de idioma para desktop */}
             <div className="d-none d-lg-block">
               <LanguageSelectorpc />
@@ -327,43 +329,27 @@ const Navbar2 = () => {
               />
             </Link>
 
-            {/* 🔥 BOTÓN INSTALAR PWA MEJORADO */}
+            {/* 🔥 BOTÓN INSTALAR PWA MEJORADO - SOLO SE MUESTRA CUANDO ES NECESARIO */}
             {showInstallButton && !isPWAInstalled && (
-  <button
-    className="d-flex align-items-center justify-content-center icon-button text-decoration-none"
-    onClick={handleInstallPWA}
-    style={{
-      width: isMobile ? '40px' : '45px',
-      height: isMobile ? '40px' : '45px',
-      borderRadius: '12px',
-      backgroundColor: settings.style ? 'rgba(255,255,255,0.1)' : 'rgba(40, 167, 69, 0.1)',
-      border: '2px solid #28a745',
-      transition: 'all 0.3s ease',
-      animation: 'pulse 2s infinite'
-    }}
-    title={t('installPWA')}
-  >
-    <FaDownload
-      size={isMobile ? 18 : 20}
-      style={{ color: '#28a745' }}
-    />
-  </button>
-)}
-            {/* 🔥 INDICADOR PWA INSTALADA */}
-            {isPWAInstalled && (
-              <div
-                className="d-flex align-items-center justify-content-center"
+              <button
+                className="d-flex align-items-center justify-content-center icon-button text-decoration-none"
+                onClick={handleInstallPWA}
                 style={{
                   width: isMobile ? '40px' : '45px',
                   height: isMobile ? '40px' : '45px',
+                  borderRadius: '12px',
+                  backgroundColor: settings.style ? 'rgba(255,255,255,0.1)' : 'rgba(40, 167, 69, 0.1)',
+                  border: '2px solid #28a745',
+                  transition: 'all 0.3s ease',
+                  animation: 'pulse 2s infinite'
                 }}
-                title={t('appInstalled')}
+                title={t('installPWA')}
               >
-                <FaCheckCircle
+                <FaDownload
                   size={isMobile ? 18 : 20}
                   style={{ color: '#28a745' }}
                 />
-              </div>
+              </button>
             )}
 
             {/* Botón Agregar Post */}
@@ -431,7 +417,7 @@ const Navbar2 = () => {
               </div>
             )}
 
-            {/* Dropdown de usuario */}
+            {/* Dropdown de usuario - CORREGIDO POSICIÓN */}
             <NavDropdown
               align="end"
               title={
@@ -485,7 +471,9 @@ const Navbar2 = () => {
                 style={{
                   maxHeight: '70vh',
                   overflowY: 'auto',
-                  padding: '8px 0'
+                  overflowX: 'hidden',
+                  padding: '8px 0',
+                  width: '100%'
                 }}
               >
                 {auth.user ? (
@@ -626,7 +614,7 @@ const Navbar2 = () => {
         </Container>
       </Navbar>
 
-      {/* 🔥 ESTILOS PARA ANIMACIÓN PWA */}
+      {/* 🔥 ESTILOS PARA ANIMACIÓN PWA Y CORRECCIÓN DROPDOWN */}
       <style jsx>{`
         @keyframes pulse {
           0% { transform: scale(1); }
@@ -637,6 +625,10 @@ const Navbar2 = () => {
         .icon-button:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
+        }
+
+        .custom-menu-item {
+          color: ${settings.style ? '#ffffff' : '#333333'} !important;
         }
 
         .custom-menu-item:hover {
@@ -662,9 +654,55 @@ const Navbar2 = () => {
           border-radius: 10px;
         }
 
-        .dropdown-menu {
+        /* 🔥 CORRECCIÓN DROPDOWN - Posicionamiento correcto */
+        #nav-user-dropdown + .dropdown-menu {
+          position: absolute !important;
+          right: 0 !important;
+          left: auto !important;
+          top: 100% !important;
+          margin-top: 8px !important;
+          width: 300px !important;
+          min-width: 300px !important;
+          max-width: 300px !important;
+          transform: none !important;
           border: none !important;
+          border-radius: 15px !important;
           box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+          background: ${settings.style ? '#2d3748' : '#ffffff'} !important;
+          padding: 0 !important;
+          overflow-x: hidden !important;
+          overflow-y: auto !important;
+        }
+
+        /* Evitar scroll horizontal en el wrapper */
+        .dropdown-scroll-wrapper {
+          overflow-x: hidden !important;
+          overflow-y: auto !important;
+          width: 100% !important;
+        }
+
+        /* Ajustar items del menú para evitar desbordamiento */
+        .custom-menu-item {
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Asegurar que el dropdown se alinee correctamente en mobile */
+        @media (max-width: 768px) {
+          #nav-user-dropdown + .dropdown-menu {
+            right: 0 !important;
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
+          }
+        }
+
+        /* Estilos para el NavDropdown.Divider */
+        .dropdown-divider {
+          border-color: ${settings.style ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} !important;
         }
       `}</style>
 

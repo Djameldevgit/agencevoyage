@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FaComments, FaHotel, FaPlane, FaBus, FaHome, FaMapMarkerAlt, FaConciergeBell, FaMoneyBillWave, FaCalendarAlt, FaUsers, FaStar, FaChild, FaBaby, FaBed, FaRuler, FaShower, FaUserFriends, FaCrown, FaTag } from 'react-icons/fa';
 
 const DescriptionPost = ({ post, readMore, setReadMore }) => {
-    const { t, i18n } = useTranslation(["descripcion", "categories", "createpost"]);
+    const { t, i18n } = useTranslation(["descripcion","categpries","createpost"]);
     const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Colores elegantes
@@ -109,7 +109,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         marginLeft: isRTL ? '12px' : '0'
                     }} />
                     <h5 className="mb-0 fw-bold" style={{ color: '#7e57c2', fontSize: '1.4rem' }}>
-                        {t('labels.specialBenefits', 'Beneficios Especiales')}
+                        {t('labels.specialBenefits')}
                     </h5>
                 </div>
 
@@ -328,7 +328,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                         marginLeft: isRTL ? '12px' : '0'
                     }} />
                     <h5 className="mb-0 fw-bold" style={{ color: primaryColor, fontSize: '1.4rem' }}>
-                        {t('labels.transportDetails', 'Detalles del Transporte')}
+                        {t('labels.transportDetails')}
                     </h5>
                 </div>
 
