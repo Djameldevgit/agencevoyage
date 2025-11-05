@@ -202,7 +202,7 @@ const postCtrl = {
             const { 
                 title, 
                 subCategory, 
-                destinacionvoyage1, 
+                destinacion, 
                 wilaya, 
                 page, 
                 limit 
@@ -220,8 +220,8 @@ const postCtrl = {
             if (subCategory && subCategory.trim() !== "") {
                 query.subCategory = { $regex: subCategory.trim(), $options: "i" };
             }
-            if (destinacionvoyage1 && destinacionvoyage1.trim() !== "") {
-                query.destinacionvoyage1 = { $regex: destinacionvoyage1.trim(), $options: "i" };
+            if (destinacion && destinacion.trim() !== "") {
+                query.destinacion = { $regex: destinacion.trim(), $options: "i" };
             }
             if (wilaya && wilaya.trim() !== "") {
                 query.wilaya = { $regex: wilaya.trim(), $options: "i" };

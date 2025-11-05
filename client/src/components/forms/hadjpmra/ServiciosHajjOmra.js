@@ -1,125 +1,507 @@
-import React from "react";
-import { Form, Card, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Card, Badge } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import Select from 'react-select';
 
 const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
   const { t, i18n } = useTranslation(["categories"]);
   const isRTL = i18n.language === "ar";
+  
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
-  const servicios = postData.servicios || [];
+  // SERVICIOS COMPLETOS ORGANIZADOS POR CATEGORÍAS
+  const serviciosCompletos = [
+    // 📋 SERVICIOS ADMINISTRATIVOS Y VISAS
+    {
+      category: "administrativos",
+      label: "📋 " + t("servicess.categoria_administrativos", "Services Administratifs"),
+      servicios: [
+        { 
+          id: "visa_hajj_omra",
+          label: "🛂 " + t("servicess.visa_hajj_omra", "Visa Hajj/Omra"),
+          description: t("servicess.visaDesc", "Traitement et obtention du visa officiel")
+        },
+        { 
+          id: "permis_sortie",
+          label: "📄 " + t("servicess.permis_sortie", "Permis de sortie territoire"),
+          description: t("servicess.permisSortieDesc", "Autorisation de sortie du territoire algérien")
+        },
+        { 
+          id: "certificat_vaccination",
+          label: "💉 " + t("servicess.certificat_vaccination", "Certificat de vaccination"),
+          description: t("servicess.certificatVaccinationDesc", "Vaccinations obligatoires et certificats")
+        },
+        { 
+          id: "autorisation_ministerielle",
+          label: "🏛️ " + t("servicess.autorisation_ministerielle", "Autorisation ministérielle"),
+          description: t("servicess.autorisationMinisterielleDesc", "Autorisations officielles requises")
+        },
+        { 
+          id: "assistance_documentation",
+          label: "📁 " + t("servicess.assistance_documentation", "Assistance documentation complète"),
+          description: t("servicess.assistanceDocumentationDesc", "Aide pour tous les documents nécessaires")
+        }
+      ]
+    },
 
-  const handleCheckboxChange = (serviceId) => {
-    const updatedServicios = servicios.includes(serviceId)
-      ? servicios.filter(item => item !== serviceId)
-      : [...servicios, serviceId];
+    // 🏨 HÉBERGEMENT ET LOGEMENT
+    {
+      category: "hebergement",
+      label: "🏨 " + t("servicess.categoria_hebergement", "Hébergement et Logement"),
+      servicios: [
+        { 
+          id: "hebergement_haram_meca",
+          label: "🕌 " + t("servicess.hebergement_haram_meca", "Hébergement près du Haram à Mecca"),
+          description: t("servicess.hebergementHaramMecaDesc", "Hôtels à proximité de la Mosquée Sacrée")
+        },
+        { 
+          id: "hebergement_haram_medina",
+          label: "🌙 " + t("servicess.hebergement_haram_medina", "Hébergement près du Haram à Médina"),
+          description: t("servicess.hebergementHaramMedinaDesc", "Hôtels près de la Mosquée du Prophète")
+        },
+        { 
+          id: "hotel_3_etoiles",
+          label: "⭐ " + t("servicess.hotel_3_etoiles", "Hôtel 3 étoiles"),
+          description: t("servicess.hotel3EtoilesDesc", "Confort standard avec services de base")
+        },
+        { 
+          id: "hotel_4_etoiles",
+          label: "⭐⭐ " + t("servicess.hotel_4_etoiles", "Hôtel 4 étoiles"),
+          description: t("servicess.hotel4EtoilesDesc", "Confort supérieur avec services additionnels")
+        },
+        { 
+          id: "hotel_5_etoiles",
+          label: "⭐⭐⭐ " + t("servicess.hotel_5_etoiles", "Hôtel 5 étoiles luxe"),
+          description: t("servicess.hotel5EtoilesDesc", "Hôtels de luxe avec services premium")
+        },
+        { 
+          id: "chambre_double",
+          label: "🛌 " + t("servicess.chambre_double", "Chambre double"),
+          description: t("servicess.chambreDoubleDesc", "Chambre pour 2 personnes")
+        },
+        { 
+          id: "chambre_triple",
+          label: "🛌🛌 " + t("servicess.chambre_triple", "Chambre triple"),
+          description: t("servicess.chambreTripleDesc", "Chambre pour 3 personnes")
+        },
+        { 
+          id: "chambre_individuelle",
+          label: "👤 " + t("servicess.chambre_individuelle", "Chambre individuelle"),
+          description: t("servicess.chambreIndividuelleDesc", "Chambre single avec intimité")
+        },
+        { 
+          id: "suite_familiale",
+          label: "👨‍👩‍👧‍👦 " + t("servicess.suite_familiale", "Suite familiale"),
+          description: t("servicess.suiteFamilialeDesc", "Suite spacieuse pour familles")
+        }
+      ]
+    },
+
+    // 🚗 TRANSPORT ET DÉPLACEMENTS
+    {
+      category: "transport",
+      label: "🚗 " + t("servicess.categoria_transport", "Transport et Déplacements"),
+      servicios: [
+        { 
+          id: "billet_avion_international",
+          label: "✈️ " + t("servicess.billet_avion_international", "Billet d'avion international"),
+          description: t("servicess.billetAvionDesc", "Vol aller-retour depuis l'Algérie")
+        },
+        { 
+          id: "transfert_aeroport",
+          label: "🚐 " + t("servicess.transfert_aeroport", "Transfert aéroport"),
+          description: t("servicess.transfertAeroportDesc", "Accueil et transfert depuis les aéroports")
+        },
+        { 
+          id: "bus_privé_meca_medina",
+          label: "🚌 " + t("servicess.bus_prive_meca_medina", "Bus privé Mecca-Médina"),
+          description: t("servicess.busPriveDesc", "Transport confortable entre les villes saintes")
+        },
+        { 
+          id: "navettes_hotels",
+          label: "🚎 " + t("servicess.navettes_hotels", "Navettes régulières hotels-Haram"),
+          description: t("servicess.navettesHotelsDesc", "Navettes gratuites vers les mosquées")
+        },
+        { 
+          id: "transport_mina_arafat",
+          label: "🗻 " + t("servicess.transport_mina_arafat", "Transport Mina-Arafat-Muzdalifah"),
+          description: t("servicess.transportMinaDesc", "Transport pendant les jours du Hajj")
+        },
+        { 
+          id: "voiture_privée",
+          label: "🚙 " + t("servicess.voiture_privee", "Voiture privée avec chauffeur"),
+          description: t("servicess.voiturePriveeDesc", "Transport personnel et flexible")
+        }
+      ]
+    },
+
+    // 👥 GUIDES ET ACCOMPAGNEMENT SPIRITUEL
+    {
+      category: "guides",
+      label: "👥 " + t("servicess.categoria_guides", "Guides et Accompagnement Spirituel"),
+      servicios: [
+        { 
+          id: "guide_religieux_francophone",
+          label: "🕋 " + t("servicess.guide_religieux_francophone", "Guide religieux francophone"),
+          description: t("servicess.guideReligieuxDesc", "Guide spécialisé pour les rituels")
+        },
+        { 
+          id: "guide_arabophone",
+          label: "📖 " + t("servicess.guide_arabophone", "Guide religieux arabophone"),
+          description: t("servicess.guideArabophoneDesc", "Guide pour pèlerins arabophones")
+        },
+        { 
+          id: "cours_preparation_hajj",
+          label: "🎓 " + t("servicess.cours_preparation_hajj", "Cours de préparation au Hajj"),
+          description: t("servicess.coursPreparationDesc", "Formation avant le départ")
+        },
+        { 
+          id: "cours_preparation_omra",
+          label: "📚 " + t("servicess.cours_preparation_omra", "Cours de préparation à l'Omra"),
+          description: t("servicess.coursPreparationOmraDesc", "Formation spécifique Omra")
+        },
+        { 
+          id: "assistance_rituels",
+          label: "🙏 " + t("servicess.assistance_rituels", "Assistance pendant les rituels"),
+          description: t("servicess.assistanceRituelsDesc", "Accompagnement pendant tous les rituels")
+        },
+        { 
+          id: "groupe_reduit",
+          label: "👨‍👩‍👧‍👦 " + t("servicess.groupe_reduit", "Groupe réduit (max 20 personnes)"),
+          description: t("servicess.groupeReduitDesc", "Attention personnalisée en petit groupe")
+        }
+      ]
+    },
+
+    // 🍽️ RESTAURATION ET NOURRITURE
+    {
+      category: "restauration",
+      label: "🍽️ " + t("servicess.categoria_restauration", "Restauration et Nourriture"),
+      servicios: [
+        { 
+          id: "petit_dejeuner",
+          label: "☕ " + t("servicess.petit_dejeuner", "Petit déjeuner inclus"),
+          description: t("servicess.petitDejeunerDesc", "Petit déjeuner buffet à l'hôtel")
+        },
+        { 
+          id: "demi_pension",
+          label: "🍲 " + t("servicess.demi_pension", "Demi-pension"),
+          description: t("servicess.demiPensionDesc", "Petit déjeuner et dîner inclus")
+        },
+        { 
+          id: "pension_complete",
+          label: "🍽️ " + t("servicess.pension_complete", "Pension complète"),
+          description: t("servicess.pensionCompleteDesc", "Tous les repas inclus")
+        },
+        { 
+          id: "buffet_sahour",
+          label: "🌙 " + t("servicess.buffet_sahour", "Buffet Sahour Ramadan"),
+          description: t("servicess.buffetSahourDesc", "Repas de Sahour pendant Ramadan")
+        },
+        { 
+          id: "repas_speciaux",
+          label: "🥘 " + t("servicess.repas_speciaux", "Repas spéciaux Mina/Arafat"),
+          description: t("servicess.repasSpeciauxDesc", "Repas pendant les jours du Hajj")
+        },
+        { 
+          id: "eau_zamzam_illimite",
+          label: "💧 " + t("servicess.eau_zamzam_illimite", "Eau Zamzam illimitée"),
+          description: t("servicess.eauZamzamDesc", "Distribution d'eau Zamzam gratuite")
+        }
+      ]
+    },
+
+    // 🏥 SANTÉ ET SÉCURITÉ
+    {
+      category: "sante",
+      label: "🏥 " + t("servicess.categoria_sante", "Santé et Sécurité"),
+      servicios: [
+        { 
+          id: "assistance_medicale_24h",
+          label: "⚕️ " + t("servicess.assistance_medicale_24h", "Assistance médicale 24h/24"),
+          description: t("servicess.assistanceMedicale24hDesc", "Équipe médicale disponible")
+        },
+        { 
+          id: "assurance_medicale",
+          label: "🏥 " + t("servicess.assurance_medicale", "Assurance médicale complète"),
+          description: t("servicess.assuranceMedicaleDesc", "Couverture santé internationale")
+        },
+        { 
+          id: "infirmier_accompagnant",
+          label: "💊 " + t("servicess.infirmier_accompagnant", "Infirmier accompagnant"),
+          description: t("servicess.infirmierAccompagnantDesc", "Infirmier dédié au groupe")
+        },
+        { 
+          id: "premier_secours",
+          label: "🆘 " + t("servicess.premier_secours", "Kit premiers secours"),
+          description: t("servicess.premierSecoursDesc", "Trousse de premiers soins")
+        },
+        { 
+          id: "coordination_securite",
+          label: "🛡️ " + t("servicess.coordination_securite", "Coordination sécurité"),
+          description: t("servicess.coordinationSecuriteDesc", "Sécurité et organisation foules")
+        },
+        { 
+          id: "localisateur_groupe",
+          label: "📍 " + t("servicess.localisateur_groupe", "Système de localisation groupe"),
+          description: t("servicess.localisateurGroupeDesc", "Bracelets GPS pour sécurité")
+        }
+      ]
+    },
+
+    // 🎁 SERVICES INCLUS ET KITS
+    {
+      category: "kits",
+      label: "🎁 " + t("servicess.categoria_kits", "Services Inclus et Kits"),
+      servicios: [
+        { 
+          id: "kit_pelegrin_complet",
+          label: "🎒 " + t("servicess.kit_pelegrin_complet", "Kit complet du pèlerin"),
+          description: t("servicess.kitPelegrinDesc", "Sac, Ihram, guide, accessoires")
+        },
+        { 
+          id: "ihram_coton",
+          label: "👕 " + t("servicess.ihram_coton", "Ihram 100% coton"),
+          description: t("servicess.ihramCotonDesc", "Vêtement Ihram qualité premium")
+        },
+        { 
+          id: "sac_voyage",
+          label: "🧳 " + t("servicess.sac_voyage", "Sac de voyage officiel"),
+          description: t("servicess.sacVoyageDesc", "Sac identifié agence")
+        },
+        { 
+          id: "guide_manuel",
+          label: "📘 " + t("servicess.guide_manuel", "Guide manuel du pèlerin"),
+          description: t("servicess.guideManuelDesc", "Livre explicatif rituels")
+        },
+        { 
+          id: "bouteille_zamzam",
+          label: "💧 " + t("servicess.bouteille_zamzam", "Bouteille Zamzam 5L"),
+          description: t("servicess.bouteilleZamzamDesc", "Eau Zamzam pour retour")
+        },
+        { 
+          id: "cadeau_souvenir",
+          label: "🎁 " + t("servicess.cadeau_souvenir", "Cadeau souvenir"),
+          description: t("servicess.cadeauSouvenirDesc", "Souvenir du voyage sacré")
+        }
+      ]
+    },
+
+    // ⭐ SERVICES PREMIUM ET LUXE
+    {
+      category: "premium",
+      label: "⭐ " + t("servicess.categoria_premium", "Services Premium et Luxe"),
+      servicios: [
+        { 
+          id: "accompagnement_vip",
+          label: "👑 " + t("servicess.accompagnement_vip", "Accompagnement VIP"),
+          description: t("servicess.accompagnementVipDesc", "Service personnalisé haut de gamme")
+        },
+        { 
+          id: "fast_track_aeroport",
+          label: "🚀 " + t("servicess.fast_track_aeroport", "Fast Track aéroport"),
+          description: t("servicess.fastTrackDesc", "Passage prioritaire aéroports")
+        },
+        { 
+          id: "suite_executive",
+          label: "🏰 " + t("servicess.suite_executive", "Suite executive"),
+          description: t("servicess.suiteExecutiveDesc", "Suite luxueuse avec services")
+        },
+        { 
+          id: "concierge_personnel",
+          label: "🔑 " + t("servicess.concierge_personnel", "Concierge personnel"),
+          description: t("servicess.conciergePersonnelDesc", "Assistant dédié 24h/24")
+        },
+        { 
+          id: "restaurant_gastronomique",
+          label: "🍴 " + t("servicess.restaurant_gastronomique", "Restaurant gastronomique"),
+          description: t("servicess.restaurantGastronomiqueDesc", "Repas dans restaurants premium")
+        },
+        { 
+          id: "transport_berline",
+          label: "🚘 " + t("servicess.transport_berline", "Transport berline luxe"),
+          description: t("servicess.transportBerlineDesc", "Voiture haut de gamme avec chauffeur")
+        }
+      ]
+    }
+  ];
+
+  // Convertir a formato plano para react-select con agrupación
+  const opcionesServicios = serviciosCompletos.flatMap(categoria => 
+    categoria.servicios.map(servicio => ({
+      ...servicio,
+      category: categoria.label
+    }))
+  );
+
+  // Agrupar opciones por categoría para el select
+  const groupedOptions = serviciosCompletos.map(categoria => ({
+    label: categoria.label,
+    options: categoria.servicios.map(servicio => ({
+      value: servicio.id,
+      label: servicio.label,
+      description: servicio.description
+    }))
+  }));
+
+  // Sincronizar con postData inicial
+  useEffect(() => {
+    if (postData?.servicios) {
+      const serviciosFormateados = opcionesServicios.filter(option => 
+        postData.servicios.includes(option.id)
+      ).map(servicio => ({
+        value: servicio.id,
+        label: servicio.label,
+        description: servicio.description
+      }));
+      setServiciosSeleccionados(serviciosFormateados);
+    }
+  }, [postData?.servicios]);
+
+  const handleChange = (selectedOptions) => {
+    const nuevosServicios = selectedOptions || [];
+    setServiciosSeleccionados(nuevosServicios);
+    
+    const valoresServicios = nuevosServicios.map(servicio => servicio.value);
     
     handleChangeInput({ 
       target: { 
         name: "servicios", 
-        value: updatedServicios 
+        value: valoresServicios 
       } 
     });
   };
 
-  // Servicios principales con IDs constantes
-  const serviciosPrincipales = [
-    { 
-      id: "visa_hajj_omra",
-      label: "🛂 " + t("servicess.visa_hajj_omra", "Visa Hajj/Omra"),
-      description: t("servicess.visaDesc", "Traitement et obtention du visa officiel")
-    },
-    { 
-      id: "hebergement_haram",
-      label: "🏨 " + t("servicess.hebergement_haram", "Hébergement près des Harams"),
-      description: t("servicess.hebergementHaramDesc", "Hôtels à proximité des mosquées saintes")
-    },
-    { 
-      id: "guide_religieux",
-      label: "🕋 " + t("servicess.guide_religieux", "Guide religieux"),
-      description: t("servicess.guideReligieuxDesc", "Guide spécialisé francophone pour les rituels")
-    },
-    { 
-      id: "transport_complet",
-      label: "🚗 " + t("servicess.transport_complet", "Transport complet"),
-      description: t("servicess.transportCompletDesc", "Transferts aéroport, navettes, bus internes")
-    },
-    { 
-      id: "assistance_medicale",
-      label: "🏥 " + t("servicess.assistance_medicale", "Assistance médicale"),
-      description: t("servicess.assistanceMedicaleDesc", "Équipe médicale et assurance santé")
-    },
-    { 
-      id: "zamzam_kit",
-      label: "💧 " + t("servicess.zamzam_kit", "Kit Zamzam & sac pèlerin"),
-      description: t("servicess.zamzamKitDesc", "Eau Zamzam et équipement du pèlerin offerts")
-    }
-  ];
+  // Estilos personalizados para react-select con soporte RTL
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      padding: '4px',
+      boxShadow: 'none',
+      textAlign: isRTL ? 'right' : 'left',
+      direction: isRTL ? 'rtl' : 'ltr',
+      '&:hover': {
+        borderColor: '#007bff'
+      }
+    }),
+    menu: (base) => ({
+      ...base,
+      textAlign: isRTL ? 'right' : 'left',
+      direction: isRTL ? 'rtl' : 'ltr'
+    }),
+    groupHeading: (base) => ({
+      ...base,
+      fontWeight: 'bold',
+      fontSize: '0.9rem',
+      backgroundColor: '#f8f9fa',
+      padding: '8px 12px',
+      borderBottom: '1px solid #dee2e6'
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: '#007bff',
+      borderRadius: '15px',
+      flexDirection: isRTL ? 'row-reverse' : 'row'
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: 'white',
+      fontWeight: 'bold',
+      padding: isRTL ? '2px 8px 2px 4px' : '2px 4px 2px 8px'
+    }),
+    multiValueRemove: (base) => ({
+      ...base,
+      color: 'white',
+      borderRadius: isRTL ? '15px 0 0 15px' : '0 15px 15px 0',
+      ':hover': {
+        backgroundColor: '#0056b3',
+        color: 'white'
+      }
+    }),
+    option: (base, state) => ({
+      ...base,
+      textAlign: isRTL ? 'right' : 'left',
+      direction: isRTL ? 'rtl' : 'ltr',
+      backgroundColor: state.isSelected ? '#007bff' : state.isFocused ? '#f8f9fa' : 'white',
+      color: state.isSelected ? 'white' : '#333'
+    })
+  };
+
+  // Componente personalizado para mostrar la descripción en las opciones
+  const OptionWithDescription = ({ innerRef, innerProps, data, isSelected, isFocused }) => (
+    <div
+      ref={innerRef}
+      {...innerProps}
+      style={{
+        padding: '8px 12px',
+        backgroundColor: isSelected ? '#007bff' : isFocused ? '#f8f9fa' : 'white',
+        color: isSelected ? 'white' : '#333',
+        cursor: 'pointer',
+        borderBottom: '1px solid #f0f0f0'
+      }}
+    >
+      <div className="fw-bold" style={{ fontSize: '0.9rem' }}>
+        {data.label}
+      </div>
+      <div 
+        style={{ 
+          fontSize: '0.75rem', 
+          opacity: isSelected ? 0.8 : 0.7,
+          lineHeight: '1.3'
+        }}
+      >
+        {data.description}
+      </div>
+    </div>
+  );
 
   return (
     <Card>
       <Card.Header style={{ direction: isRTL ? "rtl" : "ltr" }}>
         <h5 className="mb-0">
-          🎁 {t("servicess.servicesHadjOmra", "Services Essentiels Hajj & Omra")}
+          🎁 {t("servicess.servicesHadjOmra", "Services Complets Hajj & Omra")}
         </h5>
         <small className="text-muted" style={{ 
           textAlign: isRTL ? "right" : "left",
           fontSize: "0.85rem"
         }}>
-          {t("servicess.servicesDescription", "Sélectionnez les servicess inclus dans votre package")}
+          {t("servicess.servicesDescription", "Sélectionnez les services inclus dans votre package")}
         </small>
       </Card.Header>
       <Card.Body>
-        <Row style={{ direction: isRTL ? "rtl" : "ltr" }}>
-          <Col xs={12}>
-            <Form.Group>
-              <div className="border rounded p-3 bg-light">
-                {serviciosPrincipales.map((service) => (
-                  <div key={service.id} className="mb-3">
-                    <div className={`d-flex align-items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      {/* Checkbox simple */}
-                      <input
-                        type="checkbox"
-                        id={`service-${service.id}`}
-                        name="servicios"
-                        value={service.id}
-                        checked={servicios.includes(service.id)}
-                        onChange={() => handleCheckboxChange(service.id)}
-                        className={`form-check-input flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`}
-                        style={{
-                          marginTop: '0.25rem',
-                          width: '1.2em',
-                          height: '1.2em'
-                        }}
-                      />
-                      
-                      {/* Label y descripción */}
-                      <div className="flex-grow-1" style={{ textAlign: isRTL ? "right" : "left" }}>
-                        <label 
-                          htmlFor={`service-${service.id}`}
-                          className="form-label mb-1 fw-bold d-block"
-                          style={{ cursor: 'pointer', fontSize: "1rem" }}
-                        >
-                          {service.label}
-                        </label>
-                        <div className="text-muted small" style={{ 
-                          fontSize: "0.85rem",
-                          lineHeight: "1.3"
-                        }}>
-                          {service.description}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2" style={{ textAlign: isRTL ? "right" : "left" }}>
-                <small className="text-muted">
-                  {t("servicess.serviciosSeleccionados", "Services sélectionnés")}: {servicios.length}
-                </small>
-              </div>
-            </Form.Group>
-          </Col>
-        </Row>
+        <div style={{ direction: isRTL ? "rtl" : "ltr" }}>
+          <Form.Group>
+            <Form.Label className="fw-bold">
+              {t("servicess.selectServices", "Sélectionnez les services:")}
+            </Form.Label>
+            
+            <Select
+              isMulti
+              options={groupedOptions}
+              value={serviciosSeleccionados}
+              onChange={handleChange}
+              styles={customStyles}
+              components={{ Option: OptionWithDescription }}
+              placeholder={t("servicess.selectPlaceholder", "Choisissez les services désirés...")}
+              noOptionsMessage={() => t("servicess.noOptions", "Aucune option disponible")}
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              isSearchable
+            />
+            
+            <Form.Text className="text-muted" style={{ 
+              textAlign: isRTL ? "right" : "left",
+              display: 'block',
+              marginTop: '8px'
+            }}>
+              {t("servicess.multiselectHelp", "Vous pouvez sélectionner plusieurs services. Utilisez la recherche pour trouver rapidement.")}
+            </Form.Text>
+          </Form.Group>
+
+          
+        </div>
       </Card.Body>
     </Card>
   );

@@ -15,8 +15,8 @@ const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 
             </Card.Header>
             <Card.Body className="p-3">
                 <Form.Select
-                    name={`destinacionomra${destinationNumber}`}
-                    value={postData[`destinacionomra${destinationNumber}`] || ''}
+                    name="destinacion"  
+                    value={postData.destinacion || ''}  
                     onChange={handleChangeInput}
                     className={`w-100 ${isRTL ? 'text-end' : ''}`}
                     dir={isRTL ? 'rtl' : 'ltr'}

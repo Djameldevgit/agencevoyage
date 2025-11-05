@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Card  } from 'react-bootstrap';
+import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const TransportHajjOmra = ({ postData, handleChangeInput }) => {
@@ -17,136 +17,97 @@ const TransportHajjOmra = ({ postData, handleChangeInput }) => {
     ];
 
     const transportTypes = [
-        { value: 'avion_direct', label: t('avion_direct', 'Vol direct'), icon: '✈️', description: t('avion_direct_desc', 'Vol sans escale') },
-        { value: 'avion_escale', label: t('avion_escale', 'Vol avec escale'), icon: '🛬', description: t('avion_escale_desc', 'Vol avec une ou plusieurs escales') },
-        { value: 'bus_meca_medina', label: t('bus_meca_medina', 'Bus Mecque-Médine'), icon: '🚌', description: t('bus_meca_medina_desc', 'Transport terrestre entre les villes saintes') }
+        { value: 'avion_direct', label: t('avion_direct', 'Vol direct') },
+        { value: 'avion_escale', label: t('avion_escale', 'Vol avec escale') },
+        { value: 'bus_meca_medina', label: t('bus_meca_medina', 'Bus Mecque-Médine') }
     ];
 
     const classesVol = [
-        { value: 'economy', label: t('economy', 'Économique'), icon: '💺', description: t('economy_desc', 'Classe économique standard') },
-        { value: 'premium_economy', label: t('premium_economy', 'Économique Premium'), icon: '🪑', description: t('premium_economy_desc', 'Confort amélioré') },
-        { value: 'business', label: t('business', 'Affaires'), icon: '💼', description: t('business_desc', 'Sièges convertibles en lit') },
-        { value: 'first', label: t('first', 'Première Classe'), icon: '✨', description: t('first_desc', 'Service et confort maximum') }
+        { value: 'economy', label: t('economy', 'Économique') },
+        { value: 'premium_economy', label: t('premium_economy', 'Économique Premium') },
+        { value: 'business', label: t('business', 'Affaires') },
+        { value: 'first', label: t('first', 'Première Classe') }
     ];
 
     const transportsTerrestres = [
-        { value: 'bus_ac', label: t('bus_ac', 'Bus climatisé'), icon: '🚌', description: t('bus_ac_desc', 'Bus avec air conditionné') },
-        { value: 'van', label: t('van', 'Van de luxe'), icon: '🚐', description: t('van_desc', 'Van confortable et spacieux') },
-        { value: 'voiture', label: t('voiture', 'Voiture privée'), icon: '🚗', description: t('voiture_desc', 'Transport privé individuel') },
-        { value: 'non_inclus', label: t('non_inclus', 'Non inclus'), icon: '❌', description: t('non_inclus_desc', 'Transport non fourni') }
+        { value: 'bus_ac', label: t('bus_ac', 'Bus climatisé') },
+        { value: 'van', label: t('van', 'Van de luxe') },
+        { value: 'voiture', label: t('voiture', 'Voiture privée') },
+        { value: 'non_inclus', label: t('non_inclus', 'Non inclus') }
     ];
+
+    const renderSelect = (name, label, options, required = false) => (
+        <Form.Group className="h-100">
+            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
+                {label} {required && '*'}
+            </Form.Label>
+            <Form.Select
+                name={name}
+                value={postData[name] || ''}
+                onChange={handleChangeInput}
+                required={required}
+                className={`w-100 ${isRTL ? 'text-end' : ''}`}
+                dir={isRTL ? 'rtl' : 'ltr'}
+                size="lg"
+            >
+                <option value="">{t(`select${name.charAt(0).toUpperCase() + name.slice(1)}`, `Sélectionnez ${label.toLowerCase()}`)}</option>
+                {options.map((option, index) => (
+                    <option key={index} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </Form.Select>
+        </Form.Group>
+    );
 
     return (
         <Card className="mb-4">
-            <Card.Header >
+            <Card.Header>
                 <h5 className="mb-0">
-                    ✈️ {t('transportDetails', 'Détails du Transport')}
+                    {t('transportDetails', 'Détails du Transport')}
                 </h5>
             </Card.Header>
             <Card.Body>
                 <Row className={`${isRTL ? 'rtl-direction' : ''} g-3`}>
                     
-                    {/* PRIMERA FILA: Type de Transport + Compagnie Aérienne */}
+                    {/* Type de Transport */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="h-100">
-                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                {t('typeTransport', 'Type de Transport')} *
-                            </Form.Label>
-                            <Form.Select
-                                name="typeTransport"
-                                value={postData.typeTransport || ''}
-                                onChange={handleChangeInput}
-                                required
-                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                                size="lg"
-                            >
-                                <option value="">{t('selectTransportType', 'Sélectionnez le type de transport')}</option>
-                                {transportTypes.map((type, index) => (
-                                    <option key={index} value={type.value}>
-                                        {type.icon} {type.label} | {type.description}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
+                        {renderSelect(
+                            'typeTransport',
+                            t('typeTransport', 'Type de Transport'),
+                            transportTypes,
+                            true
+                        )}
                     </Col>
 
                     {/* Compagnie Aérienne */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="h-100">
-                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                {t('compagnieAerienne', 'Compagnie Aérienne')}
-                            </Form.Label>
-                            <Form.Select
-                                name="compagnieAerienne"
-                                value={postData.compagnieAerienne || ''}
-                                onChange={handleChangeInput}
-                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                                size="lg"
-                            >
-                                <option value="">{t('selectAirline', 'Choisissez la compagnie aérienne')}</option>
-                                {airlines.map((airline, index) => (
-                                    <option key={index} value={airline.value}>
-                                        {airline.label}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
+                        {renderSelect(
+                            'compagnieAerienne',
+                            t('compagnieAerienne', 'Compagnie Aérienne'),
+                            airlines
+                        )}
                     </Col>
 
-                    {/* SEGUNDA FILA: Classe de Vol + Transport Terrestre */}
+                    {/* Classe de Vol */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="h-100">
-                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                {t('classeVol', 'Classe de Vol')}
-                            </Form.Label>
-                            <Form.Select
-                                name="classeVol"
-                                value={postData.classeVol || ''}
-                                onChange={handleChangeInput}
-                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                                size="lg"
-                            >
-                                <option value="">{t('selectClass', 'Sélectionnez la classe')}</option>
-                                {classesVol.map((classe, index) => (
-                                    <option key={index} value={classe.value}>
-                                        {classe.icon} {classe.label} | {classe.description}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
+                        {renderSelect(
+                            'classeVol',
+                            t('classeVol', 'Classe de Vol'),
+                            classesVol
+                        )}
                     </Col>
 
                     {/* Transport Terrestre */}
                     <Col xs={12} md={6}>
-                        <Form.Group className="h-100">
-                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                {t('transportTerrestre', 'Transport Terrestre')}
-                            </Form.Label>
-                            <Form.Select
-                                name="transportTerrestre"
-                                value={postData.transportTerrestre || ''}
-                                onChange={handleChangeInput}
-                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                                size="lg"
-                            >
-                                <option value="">{t('selectGroundTransport', 'Transport au sol inclus')}</option>
-                                {transportsTerrestres.map((transport, index) => (
-                                    <option key={index} value={transport.value}>
-                                        {transport.icon} {transport.label} | {transport.description}
-                                    </option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
+                        {renderSelect(
+                            'transportTerrestre',
+                            t('transportTerrestre', 'Transport Terrestre'),
+                            transportsTerrestres
+                        )}
                     </Col>
 
-                    </Row> 
-
-             
-               
+                </Row>
             </Card.Body>
         </Card>
     );

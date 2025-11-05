@@ -15,14 +15,14 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
             </Card.Header>
             <Card.Body className="p-3">
                 <Form.Group className="w-100">
-                    <Form.Select
-                        name={`destinacionlocacionvoyage${destinationNumber}`}
-                        value={postData[`destinacionlocacionvoyage${destinationNumber}`] || ''}
-                        onChange={handleChangeInput}
-                        className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                        dir={isRTL ? 'rtl' : 'ltr'}
-                        size="lg"
-                    >
+                <Form.Select
+                    name="destinacion"  
+                    value={postData.destinacion || ''}  
+                    onChange={handleChangeInput}
+                    className={`w-100 ${isRTL ? 'text-end' : ''}`}
+                    dir={isRTL ? 'rtl' : 'ltr'}
+                    size="lg"
+                >
                         <option value="">{t('elegirDestino', 'Sélectionnez la destination')}</option>
                         <optgroup label={t('destinosNacionales', 'Destinations Nationales')}>
                             <option value="Alger">{t('citiesss.Alger', 'Alger')}</option>

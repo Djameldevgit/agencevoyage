@@ -1,5 +1,286 @@
 {
-
+   
+    "common": {
+      "welcome": "مرحبا",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "view": "عرض",
+      "search": "بحث",
+      "loading": "جاري التحميل...",
+      "error": "خطأ",
+      "success": "تم بنجاح",
+      "confirm": "تأكيد",
+      "back": "رجوع",
+      "next": "التالي"
+    },
+    
+    "navigation": {
+      "home": "الرئيسية",
+      "travels": "الرحلات",
+      "hotels": "الفنادق",
+      "hajj": "الحج",
+      "omra": "العمرة",
+      "vacations": "العطلات",
+      "contact": "اتصل بنا",
+      "about": "من نحن"
+    },
+    
+    "categories": {
+      "Agence de Voyage": "وكالة سفر",
+      "hadj_Omra": "الحج والعمرة",
+      "Voyage Organise": "رحلة منظمة",
+      "Location_Vacances": "إيجار عطلات",
+      
+      "villa_lujo": "فيلا فاخرة",
+      "villa_familiar": "فيلا عائلية",
+      "apartamento_lujo": "شقة فاخرة",
+      "apartamento_estudio": "شقة استوديو",
+      "studio": "استوديو",
+      "riad": "رياض تقليدي",
+      "chalet_montana": "شاليه جبلي",
+      "casa_playa": "منزل شاطئي",
+      "duplex": "دوبلكس",
+      "penthouse": "بنتهاوس",
+      "bungalow": "بانغالو",
+      "casa_rural": "منزل ريفي",
+      
+      "economico": "اقتصادي",
+      "estandar": "قياسي",
+      "superior": "متفوق",
+      "premium": "بريميوم",
+      "luxe": "فاخر",
+      
+      "1_2_personas": "1-2 أشخاص",
+      "2_4_personas": "2-4 أشخاص",
+      "4_6_personas": "4-6 أشخاص",
+      "6_8_personas": "6-8 أشخاص",
+      "8_10_personas": "8-10 أشخاص",
+      "10_12_personas": "10-12 أشخاص",
+      "12_plus_personas": "12+ أشخاص",
+      
+      "1_habitacion": "1 غرفة",
+      "2_habitaciones": "2 غرف",
+      "3_habitaciones": "3 غرف",
+      "4_habitaciones": "4 غرف",
+      "5_plus_habitaciones": "5+ غرف",
+      
+      "superficie_0_50": "0-50 م²",
+      "superficie_50_80": "50-80 م²",
+      "superficie_80_120": "80-120 م²",
+      "superficie_120_200": "120-200 م²",
+      "superficie_200_plus": "200+ م²",
+      
+      "1_bano": "1 حمام",
+      "2_banos": "2 حمام",
+      "3_banos": "3 حمام",
+      "4_plus_banos": "4+ حمام",
+      
+      "descuentoGrupo": "خصم للمجموعات",
+      "ofertaEspecial": "عرض خاص",
+      "descuentoTemporadaBaja": "خصم موسم منخفض",
+      "descuentoAnticipacion": "خصم الحجز المسبق",
+      
+      "air_algerie": "الجزائرية للطيران",
+      "saudi_airlines": "الخطوط السعودية",
+      "emirates": "طيران الإمارات",
+      "qatar_airways": "الخطوط القطرية",
+      "turkish_airlines": "الخطوط التركية",
+      "etihad_airways": "الاتحاد للطيران",
+      "other_airline": "شركة طيران أخرى",
+      
+      "avion_direct": "رحلة مباشرة",
+      "avion_escale": "رحلة مع توقف",
+      "bus_meca_medina": "حافلة مكة-المدينة",
+      
+      "economy": "اقتصادية",
+      "premium_economy": "اقتصادية متميزة",
+      "business": "رجال الأعمال",
+      "first": "درجة أولى",
+      
+      "bus_ac": "حافلة مكيفة",
+      "van": "فان فاخر",
+      "voiture": "سيارة خاصة",
+      "non_inclus": "غير مشمول"
+    },
+    
+    "servicess": {
+      "categoria_administrativos": "الخدمات الإدارية",
+      "categoria_hebergement": "الإقامة",
+      "categoria_transport": "النقل",
+      "categoria_guides": "المرشدين",
+      "categoria_restauration": "المطاعم",
+      "categoria_sante": "الصحة",
+      "categoria_kits": "عدة الحجاج",
+      "categoria_premium": "بريميوم",
+      
+      "visa_hajj_omra": "تأشيرة الحج والعمرة",
+      "permis_sortie": "تصريح خروج",
+      "certificat_vaccination": "شهادة تطعيم",
+      "autorisation_ministerielle": "تصريح وزاري",
+      "assistance_documentation": "مساعدة في الوثائق",
+      
+      "hebergement_haram_meca": "إقامة بجوار الحرم المكي",
+      "hebergement_haram_medina": "إقامة بجوار المسجد النبوي",
+      "hotel_3_etoiles": "فندق 3 نجوم",
+      "hotel_4_etoiles": "فندق 4 نجوم",
+      "hotel_5_etoiles": "فندق 5 نجوم",
+      "chambre_double": "غرفة مزدوجة",
+      "chambre_triple": "غرفة ثلاثية",
+      "chambre_individuelle": "غرفة فردية",
+      "suite_familiale": "جناح عائلي",
+      
+      "billet_avion_international": "تذكرة طيران دولية",
+      "transfert_aeroport": "نقل من المطار",
+      "bus_prive_meca_medina": "حافلة خاصة مكة-المدينة",
+      "navettes_hotels": "مواصلات الفنادق",
+      "transport_mina_arafat": "نقل منى-عرفات",
+      "voiture_privee": "سيارة خاصة",
+      
+      "guide_religieux_francophone": "مرشد ديني ناطق بالفرنسية",
+      "guide_arabophone": "مرشد ناطق بالعربية",
+      "cours_preparation_hajj": "دورات تحضيرية للحج",
+      "cours_preparation_omra": "دورات تحضيرية للعمرة",
+      "assistance_rituels": "مساعدة في المناسك",
+      "groupe_reduit": "مجموعة صغيرة",
+      
+      "petit_dejeuner": "فطور",
+      "demi_pension": "نصف إقامة",
+      "pension_complete": "إقامة كاملة",
+      "buffet_sahour": "بوفيه السحور",
+      "repas_speciaux": "وجبات خاصة",
+      "eau_zamzam_illimite": "ماء زمزم غير محدود",
+      
+      "assistance_medicale_24h": "مساعدة طبية 24 ساعة",
+      "assurance_medicale": "تأمين طبي",
+      "infirmier_accompagnant": "ممرض مرافق",
+      "premier_secours": "إسعافات أولية",
+      "coordination_securite": "تنسيق أمني",
+      "localisateur_groupe": "محدد موقع المجموعة",
+      
+      "kit_pelegrin_complet": "عدة حاج كاملة",
+      "ihram_coton": "إحرام قطني",
+      "sac_voyage": "حقيبة سفر",
+      "guide_manuel": "دليل إرشادي",
+      "bouteille_zamzam": "زجاجة ماء زمزم",
+      "cadeau_souvenir": "هدية تذكارية",
+      
+      "accompagnement_vip": "مرافقة VIP",
+      "fast_track_aeroport": "مسار سريع بالمطار",
+      "suite_executive": "جناح تنفيذي",
+      "concierge_personnel": "كونسيرج شخصي",
+      "restaurant_gastronomique": "مطعم فاخر",
+      "transport_berline": "نقل بسيارة برلين"
+    },
+    
+    "descripcion": {
+      "travelTypes": {
+        "hadj_Omra": "رحلة الحج والعمرة",
+        "Voyage Organise": "رحلة منظمة",
+        "Location_Vacances": "إيجار عطلات"
+      },
+      
+      "labels": {
+        "exceptionalOffer": "عرض استثنائي",
+        "exclusiveOffer": "عرض حصري",
+        "publishedOn": "نشر في",
+        "views": "مشاهدة",
+        "towards": "نحو",
+        "from": "من",
+        "departureAt": "مغادرة الساعة",
+        "duration": "المدة",
+        "servicesEquipment": "الخدمات والتجهيزات",
+        "otherServices": "خدمات أخرى",
+        "hotelInfo": "معلومات الفندق",
+        "hotelName": "اسم الفندق",
+        "hotelCity": "المدينة",
+        "hotelAddress": "العنوان",
+        "hotelZone": "المنطقة/الجهة",
+        "completePricing": "الأسعار الكاملة",
+        "adultPrice": "بالغ",
+        "childPrice": "طفل (2-12 سنة)",
+        "babyPrice": "رضيع (0-2 سنة)",
+        "adult": "بالغ",
+        "child": "طفل",
+        "baby": "رضيع",
+        "specialOptions": "خيارات خاصة",
+        "detailedDescription": "وصف مفصل",
+        "readLess": "قراءة أقل",
+        "readMore": "قراءة المزيد",
+        "uniqueExperience": "تجربة فريدة",
+        "accommodationFeatures": "مميزات السكن",
+        "propertyType": "نوع العقار",
+        "category": "الفئة",
+        "capacity": "السعة",
+        "rooms": "الغرف",
+        "surface": "المساحة",
+        "bathrooms": "الحمامات",
+        "transportDetails": "تفاصيل النقل",
+        "transportType": "نوع النقل",
+        "airline": "شركة الطيران",
+        "flightClass": "درجة الطيران",
+        "groundTransport": "النقل البري",
+        "specialBenefits": "مزايا خاصة"
+      },
+      
+      "sections": {
+        "main": "تقدم {{type}}"
+      }
+    },
+    
+    "createpost": {
+      "title": "عنوان الرحلة",
+      "description": "وصف الرحلة",
+      "destination": "الوجهة",
+      "departureDate": "تاريخ المغادرة",
+      "returnDate": "تاريخ العودة",
+      "duration": "مدة الإقامة",
+      "price": "السعر",
+      "contact": "رقم الاتصال",
+      "selectCategory": "اختر الفئة",
+      "selectSubCategory": "اختر النوع",
+      "selectWilaya": "اختر الولاية",
+      "selectCommune": "اختر البلدية",
+      "addImages": "إضافة صور",
+      "addServices": "إضافة خدمات",
+      "savePost": "حفظ الرحلة",
+      "updatePost": "تحديث الرحلة"
+    },
+    
+    "forms": {
+      "required": "هذا الحقل مطلوب",
+      "invalidEmail": "بريد إلكتروني غير صالح",
+      "invalidPhone": "رقم هاتف غير صالح",
+      "minLength": "يجب أن يكون {{min}} أحرف على الأقل",
+      "maxLength": "يجب أن يكون {{max}} أحرف على الأكثر"
+    },
+    
+    "months": {
+      "january": "يناير",
+      "february": "فبراير",
+      "march": "مارس",
+      "april": "أبريل",
+      "may": "مايو",
+      "june": "يونيو",
+      "july": "يوليو",
+      "august": "أغسطس",
+      "september": "سبتمبر",
+      "october": "أكتوبر",
+      "november": "نوفمبر",
+      "december": "ديسمبر"
+    },
+    
+    "days": {
+      "monday": "الاثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "sunday": "الأحد"
+    
+  },
   
       "hadj_Omra": "Pèlerinage Hajj & Omra",
       "Voyage Organise": "Voyage Organisé",
@@ -158,7 +439,19 @@
     "readMore": "قراءة المزيد",
     "servicesEquipment": "الخدمات والتجهيزات",
     "otherServices": "خدمات أخرى",
-    "uniqueExperience": "تجربة فريدة تنتظرك"
+    "uniqueExperience": "تجربة فريدة تنتظرك",
+
+    "hotelInfo": "معلومات الفندق",
+    "hotelName": "اسم الفندق",
+    "hotelCity": "المدينة",
+    "hotelAddress": "العنوان",
+    "hotelZone": "المنطقة/الجهة",
+    "completePricing": "الأسعار الكاملة",
+    "adultPrice": "بالغ",
+    "childPrice": "طفل (2-12 سنة)",
+    "babyPrice": "رضيع (0-2 سنة)",
+    "specialOptions": "خيارات خاصة"
+
   },
   "sections": {
     "main": "عرض خاص {type}"

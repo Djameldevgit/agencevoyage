@@ -1,4 +1,290 @@
 {
+
+  
+  
+    "common": {
+      "welcome": "Bienvenido",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "view": "Ver",
+      "search": "Buscar",
+      "loading": "Cargando...",
+      "error": "Error",
+      "success": "Éxito",
+      "confirm": "Confirmar",
+      "back": "Atrás",
+      "next": "Siguiente"
+    },
+    
+    "navigation": {
+      "home": "Inicio",
+      "travels": "Viajes",
+      "hotels": "Hoteles",
+      "hajj": "Hajj",
+      "omra": "Omra",
+      "vacations": "Vacaciones",
+      "contact": "Contacto",
+      "about": "Nosotros"
+    },
+    
+    "categories": {
+      "Agence de Voyage": "Agencia de Viajes",
+      "hadj_Omra": "Hajj y Omra",
+      "Voyage Organise": "Viaje Organizado",
+      "Location_Vacances": "Alquiler Vacacional",
+      
+      "villa_lujo": "Villa de Lujo",
+      "villa_familiar": "Villa Familiar",
+      "apartamento_lujo": "Apartamento Premium",
+      "apartamento_estudio": "Apartamento Estudio",
+      "studio": "Studio",
+      "riad": "Riad Tradicional",
+      "chalet_montana": "Chalet Montaña",
+      "casa_playa": "Casa Playa",
+      "duplex": "Dúplex",
+      "penthouse": "Penthouse",
+      "bungalow": "Bungalow",
+      "casa_rural": "Casa Rural",
+      
+      "economico": "Económico",
+      "estandar": "Estándar",
+      "superior": "Superior",
+      "premium": "Premium",
+      "luxe": "Lujo",
+      
+      "1_2_personas": "1-2 personas",
+      "2_4_personas": "2-4 personas",
+      "4_6_personas": "4-6 personas",
+      "6_8_personas": "6-8 personas",
+      "8_10_personas": "8-10 personas",
+      "10_12_personas": "10-12 personas",
+      "12_plus_personas": "12+ personas",
+      
+      "1_habitacion": "1 habitación",
+      "2_habitaciones": "2 habitaciones",
+      "3_habitaciones": "3 habitaciones",
+      "4_habitaciones": "4 habitaciones",
+      "5_plus_habitaciones": "5+ habitaciones",
+      
+      "superficie_0_50": "0-50 m²",
+      "superficie_50_80": "50-80 m²",
+      "superficie_80_120": "80-120 m²",
+      "superficie_120_200": "120-200 m²",
+      "superficie_200_plus": "200+ m²",
+      
+      "1_bano": "1 baño",
+      "2_banos": "2 baños",
+      "3_banos": "3 baños",
+      "4_plus_banos": "4+ baños",
+      
+      "descuentoGrupo": "Descuento para grupos",
+      "ofertaEspecial": "Oferta especial",
+      "descuentoTemporadaBaja": "Descuento temporada baja",
+      "descuentoAnticipacion": "Descuento por anticipación",
+      
+      "air_algerie": "Air Algérie",
+      "saudi_airlines": "Saudi Airlines",
+      "emirates": "Emirates",
+      "qatar_airways": "Qatar Airways",
+      "turkish_airlines": "Turkish Airlines",
+      "etihad_airways": "Etihad Airways",
+      "other_airline": "Otra compañía",
+      
+      "avion_direct": "Vuelo directo",
+      "avion_escale": "Vuelo con escala",
+      "bus_meca_medina": "Bus Meca-Medina",
+      
+      "economy": "Económica",
+      "premium_economy": "Económica Premium",
+      "business": "Negocios",
+      "first": "Primera Clase",
+      
+      "bus_ac": "Bus climatizado",
+      "van": "Van de lujo",
+      "voiture": "Coche privado",
+      "non_inclus": "No incluido"
+    },
+    
+    "servicess": {
+      "categoria_administrativos": "Servicios Administrativos",
+      "categoria_hebergement": "Alojamiento",
+      "categoria_transport": "Transporte",
+      "categoria_guides": "Guías",
+      "categoria_restauration": "Restauración",
+      "categoria_sante": "Salud",
+      "categoria_kits": "Kits Peregrinos",
+      "categoria_premium": "Premium",
+      
+      "visa_hajj_omra": "Visado Hajj/Omra",
+      "permis_sortie": "Permiso de salida",
+      "certificat_vaccination": "Certificado de vacunación",
+      "autorisation_ministerielle": "Autorización ministerial",
+      "assistance_documentation": "Asistencia documental",
+      
+      "hebergement_haram_meca": "Alojamiento cerca del Haram en Meca",
+      "hebergement_haram_medina": "Alojamiento cerca del Haram en Medina",
+      "hotel_3_etoiles": "Hotel 3 estrellas",
+      "hotel_4_etoiles": "Hotel 4 estrellas",
+      "hotel_5_etoiles": "Hotel 5 estrellas",
+      "chambre_double": "Habitación doble",
+      "chambre_triple": "Habitación triple",
+      "chambre_individuelle": "Habitación individual",
+      "suite_familiale": "Suite familiar",
+      
+      "billet_avion_international": "Billete de avión internacional",
+      "transfert_aeroport": "Traslado aeropuerto",
+      "bus_prive_meca_medina": "Bus privado Meca-Medina",
+      "navettes_hotels": "Lanzaderas hoteles",
+      "transport_mina_arafat": "Transporte Mina-Arafat",
+      "voiture_privee": "Coche privado",
+      
+      "guide_religieux_francophone": "Guía religioso francófono",
+      "guide_arabophone": "Guía arabófono",
+      "cours_preparation_hajj": "Cursos preparación Hajj",
+      "cours_preparation_omra": "Cursos preparación Omra",
+      "assistance_rituels": "Asistencia en rituales",
+      "groupe_reduit": "Grupo reducido",
+      
+      "petit_dejeuner": "Desayuno",
+      "demi_pension": "Media pensión",
+      "pension_complete": "Pensión completa",
+      "buffet_sahour": "Buffet Sahur",
+      "repas_speciaux": "Comidas especiales",
+      "eau_zamzam_illimite": "Agua Zamzam ilimitado",
+      
+      "assistance_medicale_24h": "Asistencia médica 24h",
+      "assurance_medicale": "Seguro médico",
+      "infirmier_accompagnant": "Enfermero acompañante",
+      "premier_secours": "Primeros auxilios",
+      "coordination_securite": "Coordinación seguridad",
+      "localisateur_groupe": "Localizador grupo",
+      
+      "kit_pelegrin_complet": "Kit peregrino completo",
+      "ihram_coton": "Ihram de algodón",
+      "sac_voyage": "Bolsa de viaje",
+      "guide_manuel": "Guía manual",
+      "bouteille_zamzam": "Botella Zamzam",
+      "cadeau_souvenir": "Regalo souvenir",
+      
+      "accompagnement_vip": "Acompañamiento VIP",
+      "fast_track_aeroport": "Fast track aeropuerto",
+      "suite_executive": "Suite ejecutiva",
+      "concierge_personnel": "Conserje personal",
+      "restaurant_gastronomique": "Restaurante gastronómico",
+      "transport_berline": "Transporte berlina"
+    },
+    
+    "descripcion": {
+      "travelTypes": {
+        "hadj_Omra": "Viaje de Hajj y Omra",
+        "Voyage Organise": "Viaje Organizado",
+        "Location_Vacances": "Alquiler Vacacional"
+      },
+      
+      "labels": {
+        "exceptionalOffer": "Oferta excepcional",
+        "exclusiveOffer": "Oferta exclusiva",
+        "publishedOn": "Publicado el",
+        "views": "vistas",
+        "towards": "hacia",
+        "from": "desde",
+        "departureAt": "salida a las",
+        "duration": "Duración",
+        "servicesEquipment": "Servicios y Equipamientos",
+        "otherServices": "Otros servicios",
+        "hotelInfo": "Información del Hotel",
+        "hotelName": "Nombre del hotel",
+        "hotelCity": "Ciudad",
+        "hotelAddress": "Dirección",
+        "hotelZone": "Zona/Región",
+        "completePricing": "Tarifas Completas",
+        "adultPrice": "Adulto",
+        "childPrice": "Niño (2-12 años)",
+        "babyPrice": "Bebé (0-2 años)",
+        "adult": "Adulto",
+        "child": "Niño",
+        "baby": "Bebé",
+        "specialOptions": "Opciones Especiales",
+        "detailedDescription": "Descripción Detallada",
+        "readLess": "Leer menos",
+        "readMore": "Leer más",
+        "uniqueExperience": "Experiencia única",
+        "accommodationFeatures": "Características del Alojamiento",
+        "propertyType": "Tipo de Propiedad",
+        "category": "Categoría",
+        "capacity": "Capacidad",
+        "rooms": "Habitaciones",
+        "surface": "Superficie",
+        "bathrooms": "Baños",
+        "transportDetails": "Detalles del Transporte",
+        "transportType": "Tipo de Transporte",
+        "airline": "Compañía Aérea",
+        "flightClass": "Clase de Vuelo",
+        "groundTransport": "Transporte Terrestre",
+        "specialBenefits": "Beneficios Especiales"
+      },
+      
+      "sections": {
+        "main": "Presenta {{type}}"
+      }
+    },
+    
+    "createpost": {
+      "title": "Título del viaje",
+      "description": "Descripción del viaje",
+      "destination": "Destino",
+      "departureDate": "Fecha de salida",
+      "returnDate": "Fecha de regreso",
+      "duration": "Duración de estancia",
+      "price": "Precio",
+      "contact": "Contacto",
+      "selectCategory": "Seleccionar categoría",
+      "selectSubCategory": "Seleccionar tipo",
+      "selectWilaya": "Seleccionar wilaya",
+      "selectCommune": "Seleccionar comuna",
+      "addImages": "Añadir imágenes",
+      "addServices": "Añadir servicios",
+      "savePost": "Guardar viaje",
+      "updatePost": "Actualizar viaje"
+    },
+    
+    "forms": {
+      "required": "Este campo es obligatorio",
+      "invalidEmail": "Email no válido",
+      "invalidPhone": "Teléfono no válido",
+      "minLength": "Mínimo {{min}} caracteres",
+      "maxLength": "Máximo {{max}} caracteres"
+    },
+    
+    "months": {
+      "january": "enero",
+      "february": "febrero",
+      "march": "marzo",
+      "april": "abril",
+      "may": "mayo",
+      "june": "junio",
+      "july": "julio",
+      "august": "agosto",
+      "september": "septiembre",
+      "october": "octubre",
+      "november": "noviembre",
+      "december": "diciembre"
+    },
+    
+    "days": {
+      "monday": "lunes",
+      "tuesday": "martes",
+      "wednesday": "miércoles",
+      "thursday": "jueves",
+      "friday": "viernes",
+      "saturday": "sábado",
+      "sunday": "domingo"
+   
+  },
+ 
+
   "visa_hajj_omra": "Visa Hajj/Omra",
   "hebergement_haram": "Hébergement près des Harams", 
   "guide_religieux": "Guide religieux",
@@ -104,7 +390,20 @@
     "readMore": "Lire la suite",
     "servicesEquipment": "Services & Équipements",
     "otherServices": "autres services",
-    "uniqueExperience": "Une expérience unique vous attend"
+    "uniqueExperience": "Une expérience unique vous attend",
+
+    "hotelInfo": "Informations de l'Hôtel",
+    "hotelName": "Nom de l'hôtel",
+    "hotelCity": "Ville",
+    "hotelAddress": "Adresse",
+    "hotelZone": "Zone/Région",
+    "completePricing": "Tarifs Complets",
+    "adultPrice": "Adulte",
+    "childPrice": "Enfant (2-12 ans)",
+    "babyPrice": "Bébé (0-2 ans)",
+    "specialOptions": "Options Spéciales"
+
+
   },
   "sections": {
     "main": "Offre spéciale {type}"

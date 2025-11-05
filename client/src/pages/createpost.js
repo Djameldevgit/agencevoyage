@@ -23,16 +23,14 @@ import DestinationLocationVacances from '../components/forms/locationvacances/De
 import DestinationVoyagesOrganises from '../components/forms/voyageorgranise/Destinacionvoyageorganise';
 
 import TransportHajjOmra from '../components/forms/hadjpmra/TransporHajjOmra';
-import TransportVoyagesOrganises from '../components/forms/voyageorgranise/TransportVoyageOrganise';
-
 import AlojamientoHajjOmra from '../components/forms/hadjpmra/HotelHajjOmra';
 import AlojamientoLocationVacances from '../components/forms/locationvacances/Hotellocationvacance';
-import AlojamientoVoyagesOrganises from '../components/forms/voyageorgranise/Hotelvoyageorganise';
-
 import NombreLugarVoyagesOrganises from '../components/forms/voyageorgranise/NombreLugarVoyagesOrganiseq';
 
-import ServiciosHajjOmra from '../components/forms/hadjpmra/ServiciosHajjOmra';
-import ServiciosLocationVacances from '../components/forms/locationvacances/ServiciosLocationVancances';
+// 🔷 NUEVOS COMPONENTES DE SERVICIOS UNIFICADOS
+import ServicesHadjOmra from '../components/forms/hadjpmra/ServiciosHajjOmra';
+import ServicesLocationVacances from '../components/forms/locationvacances/ServicesLocationVacances';
+import ServicesVoyageOrganise from '../components/forms/voyageorgranise/ServicesVoyageOrganise';
 
 import TarifasYprecios from '../components/forms/TarifasYprecios';
 import TarifasYpreciosomra from '../components/forms/hadjpmra/TarifasYpreciosomra';
@@ -40,36 +38,68 @@ import TarifasYpreciosomra from '../components/forms/hadjpmra/TarifasYpreciosomr
 // 🔷 REDUX Y DATOS
 import { createPost, updatePost } from '../redux/actions/postAction';
 import communesjson from "../json/communes.json";
-
-// 🔷 ESTADO INICIAL OPTIMIZADO
 const getInitialState = () => ({
+  // ✅ CAMPOS COMUNES A TODAS LAS CATEGORÍAS
   category: "Agence de Voyage",
   subCategory: "",
   title: "",
   description: "",
   price: "",
   wilaya: "",
+  commune: "",
   vile: "",
   contacto: "",
   images: [],
-  destinacionlocacionvoyage: "",
-  destinacionomra: "",
-  destinacionvoyageorganise: "",
+  destinacion: "", // ✅ ÚNICO CAMPO PARA DESTINO
   datedepar: "",
   horadudepar: "",
   dateretour: "",
   dureeSejour: "",
   servicios: [],
-  ...Object.fromEntries([
-    'categoriaHotelMeca', 'compagnieAerienne', 'typeTransport', 'precioBase', 'tipoPrecio',
-    'hotelMedina', 'hotelMeca', 'tipoPropiedad', 'capacidad', 'habitaciones', 'superficie',
-    'nombrePropiedad', 'direccionCompleta', 'ciudad', 'zonaBarrio', 'descripcionUbicacion',
-    'transportInclus', 'categoriaAlojamiento', 'tipoHabitacion', 'regimenComidas', 'ubicacionHotel',
-    'nombreHotel', 'ciudadHotel', 'direccionHotel', 'zonaRegion', 'modeTransport', 'classeTransport',
-    'typeVol', 'baggage', 'repasVol', 'prixAdulte', 'prixEnfant', 'prixBebe'
-  ].map(key => [key, ""]))
-});
+  
+  // 🏨 CAMPOS DE HOTEL
+  nombreHotel: "",
+  ciudadHotel: "",
+  zonaRegion: "",
+  direccionHotel: "",
 
+  // 💰 CAMPOS DE PRECIOS NUEVOS
+  precioBase: "",
+  tarifaNinos: "", 
+  tarifaBebes: "",
+  descuentoGrupo: false,
+  ofertaEspecial: false,
+  
+  // 🆕 NUEVOS CAMPOS DE DESCUENTOS
+  descuentoTemporadaBaja: false,
+  descuentoAnticipacion: false,
+ 
+  // ✅ CAMPOS CRÍTICOS EXISTENTES
+  ...Object.fromEntries([
+    'tipoPrecio',           // Precios Hajj
+    'prixAdulte', 
+    'prixEnfant', 
+    'prixBebe'              // Tarifas Voyage
+  ].map(key => [key, ""])),
+
+  // 🏠 CAMPOS DE Hotellocationvacance
+  tipoPropiedad: "",
+  categoria: "",
+  capacidad: "",
+  habitaciones: "",
+  superficie: "",
+  banos: "",
+
+  // 🏨 CAMPOS HAJJ OMRA HOTELS
+  hotelMeca: "",
+  hotelMedina: "",
+
+  // ✈️ CAMPOS DE TransportHajjOmra
+  typeTransport: "",
+  compagnieAerienne: "",
+  classeVol: "",
+  transportTerrestre: ""
+});
 const Createpost = () => {
   const { auth, theme, languageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -98,6 +128,15 @@ const Createpost = () => {
   useEffect(() => {
     if (isEdit && postToEdit) {
       const sanitizedData = sanitizePostData(postToEdit);
+      
+      // ✅ MIGRACIÓN AUTOMÁTICA - BUSCAR EN TODOS LOS CAMPOS OBSOLETOS
+      const destinacionUnificada = 
+        sanitizedData.destinacion || 
+        sanitizedData.destinacionomra || 
+        sanitizedData.destinacionvoyageorganise || 
+        sanitizedData.destinacionlocacionvoyage || 
+        "";
+
       const finalPostData = {
         ...getInitialState(),
         ...sanitizedData,
@@ -106,7 +145,13 @@ const Createpost = () => {
         description: sanitizedData.description || sanitizedData.content || "",
         title: sanitizedData.title || "",
         servicios: Array.isArray(sanitizedData.servicios) ? sanitizedData.servicios : [],
+        destinacion: destinacionUnificada, // ✅ ASIGNACIÓN DEL DESTINO UNIFICADO
       };
+
+      // ✅ ELIMINAR DEFINITIVAMENTE CAMPOS OBSOLETOS DE DESTINO
+      delete finalPostData.destinacionomra;
+      delete finalPostData.destinacionvoyageorganise;
+      delete finalPostData.destinacionlocacionvoyage;
 
       setPostData(finalPostData);
 
@@ -128,7 +173,15 @@ const Createpost = () => {
   }, [isEdit, postToEdit]);
 
   const sanitizePostData = useCallback((data) => {
-    return data ? { ...data } : {};
+    if (!data) return {};
+    
+    // ✅ CREAR COPIA SIN CAMPOS OBSOLETOS DE DESTINO
+    const cleanData = { ...data };
+    delete cleanData.destinacionomra;
+    delete cleanData.destinacionvoyageorganise;
+    delete cleanData.destinacionlocacionvoyage;
+    
+    return cleanData;
   }, []);
 
   const handleChangeInput = useCallback((e) => {
@@ -201,8 +254,14 @@ const Createpost = () => {
     }
 
     try {
+      // ✅ LIMPIAR DATOS ANTES DE ENVIAR - ELIMINAR CUALQUIER CAMPO OBSOLETO
+      const cleanPostData = { ...postData };
+      delete cleanPostData.destinacionomra;
+      delete cleanPostData.destinacionvoyageorganise;
+      delete cleanPostData.destinacionlocacionvoyage;
+
       const actionData = {
-        postData: { ...postData },
+        postData: cleanPostData,
         images,
         auth,
         ...(isEdit && postToEdit && {
@@ -231,43 +290,100 @@ const Createpost = () => {
     setShowAlert(true);
   }, []);
 
+  // ✅ COMPONENTE DE DESTINO UNIFICADO - USA SOLO 'destinacion'
+  const DestinationUnified = useMemo(() => {
+    if (!postData.subCategory) return null;
+
+    const destinationProps = {
+      postData: {
+        ...postData,
+        // ✅ FORZAR QUE LOS COMPONENTES HIJOS USEN SOLO 'destinacion'
+        destinacion: postData.destinacion
+      },
+      handleChangeInput: (e) => {
+        // ✅ INTERCEPTAR CUALQUIER CAMBIO Y REDIRIGIR A 'destinacion'
+        if (e.target.name.includes('destinacion')) {
+          handleChangeInput({
+            target: {
+              name: 'destinacion',
+              value: e.target.value
+            }
+          });
+        } else {
+          handleChangeInput(e);
+        }
+      }
+    };
+
+    switch (postData.subCategory) {
+      case "Voyage Organise":
+        return <DestinationVoyagesOrganises {...destinationProps} />;
+      case "Location_Vacances":
+        return <DestinationLocationVacances {...destinationProps} />;
+      case "hadj_Omra":
+        return <DestinationHajjOmra {...destinationProps} />;
+      default:
+        return null;
+    }
+  }, [postData.subCategory, postData, handleChangeInput]);
+
+  // ✅ COMPONENTE DE SERVICIOS UNIFICADO
+  const ServicesUnified = useMemo(() => {
+    if (!postData.subCategory) return null;
+
+    const servicesProps = {
+      postData,
+      handleChangeInput
+    };
+
+    switch (postData.subCategory) {
+      case "Voyage Organise":
+        return <ServicesVoyageOrganise {...servicesProps} />;
+      case "Location_Vacances":
+        return <ServicesLocationVacances {...servicesProps} />;
+      case "hadj_Omra":
+        return <ServicesHadjOmra {...servicesProps} />;
+      default:
+        return null;
+    }
+  }, [postData.subCategory, postData, handleChangeInput]);
+
   const renderVoyageOrganise = useMemo(() => (
     <>
       <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
       <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
       <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-      <DestinationVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-      <TransportVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      {DestinationUnified}
       <NombreLugarVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
-      <AlojamientoVoyagesOrganises postData={postData} handleChangeInput={handleChangeInput} />
+      {ServicesUnified}
       <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="voyagesorganises" />
     </>
-  ), [postData, handleChangeInput]);
+  ), [postData, handleChangeInput, DestinationUnified, ServicesUnified]);
 
   const renderLocationVacances = useMemo(() => (
     <>
       <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
       <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
       <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-      <DestinationLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
+      {DestinationUnified}
       <AlojamientoLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
-      <ServiciosLocationVacances postData={postData} handleChangeInput={handleChangeInput} />
+      {ServicesUnified}
       <TarifasYprecios postData={postData} handleChangeInput={handleChangeInput} category="locationvacances" />
     </>
-  ), [postData, handleChangeInput]);
+  ), [postData, handleChangeInput, DestinationUnified, ServicesUnified]);
 
   const renderHadjOmra = useMemo(() => (
     <>
       <DateDeparRetour postData={postData} handleChangeInput={handleChangeInput} />
       <HoraDepart postData={postData} handleChangeInput={handleChangeInput} />
       <DurationDisplay postData={postData} handleChangeInput={handleChangeInput} />
-      <DestinationHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      {DestinationUnified}
       <TransportHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
       <AlojamientoHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
-      <ServiciosHajjOmra postData={postData} handleChangeInput={handleChangeInput} />
+      {ServicesUnified}
       <TarifasYpreciosomra postData={postData} handleChangeInput={handleChangeInput} />
     </>
-  ), [postData, handleChangeInput]);
+  ), [postData, handleChangeInput, DestinationUnified, ServicesUnified]);
 
   const renderCategoryFields = useMemo(() => {
     switch (postData.subCategory) {
