@@ -26,7 +26,6 @@ const CardBodyTitle = ({ post }) => {
 
     // Configurar moment con el idioma actual - SIMPLIFICADO
     useEffect(() => {
-        // Usar siempre formato francés para evitar caracteres árabes
         moment.locale('fr');
     }, [i18n.language]);
 
@@ -56,15 +55,12 @@ const CardBodyTitle = ({ post }) => {
 
     const formatDate = (dateString) => {
         if (!dateString) return '';
-        
-        // ✅ FORMATO SIMPLIFICADO - siempre en francés/normal
         return moment(dateString).format('DD/MM/YYYY');
     };
 
     const getDayName = (dateString) => {
         if (!dateString) return '';
         
-        // ✅ Días en formato simple (siempre en francés)
         const days = {
             'Monday': 'Lun',
             'Tuesday': 'Mar', 
@@ -95,7 +91,7 @@ const CardBodyTitle = ({ post }) => {
         return icons[subCategory] || '✈️';
     };
 
-    // 🔥 NUEVA FUNCIÓN: Traducir subCategory
+    // 🔥 FUNCIÓN: Traducir subCategory
     const translateSubCategory = (subCategory) => {
         const translations = {
             'Location_Vacances': t('categories.locationVacances', 'Location de Vacances'),
@@ -113,27 +109,22 @@ const CardBodyTitle = ({ post }) => {
         return translations[subCategory] || subCategory || t('noCategory', 'Sans catégorie');
     };
 
-    // 🔥 FUNCIÓN MEJORADA: Redirigir a PropertyMap
-    const handleSubCategoryClick = (e) => {
-        e.stopPropagation(); // Prevenir que se propague el evento
+    // 🔥 FUNCIÓN CORREGIDA: Solo destinacion redirige al mapa
+    const handleDestinationClick = (e) => {
+        e.stopPropagation();
         
-        // Redirigir a /PropertyMap con datos del post
         history.push('/PropertyMap', { 
             postData: post,
-            from: 'CardBodyTitle',
-            subCategory: post.subCategory
+            from: 'Destination'
         });
     };
 
-    // 🔥 NUEVA FUNCIÓN: Redirigir desde el ícono del mapa
-    const handleMapIconClick = (e) => {
+    // 🔥 FUNCIÓN: Manejar click en subcategoría (SOLO para dropdown)
+    const handleSubCategoryClick = (e) => {
         e.stopPropagation();
-        
-        history.push('/map', { 
-            postData: post,
-            from: 'MapIcon',
-            destinacion: post.destinacion
-        });
+        if (auth.user) {
+            setShowDropdown(!showDropdown);
+        }
     };
 
     // ========== FUNCIONES DEL DROPDOWN ==========
@@ -149,7 +140,6 @@ const CardBodyTitle = ({ post }) => {
             return;
         }
 
-        // ✅ AGREGAR USUARIO PARA CHAT
         dispatch({
             type: 'MESS_TYPES.ADD_USER',
             payload: {
@@ -165,7 +155,7 @@ const CardBodyTitle = ({ post }) => {
 
     const handleViewAgencyProfile = () => {
         if (!post.user || !post.user._id) {
-            alert(t('agency.profileError', 'No se puede ver el perfil de esta agencia'));
+            alert(t('agency.profileError', 'No se puede ver el profil de cette agence'));
             return;
         }
 
@@ -198,7 +188,7 @@ const CardBodyTitle = ({ post }) => {
             return;
         }
 
-        if (window.confirm(t('post.deleteConfirmation', '¿Estás seguro de que quieres eliminar esta publicación?'))) {
+        if (window.confirm(t('post.deleteConfirmation', 'Êtes-vous sûr de vouloir supprimer cette publication?'))) {
             setIsDeleting(true);
             try {
                 await dispatch(deletePost({ post, auth, socket }));
@@ -276,18 +266,18 @@ const CardBodyTitle = ({ post }) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '10px 12px',
+                padding: '12px 16px',
                 cursor: 'pointer',
                 transition: 'background-color 0.2s ease',
                 borderBottom: '1px solid #f1f5f9',
-                fontSize: '14px',
+                fontSize: '15px',
                 color: isDanger ? '#e53e3e' : '#4a5568'
             }}
             onClick={onClick}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#f7fafc'}
             onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
         >
-            <span className="material-icons" style={{ fontSize: '18px', width: '24px' }}>
+            <span className="material-icons" style={{ fontSize: '20px', width: '24px' }}>
                 {icon}
             </span>
             <span>{text}</span>
@@ -296,7 +286,7 @@ const CardBodyTitle = ({ post }) => {
 
     return (
         <div className="cardtitle" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-            <div className="card-header" style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0' }}>
+            <div className="card-header" style={{ padding: '20px', borderBottom: '1px solid #e2e8f0' }}>
                 {!isDetailPage && (
                     <div style={{ width: '100%' }}>
                         {/* Línea 1: Subcategoría con dropdown y destino */}
@@ -304,33 +294,32 @@ const CardBodyTitle = ({ post }) => {
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'space-between',
-                            marginBottom: '8px',
+                            marginBottom: '12px',
                             flexWrap: 'wrap',
-                            gap: '8px',
+                            gap: '12px',
                             position: 'relative'
                         }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                                {/* Badge de subcategoría con dropdown - AHORA CON ONCLICK */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                                {/* 🔥 SUBCATEGORÍA - SOLO PARA DROPDOWN */}
                                 <div className="dropdown-container" style={{ position: 'relative', display: 'inline-block' }}>
                                     <div 
                                         style={{ 
                                             display: 'flex', 
                                             alignItems: 'center', 
-                                            gap: '6px',
+                                            gap: '8px',
                                             backgroundColor: '#edf2f7',
-                                            padding: '4px 8px 4px 12px',
-                                            borderRadius: '20px',
+                                            padding: '8px 16px 8px 20px',
+                                            borderRadius: '25px',
                                             border: '1px solid #e2e8f0',
-                                            cursor: 'pointer', // Siempre clickable para PropertyMap
+                                            cursor: auth.user ? 'pointer' : 'default', // Solo clickeable si hay usuario
                                             transition: 'all 0.2s ease',
                                             minWidth: 'fit-content'
                                         }}
-                                        onClick={handleSubCategoryClick} // 🔥 CLICK PARA PROPERTYMAP
-                                        onMouseEnter={() => auth.user && setShowDropdown(true)}
-                                        title="Voir sur la carte" // Tooltip
+                                        onClick={handleSubCategoryClick} // 🔥 SOLO abre/cierra dropdown
+                                        title={auth.user ? t('cardbody.moreOptions', 'Plus d\'options') : ''}
                                     >
                                         <span style={{ 
-                                            fontSize: '14px', 
+                                            fontSize: '16px', 
                                             fontWeight: '600', 
                                             color: '#2d3748'
                                         }}>
@@ -339,7 +328,7 @@ const CardBodyTitle = ({ post }) => {
                                         {auth.user && (
                                             <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'}`} 
                                                style={{ 
-                                                   fontSize: '10px', 
+                                                   fontSize: '12px', 
                                                    color: '#718096',
                                                    transition: 'transform 0.2s ease'
                                                }}></i>
@@ -352,12 +341,12 @@ const CardBodyTitle = ({ post }) => {
                                             position: 'absolute',
                                             top: '100%',
                                             [isRTL ? 'right' : 'left']: '0',
-                                            marginTop: '4px',
+                                            marginTop: '8px',
                                             backgroundColor: 'white',
                                             border: '1px solid #e2e8f0',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                                            minWidth: '240px',
+                                            borderRadius: '12px',
+                                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                                            minWidth: '280px',
                                             zIndex: 1000,
                                             overflow: 'hidden'
                                         }}
@@ -376,54 +365,70 @@ const CardBodyTitle = ({ post }) => {
                                     )}
                                 </div>
                                 
+                                {/* 🔥 DESTINACION - SOLO ESTE REDIRIGE AL MAPA */}
                                 {post.destinacion && (
                                     <>
-                                        <span style={{ color: '#a0aec0' }}>•</span>
+                                        <span style={{ color: '#a0aec0', fontSize: '18px' }}>•</span>
                                         <div 
                                             style={{ 
                                                 display: 'flex', 
                                                 alignItems: 'center', 
-                                                gap: '4px',
-                                                cursor: 'pointer', // 🔥 HACER CLICKABLE
-                                                transition: 'color 0.2s ease'
+                                                gap: '8px',
+                                                cursor: 'pointer', // 🔥 SIEMPRE clickeable
+                                                transition: 'all 0.3s ease',
+                                                padding: '6px 12px',
+                                                borderRadius: '20px'
                                             }}
-                                            onClick={handleMapIconClick} // 🔥 CLICK PARA PROPERTYMAP
-                                            title="Voir la destination sur la carte" // Tooltip
+                                            onClick={handleDestinationClick} // 🔥 SOLO ESTE redirige al mapa
+                                            onMouseEnter={(e) => {
+                                                e.target.style.backgroundColor = '#f0f9ff';
+                                                e.target.style.color = '#1e88e5';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.target.style.backgroundColor = 'transparent';
+                                                e.target.style.color = '#4a5568';
+                                            }}
+                                            title={t('cardbody.viewDestinationOnMap', 'Voir la destination sur la carte')}
                                         >
                                             <i className="fas fa-map-marker-alt" style={{ 
                                                 color: '#e53e3e', 
-                                                fontSize: '12px',
+                                                fontSize: '16px',
                                                 transition: 'transform 0.2s ease'
                                             }}></i>
                                             <span style={{ 
-                                                fontSize: '14px', 
+                                                fontSize: '16px', 
                                                 fontWeight: '500', 
-                                                color: '#4a5568'
+                                                color: 'inherit'
                                             }}>
                                                 {post.destinacion}
                                             </span>
+                                            <i className="fas fa-external-link-alt" style={{ 
+                                                fontSize: '12px', 
+                                                color: '#a0aec0',
+                                                marginLeft: '4px'
+                                            }}></i>
                                         </div>
                                     </>
                                 )}
                             </div>
                         </div>
 
-                        {/* Línea 2: Fecha y ubicación - SIMPLIFICADA */}
+                        {/* Línea 2: Fecha y ubicación */}
                         <div style={{ 
                             display: 'flex', 
                             alignItems: 'center', 
-                            gap: '12px',
+                            gap: '16px',
                             flexWrap: 'wrap',
-                            fontSize: '13px',
+                            fontSize: '15px',
                             color: '#718096'
                         }}>
                             {post.datedepar && (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    <i className="far fa-calendar-alt" style={{ fontSize: '12px' }}></i>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <i className="far fa-calendar-alt" style={{ fontSize: '14px' }}></i>
                                     <span style={{ fontWeight: '500' }}>
                                         {t('departure', 'Départ')} {formatDate(post.datedepar)}
                                     </span>
-                                    <span style={{ color: '#cbd5e0', fontSize: '12px' }}>
+                                    <span style={{ color: '#cbd5e0', fontSize: '14px' }}>
                                         ({getDayName(post.datedepar)})
                                     </span>
                                 </div>
@@ -432,8 +437,8 @@ const CardBodyTitle = ({ post }) => {
                             {post.wilaya && (
                                 <>
                                     <span style={{ color: '#e2e8f0' }}>|</span>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                        <i className="fas fa-map-pin" style={{ fontSize: '10px' }}></i>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <i className="fas fa-map-pin" style={{ fontSize: '12px' }}></i>
                                         <span>
                                             {post.wilaya}
                                             {post.commune && `, ${post.commune}`}
@@ -446,79 +451,104 @@ const CardBodyTitle = ({ post }) => {
                 )}
             </div>
 
-            {/* Vista para página de detalle - AHORA TAMBIÉN CON ONCLICK */}
+            {/* Vista para página de detalle */}
             {isDetailPage && (
-                <div style={{ padding: '20px' }}>
-                    {/* Subcategoría clickeable */}
-                    <h2 
+                <div style={{ padding: '24px' }}>
+                    {/* Subcategoría - SOLO para dropdown */}
+                    <div 
                         style={{ 
-                            fontSize: '24px', 
-                            fontWeight: '700', 
-                            color: '#2d3748',
-                            marginBottom: '8px',
-                            textAlign: isRTL ? 'right' : 'left',
-                            cursor: 'pointer',
-                            display: 'inline-block',
-                            transition: 'color 0.2s ease',
-                            padding: '8px 12px',
-                            borderRadius: '8px'
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            marginBottom: '12px',
+                            cursor: auth.user ? 'pointer' : 'default',
+                            transition: 'all 0.2s ease',
+                            padding: '12px 16px',
+                            borderRadius: '12px',
+                            backgroundColor: '#edf2f7'
                         }}
                         onClick={handleSubCategoryClick}
                         onMouseEnter={(e) => {
-                            e.target.style.color = '#1e88e5';
-                            e.target.style.backgroundColor = '#f0f9ff';
+                            if (auth.user) {
+                                e.target.style.backgroundColor = '#e2e8f0';
+                            }
                         }}
                         onMouseLeave={(e) => {
-                            e.target.style.color = '#2d3748';
-                            e.target.style.backgroundColor = 'transparent';
+                            if (auth.user) {
+                                e.target.style.backgroundColor = '#edf2f7';
+                            }
                         }}
-                        title="Voir sur la carte"
+                        title={auth.user ? t('cardbody.moreOptions', 'Plus d\'options') : ''}
                     >
-                        {getSubCategoryIcon(post.subCategory)} {translateSubCategory(post.subCategory)}
-                    </h2>
+                        <span style={{ 
+                            fontSize: '24px', 
+                            fontWeight: '700', 
+                            color: '#2d3748'
+                        }}>
+                            {getSubCategoryIcon(post.subCategory)} {translateSubCategory(post.subCategory)}
+                        </span>
+                        {auth.user && (
+                            <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'}`} 
+                               style={{ 
+                                   fontSize: '14px', 
+                                   color: '#718096'
+                               }}></i>
+                        )}
+                    </div>
                     
+                    {/* Destinacion - SOLO ESTE redirige al mapa */}
                     {post.destinacion && (
                         <div 
                             style={{ 
                                 display: 'flex', 
                                 alignItems: 'center', 
-                                gap: '8px',
-                                marginBottom: '12px',
-                                fontSize: '16px',
+                                gap: '12px',
+                                marginBottom: '16px',
+                                fontSize: '18px',
                                 color: '#4a5568',
                                 cursor: 'pointer',
-                                padding: '6px 10px',
-                                borderRadius: '6px',
-                                transition: 'all 0.2s ease'
+                                padding: '10px 16px',
+                                borderRadius: '10px',
+                                transition: 'all 0.3s ease',
+                                border: '2px solid transparent'
                             }}
-                            onClick={handleMapIconClick}
+                            onClick={handleDestinationClick}
                             onMouseEnter={(e) => {
                                 e.target.style.color = '#1e88e5';
                                 e.target.style.backgroundColor = '#f0f9ff';
+                                e.target.style.borderColor = '#1e88e5';
+                                e.target.style.transform = 'translateY(-2px)';
                             }}
                             onMouseLeave={(e) => {
                                 e.target.style.color = '#4a5568';
                                 e.target.style.backgroundColor = 'transparent';
+                                e.target.style.borderColor = 'transparent';
+                                e.target.style.transform = 'translateY(0)';
                             }}
-                            title="Voir la destination sur la carte"
+                            title={t('cardbody.viewDestinationOnMap', 'Voir la destination sur la carte')}
                         >
-                            <i className="fas fa-map-marker-alt" style={{ color: '#e53e3e' }}></i>
-                            <span>{post.destinacion}</span>
+                            <i className="fas fa-map-marker-alt" style={{ color: '#e53e3e', fontSize: '18px' }}></i>
+                            <span style={{ fontWeight: '600' }}>{post.destinacion}</span>
+                            <i className="fas fa-external-link-alt" style={{ 
+                                fontSize: '14px', 
+                                color: '#a0aec0',
+                                marginLeft: '8px'
+                            }}></i>
                         </div>
                     )}
 
-                    {/* Fechas simplificadas */}
+                    {/* Fechas */}
                     {post.datedepar && (
                         <div style={{ 
                             display: 'flex', 
                             alignItems: 'center', 
-                            gap: '16px',
-                            marginTop: '12px',
-                            fontSize: '14px',
+                            gap: '20px',
+                            marginTop: '16px',
+                            fontSize: '16px',
                             color: '#718096'
                         }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <i className="far fa-calendar-alt"></i>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <i className="far fa-calendar-alt" style={{ fontSize: '16px' }}></i>
                                 <span>
                                     <strong>Départ:</strong> {formatDate(post.datedepar)} ({getDayName(post.datedepar)})
                                 </span>
@@ -536,7 +566,7 @@ const CardBodyTitle = ({ post }) => {
                 />
             )}
 
-            {/* Modal de autenticación simplificado */}
+            {/* Modal de autenticación */}
             {showAuthModal && (
                 <div style={{
                     position: 'fixed',
@@ -552,27 +582,28 @@ const CardBodyTitle = ({ post }) => {
                 }}>
                     <div style={{
                         backgroundColor: 'white',
-                        padding: '20px',
+                        padding: '24px',
                         borderRadius: '12px',
                         textAlign: 'center',
-                        minWidth: '300px'
+                        minWidth: '320px'
                     }}>
-                        <h3 style={{ marginBottom: '16px', color: '#2d3748' }}>
+                        <h3 style={{ marginBottom: '20px', color: '#2d3748', fontSize: '20px' }}>
                             {t('auth.required', 'Authentification Requise')}
                         </h3>
-                        <p style={{ marginBottom: '20px', color: '#718096' }}>
+                        <p style={{ marginBottom: '24px', color: '#718096', fontSize: '16px' }}>
                             {t('auth.loginToContinue', 'Veuillez vous connecter pour continuer')}
                         </p>
-                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
                             <button
                                 onClick={() => history.push('/login')}
                                 style={{
-                                    padding: '10px 20px',
+                                    padding: '12px 24px',
                                     backgroundColor: '#4a5568',
                                     color: 'white',
                                     border: 'none',
-                                    borderRadius: '6px',
-                                    cursor: 'pointer'
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '15px'
                                 }}
                             >
                                 {t('auth.login', 'Connexion')}
@@ -580,12 +611,13 @@ const CardBodyTitle = ({ post }) => {
                             <button
                                 onClick={() => history.push('/register')}
                                 style={{
-                                    padding: '10px 20px',
+                                    padding: '12px 24px',
                                     backgroundColor: '#e2e8f0',
                                     color: '#4a5568',
                                     border: 'none',
-                                    borderRadius: '6px',
-                                    cursor: 'pointer'
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '15px'
                                 }}
                             >
                                 {t('auth.register', 'Inscription')}
