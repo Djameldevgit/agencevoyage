@@ -113,7 +113,7 @@ const CardBodyTitle = ({ post }) => {
     const handleDestinationClick = (e) => {
         e.stopPropagation();
         
-        history.push('/PropertyMap', { 
+        history.push('/map', { 
             postData: post,
             from: 'Destination'
         });
@@ -459,11 +459,11 @@ const CardBodyTitle = ({ post }) => {
                         style={{ 
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '8px',
+                            gap: '4px',
                             marginBottom: '12px',
                             cursor: auth.user ? 'pointer' : 'default',
                             transition: 'all 0.2s ease',
-                            padding: '12px 16px',
+                            padding: '5px 10px',
                             borderRadius: '12px',
                             backgroundColor: '#edf2f7'
                         }}
@@ -502,12 +502,12 @@ const CardBodyTitle = ({ post }) => {
                             style={{ 
                                 display: 'flex', 
                                 alignItems: 'center', 
-                                gap: '12px',
+                                gap: '4px',
                                 marginBottom: '16px',
                                 fontSize: '18px',
                                 color: '#4a5568',
                                 cursor: 'pointer',
-                                padding: '10px 16px',
+                                padding: '5px 10px',
                                 borderRadius: '10px',
                                 transition: 'all 0.3s ease',
                                 border: '2px solid transparent'
