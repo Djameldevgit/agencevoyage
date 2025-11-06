@@ -19,9 +19,9 @@ import {
   PinterestShareButton,
   PinterestIcon
 } from 'react-share';
-
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
 
+ 
 const ShareModal = ({ 
   show, 
   onHide, 

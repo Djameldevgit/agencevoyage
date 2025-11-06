@@ -1,6 +1,42 @@
 {
 
  
+    "categories": {
+      "locationVacances": "إيجار عطلات",
+      "hajjUmrah": "الحج والعمرة",
+      "voyageOrganise": "رحلة منظمة",
+      "businessTrip": "رحلة عمل",
+      "tourism": "سياحة",
+      "adventure": "مغامرة",
+      "cultural": "ثقافي",
+      "beach": "شاطئي",
+      "mountain": "جبل",
+      "desert": "صحراء"
+    },
+ 
+    
+    "noCategory": "بدون فئة",
+    "departure": "مغادرة",
+    "destination": "الوجهة",
+    "location": "الموقع",
+    "editPost": "تعديل المنشور",
+    "deletePost": "حذف المنشور",
+    "writeToAgency": "الكتابة إلى الوكالة",
+    "followAgency": "متابعة الوكالة",
+    "sharePost": "مشاركة",
+    "viewDetails": "عرض التفاصيل",
+    "agency": {
+      "contactError": "لا يمكن الاتصال بهذه الوكالة",
+      "profileError": "لا يمكن عرض ملف الوكالة"
+    },
+    
+    "auth": {
+      "required": "مطلوب مصادقة",
+      "loginToContinue": "يرجى تسجيل الدخول للمتابعة",
+      "login": "تسجيل الدخول",
+      "register": "تسجيل"
+    },
+  
     "home": {
       "welcome": "مرحباً بكم في منصة السفر الخاصة بنا"
     },
@@ -19,10 +55,7 @@
       "share": "مشاركة المنشور",
       "deleteConfirmation": "هل أنت متأكد من رغبتك في حذف هذا المنشور؟"
     },
-    "agency": {
-      "contactError": "لا يمكن الاتصال بهذه الوكالة",
-      "profileError": "لا يمكن عرض ملف هذه الوكالة"
-    },
+    
     "date": {
       "notSpecified": "تاريخ غير محدد"
     },
@@ -47,7 +80,7 @@
   "save": "حفظ",
   "saved": "تم الحفظ",
   "saving": "جاري الحفظ...",
-  "report_post": "الإبلاغ عن المنشور",
+  
   "cancel": "إلغاء",
   "details": "تفاصيل",
   "tap_to_see_info": "انقر لرؤية المعلومات",

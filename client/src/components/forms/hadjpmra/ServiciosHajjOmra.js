@@ -357,7 +357,7 @@ const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
       setServiciosSeleccionados(serviciosFormateados);
     }
   }, [postData?.servicios]);
-
+  
   const handleChange = (selectedOptions) => {
     const nuevosServicios = selectedOptions || [];
     setServiciosSeleccionados(nuevosServicios);
@@ -371,139 +371,166 @@ const ServicesHadjOmra = ({ postData, handleChangeInput }) => {
       } 
     });
   };
-
+  
   // Estilos personalizados para react-select con soporte RTL
   const customStyles = {
     control: (base, state) => ({
       ...base,
-      border: '1px solid #ddd',
+      border: '1px solid #e2e8f0',
       borderRadius: '8px',
       padding: '4px',
       boxShadow: 'none',
       textAlign: isRTL ? 'right' : 'left',
       direction: isRTL ? 'rtl' : 'ltr',
+      backgroundColor: state.isFocused ? '#f7fafc' : '#fff',
       '&:hover': {
-        borderColor: '#007bff'
+        borderColor: '#cbd5e0'
       }
     }),
     menu: (base) => ({
       ...base,
       textAlign: isRTL ? 'right' : 'left',
-      direction: isRTL ? 'rtl' : 'ltr'
+      direction: isRTL ? 'rtl' : 'ltr',
+      border: '1px solid #e2e8f0',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
     }),
     groupHeading: (base) => ({
       ...base,
       fontWeight: 'bold',
       fontSize: '0.9rem',
-      backgroundColor: '#f8f9fa',
+      backgroundColor: '#f8fafc',
+      color: '#4a5568',
       padding: '8px 12px',
-      borderBottom: '1px solid #dee2e6'
+      borderBottom: '1px solid #e2e8f0'
     }),
     multiValue: (base) => ({
       ...base,
-      backgroundColor: '#007bff',
-      borderRadius: '15px',
+      backgroundColor: '#edf2f7',
+      borderRadius: '12px',
       flexDirection: isRTL ? 'row-reverse' : 'row'
     }),
     multiValueLabel: (base) => ({
       ...base,
-      color: 'white',
-      fontWeight: 'bold',
+      color: '#4a5568',
+      fontWeight: '600',
       padding: isRTL ? '2px 8px 2px 4px' : '2px 4px 2px 8px'
     }),
     multiValueRemove: (base) => ({
       ...base,
-      color: 'white',
-      borderRadius: isRTL ? '15px 0 0 15px' : '0 15px 15px 0',
+      color: '#718096',
+      borderRadius: isRTL ? '12px 0 0 12px' : '0 12px 12px 0',
       ':hover': {
-        backgroundColor: '#0056b3',
-        color: 'white'
+        backgroundColor: '#e2e8f0',
+        color: '#4a5568'
       }
     }),
     option: (base, state) => ({
       ...base,
       textAlign: isRTL ? 'right' : 'left',
       direction: isRTL ? 'rtl' : 'ltr',
-      backgroundColor: state.isSelected ? '#007bff' : state.isFocused ? '#f8f9fa' : 'white',
-      color: state.isSelected ? 'white' : '#333'
+      backgroundColor: state.isSelected ? '#e2e8f0' : state.isFocused ? '#f7fafc' : 'white',
+      color: state.isSelected ? '#2d3748' : '#4a5568',
+      ':active': {
+        backgroundColor: '#edf2f7'
+      }
+    }),
+    indicatorsContainer: (base) => ({
+      ...base,
+      color: '#a0aec0'
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      color: '#a0aec0',
+      ':hover': {
+        color: '#718096'
+      }
+    }),
+    clearIndicator: (base) => ({
+      ...base,
+      color: '#a0aec0',
+      ':hover': {
+        color: '#718096'
+      }
     })
   };
-
+  
   // Componente personalizado para mostrar la descripción en las opciones
   const OptionWithDescription = ({ innerRef, innerProps, data, isSelected, isFocused }) => (
     <div
       ref={innerRef}
       {...innerProps}
       style={{
-        padding: '8px 12px',
-        backgroundColor: isSelected ? '#007bff' : isFocused ? '#f8f9fa' : 'white',
-        color: isSelected ? 'white' : '#333',
+        padding: '10px 12px',
+        backgroundColor: isSelected ? '#edf2f7' : isFocused ? '#f7fafc' : 'white',
+        color: isSelected ? '#2d3748' : '#4a5568',
         cursor: 'pointer',
-        borderBottom: '1px solid #f0f0f0'
+        borderBottom: '1px solid #f1f5f9',
+        transition: 'background-color 0.2s ease'
       }}
     >
-      <div className="fw-bold" style={{ fontSize: '0.9rem' }}>
+      <div style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '2px' }}>
         {data.label}
       </div>
       <div 
         style={{ 
           fontSize: '0.75rem', 
-          opacity: isSelected ? 0.8 : 0.7,
-          lineHeight: '1.3'
+          opacity: 0.7,
+          lineHeight: '1.3',
+          color: isSelected ? '#4a5568' : '#718096'
         }}
       >
         {data.description}
       </div>
     </div>
   );
-
+  
   return (
-    <Card>
-      <Card.Header style={{ direction: isRTL ? "rtl" : "ltr" }}>
-        <h5 className="mb-0">
+    <div style={{ direction: isRTL ? "rtl" : "ltr" }}>
+      <div style={{ marginBottom: '20px' }}>
+        <h5 style={{ 
+          margin: '0 0 6px 0', 
+          fontWeight: '600',
+          color: '#2d3748'
+        }}>
           🎁 {t("servicess.servicesHadjOmra", "Services Complets Hajj & Omra")}
         </h5>
-        <small className="text-muted" style={{ 
-          textAlign: isRTL ? "right" : "left",
-          fontSize: "0.85rem"
+        <small style={{ 
+          color: '#718096',
+          textAlign: isRTL ? 'right' : 'left',
+          fontSize: '0.85rem',
+          display: 'block',
+          lineHeight: '1.4'
         }}>
           {t("servicess.servicesDescription", "Sélectionnez les services inclus dans votre package")}
         </small>
-      </Card.Header>
-      <Card.Body>
-        <div style={{ direction: isRTL ? "rtl" : "ltr" }}>
-          <Form.Group>
-            <Form.Label className="fw-bold">
-              {t("servicess.selectServices", "Sélectionnez les services:")}
-            </Form.Label>
-            
-            <Select
-              isMulti
-              options={groupedOptions}
-              value={serviciosSeleccionados}
-              onChange={handleChange}
-              styles={customStyles}
-              components={{ Option: OptionWithDescription }}
-              placeholder={t("servicess.selectPlaceholder", "Choisissez les services désirés...")}
-              noOptionsMessage={() => t("servicess.noOptions", "Aucune option disponible")}
-              closeMenuOnSelect={false}
-              hideSelectedOptions={false}
-              isSearchable
-            />
-            
-            <Form.Text className="text-muted" style={{ 
-              textAlign: isRTL ? "right" : "left",
-              display: 'block',
-              marginTop: '8px'
-            }}>
-              {t("servicess.multiselectHelp", "Vous pouvez sélectionner plusieurs services. Utilisez la recherche pour trouver rapidement.")}
-            </Form.Text>
-          </Form.Group>
-
-          
-        </div>
-      </Card.Body>
-    </Card>
+      </div>
+  
+      <div style={{ marginBottom: '15px' }}>
+        <label style={{ 
+          fontWeight: '600',
+          display: 'block',
+          marginBottom: '8px',
+          color: '#4a5568',
+          fontSize: '0.95rem'
+        }}>
+          {t("servicess.selectServices", "Sélectionnez les services:")}
+        </label>
+        
+        <Select
+          isMulti
+          options={groupedOptions}
+          value={serviciosSeleccionados}
+          onChange={handleChange}
+          styles={customStyles}
+          components={{ Option: OptionWithDescription }}
+          placeholder={t("servicess.selectPlaceholder", "Choisissez les services désirés...")}
+          noOptionsMessage={() => t("servicess.noOptions", "Aucune option disponible")}
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          isSearchable
+        />
+      </div>
+    </div>
   );
 };
 

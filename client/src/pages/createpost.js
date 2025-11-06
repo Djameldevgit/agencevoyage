@@ -40,7 +40,7 @@ import { createPost, updatePost } from '../redux/actions/postAction';
 
 const getInitialState = () => ({
   // ✅ CAMPOS COMUNES A TODAS LAS CATEGORÍAS
-  category: "Agence de Voyage",
+  category: "Agence de Voyage Tassili",
   subCategory: "",
   title: "",
   description: "",

@@ -1543,5 +1543,101 @@
   
  
   "wilayaHelp": "اختر ولايتك",
-  "villeDepartHelp": "أدخل مدينة المغادرة"
+  "villeDepartHelp": "أدخل مدينة المغادرة",
+
+  
+  "selectWilaya": "اختر الولاية",
+ 
+  "communePlaceholder": "مثال: باب الوادي، سيدي امحمد، حسين داي...",
+  "specificAddress": "العنوان المحدد",
+  "specificAddressPlaceholder": "مثال: شارع، مكان محدد، نقطة اللقاء...",
+ 
+    "destino": "الوجهة",
+    "internacional": "الدولية",
+    "ciudadDestino": "مدينة الوجهة",
+ 
+    "destinosArabes": "الوجهات العربية",
+   
+    "noOptions": "لا توجد خيارات متاحة",
+    
+    "dubai": "دبي",
+    "abuDhabi": "أبو ظبي",
+    "sharjah": "الشارقة",
+    "elCairo": "القاهرة",
+    "sharmElSheikh": "شرم الشيخ",
+    "alejandria": "الإسكندرية",
+    "tunez": "تونس",
+    "sousse": "سوسة",
+    "djerba": "جربة",
+    "hammamet": "حمامات",
+    "aman": "عمان",
+    "aqaba": "العقبة",
+    "petra": "البتراء",
+    "doha": "الدوحة",
+    "manama": "المنامة",
+    "mascate": "مسقط",
+    "salalah": "صلالة",
+    "beirut": "بيروت",
+    "tripoli": "طرابلس",
+    
+    "estambul": "إسطنبول",
+    "ankara": "أنقرة",
+    "esmirna": "إزمير",
+    "antalya": "أنطاليا",
+    "bursa": "بورصة",
+    "konya": "قونية",
+    "trabzon": "طرابزون",
+    "capadocia": "كبادوكيا",
+    "pamukkale": "باموكالي",
+    "efeso": "أفسس",
+    
+    "kualaLumpur": "كوالالمبور",
+    "langkawi": "لانكاوي",
+    "penang": "بينانغ",
+    "bangkok": "بانكوك",
+    "phuket": "فوكيت",
+    "chiangMai": "تشيانغ مي",
+    "singapur": "سنغافورة",
+    "bali": "بالي",
+    "yakarta": "جاكرتا",
+    "seul": "سيول",
+    
+    "paris": "باريس",
+    "lyon": "ليون",
+    "marsella": "مرسيليا",
+    "londres": "لندن",
+    "manchester": "مانشستر",
+    "roma": "روما",
+    "milan": "ميلانو",
+    "venecia": "البندقية",
+    "madrid": "مدريد",
+    "barcelona": "برشلونة",
+    "berlin": "برلين",
+    "munich": "ميونخ",
+    "amsterdam": "أمستردام",
+    "bruselas": "بروكسل",
+    "ginebra": "جنيف",
+    "zurich": "زيورخ",
+    
+    "nuevaYork": "نيويورك",
+    "losAngeles": "لوس أنجلوس",
+    "miami": "ميامي",
+    "lasVegas": "لاس فيغاس",
+    "toronto": "تورونتو",
+    "montreal": "مونتريال",
+    "vancouver": "فانكوفر",
+    
+    "casablanca": "الدار البيضاء",
+    "marrakech": "مراكش",
+    "tanger": "طنجة",
+    "dakar": "داكار",
+    "nairobi": "نيروبي",
+    "ciudadDelCabo": "كيب تاون"
+ 
+
+
+
+
+
+
 }

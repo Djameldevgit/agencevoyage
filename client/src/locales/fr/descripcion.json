@@ -1,5 +1,69 @@
 {
-   
+  
+    "categories": {
+      "hajjUmrah": "Pèlerinage Hajj & Omra",
+      "hajjDescription": "Expérience spirituelle unique vers les lieux saints de l'Islam",
+      "organizedTrip": "Voyage Organisé",
+      "organizedDescription": "Aventure planifiée pour votre confort et découverte",
+      "vacationRental": "Location de Vacances",
+      "rentalDescription": "Votre maison loin de chez vous pour des moments inoubliables",
+      "general": "Offre Exceptionnelle",
+      "generalDescription": "Expérience de voyage unique soigneusement préparée"
+    },
+    "announcement": {
+      "excitingNews": "🎉 Nouvelle Offre Exclusive !",
+      "proudlyPresents": "a le plaisir de vous présenter un",
+      "carefullyDesigned": "soigneusement conçu pour votre plus grand plaisir.",
+      "departure": "Départ",
+      "at": "à",
+      "destination": "Destination",
+      "duration": "Durée"
+    },
+    "details": {
+      "journeyDetails": "Les Détails de Votre Voyage",
+      "departureLocation": "Lieu de départ",
+      "includes": "Comprend",
+      "andMore": "et plus encore..."
+    },
+    "specific": {
+      "hotelMeca": "Hôtel à La Mecque",
+      "hotelMedina": "Hôtel à Médine",
+      "transport": "Transport",
+      "hotel": "Hôtel",
+      "category": "Catégorie",
+      "mealPlan": "Régime alimentaire",
+      "propertyType": "Type de propriété",
+      "capacity": "Capacité",
+      "people": "personnes",
+      "rooms": "Chambres",
+      "area": "Surface"
+    },
+    "accommodation": {
+      "yourStay": "Votre Hébergement",
+      "hotelName": "Nom de l'hôtel",
+      "meca": "La Mecque",
+      "medina": "Médine"
+    },
+    "pricing": {
+      "investment": "Votre Investissement",
+      "startingFrom": "À partir de",
+      "perPerson": "par personne",
+      "familyRates": "Tarifs Famille",
+      "adults": "Adultes",
+      "children": "Enfants",
+      "specialOffers": "Offres Spéciales",
+      "groupDiscount": "Réduction Groupe",
+      "specialOffer": "Offre Spéciale",
+      "lowSeason": "Basse Saison",
+      "earlyBooking": "Réservation Anticipée"
+    },
+    "contact": {
+      "readyToBook": "Prêt à Réserver ?",
+      "dontMiss": "Ne manquez pas cette opportunité unique ! Notre équipe est à votre disposition pour répondre à toutes vos questions et finaliser votre réservation.",
+      "callNow": "Appelez-nous dès maintenant",
+      "guarantee": "Réservez en toute confiance et préparez-vous à vivre des moments inoubliables !"
+    
+  },
  
         "exceptionalOffer": "Offre exceptionnelle",
         "exclusiveOffer": "Offre exclusive",
@@ -1170,9 +1234,7 @@
           "dates_times": "Dates et Horaires",
           "destination": "Destination",
           "transport": "Transport",
-          "accommodation": "Hébergement",
-         
-          "pricing": "Prix",
+        
           "contact_reservation": "Contact et Réservation",
        
      
@@ -1528,83 +1590,7 @@
       "about": "Nosotros"
     },
     
-    "categories": {
-      "Agence de Voyage": "Agencia de Viajes",
-      "hadj_Omra": "Hajj y Omra",
-      "Voyage Organise": "Viaje Organizado",
-      "Location_Vacances": "Alquiler Vacacional",
-      
-      "villa_lujo": "Villa de Lujo",
-      "villa_familiar": "Villa Familiar",
-      "apartamento_lujo": "Apartamento Premium",
-      "apartamento_estudio": "Apartamento Estudio",
-      "studio": "Studio",
-      "riad": "Riad Tradicional",
-      "chalet_montana": "Chalet Montaña",
-      "casa_playa": "Casa Playa",
-      "duplex": "Dúplex",
-      "penthouse": "Penthouse",
-      "bungalow": "Bungalow",
-      "casa_rural": "Casa Rural",
-      
-      "economico": "Económico",
-      "estandar": "Estándar",
-      "superior": "Superior",
-      "premium": "Premium",
-      "luxe": "Lujo",
-      
-      "1_2_personas": "1-2 personas",
-      "2_4_personas": "2-4 personas",
-      "4_6_personas": "4-6 personas",
-      "6_8_personas": "6-8 personas",
-      "8_10_personas": "8-10 personas",
-      "10_12_personas": "10-12 personas",
-      "12_plus_personas": "12+ personas",
-      
-      "1_habitacion": "1 habitación",
-      "2_habitaciones": "2 habitaciones",
-      "3_habitaciones": "3 habitaciones",
-      "4_habitaciones": "4 habitaciones",
-      "5_plus_habitaciones": "5+ habitaciones",
-      
-      "superficie_0_50": "0-50 m²",
-      "superficie_50_80": "50-80 m²",
-      "superficie_80_120": "80-120 m²",
-      "superficie_120_200": "120-200 m²",
-      "superficie_200_plus": "200+ m²",
-      
-      "1_bano": "1 baño",
-      "2_banos": "2 baños",
-      "3_banos": "3 baños",
-      "4_plus_banos": "4+ baños",
-      
-      "descuentoGrupo": "Descuento para grupos",
-      "ofertaEspecial": "Oferta especial",
-      "descuentoTemporadaBaja": "Descuento temporada baja",
-      "descuentoAnticipacion": "Descuento por anticipación",
-      
-      "air_algerie": "Air Algérie",
-      "saudi_airlines": "Saudi Airlines",
-      "emirates": "Emirates",
-      "qatar_airways": "Qatar Airways",
-      "turkish_airlines": "Turkish Airlines",
-      "etihad_airways": "Etihad Airways",
-      "other_airline": "Otra compañía",
-      
-      "avion_direct": "Vuelo directo",
-      "avion_escale": "Vuelo con escala",
-      "bus_meca_medina": "Bus Meca-Medina",
-      
-      "economy": "Económica",
-      "premium_economy": "Económica Premium",
-      "business": "Negocios",
-      "first": "Primera Clase",
-      
-      "bus_ac": "Bus climatizado",
-      "van": "Van de lujo",
-      "voiture": "Coche privado",
-      "non_inclus": "No incluido"
-    },
+    
    
       "servicess": {
         "categoria_administrativos": "Services Administratifs",

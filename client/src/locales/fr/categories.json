@@ -620,7 +620,7 @@
     "transporte": "Avion",
     "duracionviaje": "7 jours / 6 nuits",
     
-    "commune": "Hydra",
+    "commune": "Ville",
     "horadudepar": "08:00",
     "datedepar": "2024-06-15",
     "fecharegreso": "2024-06-22",
@@ -1513,7 +1513,102 @@
         "details_flexible": "Remboursement intégral si annulé au moins 24 heures à l'avance",
         "details_moderee": "Remboursement de 50% si annulé au moins 48 heures à l'avance",
         "details_strict": "Aucun remboursement en cas d'annulation",
-        "apercu_politiques": "Aperçu des politiques disponibles"
+        "apercu_politiques": "Aperçu des politiques disponibles",
+
+       
+        "selectWilaya": "Sélectionnez la wilaya",
+         
+        "communePlaceholder": "Ex: Bab El Oued, Sidi Mhamed, Hussein Dey...",
+        "specificAddress": "Adresse spécifique",
+        "specificAddressPlaceholder": "Ex: Rue, lieu précis, point de rendez-vous...",
+    
+          "destino": "Destination",
+          "internacional": "International",
+          "ciudadDestino": "Ville de destination",
+         
+          "destinosArabes": "Destinations Arabes",
+        
+          "noOptions": "Aucune option disponible",
+          
+          "dubai": "Dubaï",
+          "abuDhabi": "Abou Dhabi",
+          "sharjah": "Charjah",
+          "elCairo": "Le Caire",
+          "sharmElSheikh": "Charm el-Cheikh",
+          "alejandria": "Alexandrie",
+          "tunez": "Tunis",
+          "sousse": "Sousse",
+          "djerba": "Djerba",
+          "hammamet": "Hammamet",
+          "aman": "Amman",
+          "aqaba": "Aqaba",
+          "petra": "Pétra",
+          "doha": "Doha",
+          "manama": "Manama",
+          "mascate": "Mascate",
+          "salalah": "Salalah",
+          "beirut": "Beyrouth",
+          "tripoli": "Tripoli",
+          
+          "estambul": "Istanbul",
+          "ankara": "Ankara",
+          "esmirna": "Izmir",
+          "antalya": "Antalya",
+          "bursa": "Bursa",
+          "konya": "Konya",
+          "trabzon": "Trabzon",
+          "capadocia": "Cappadoce",
+          "pamukkale": "Pamukkale",
+          "efeso": "Éphèse",
+          
+          "kualaLumpur": "Kuala Lumpur",
+          "langkawi": "Langkawi",
+          "penang": "Penang",
+          "bangkok": "Bangkok",
+          "phuket": "Phuket",
+          "chiangMai": "Chiang Mai",
+          "singapur": "Singapour",
+          "bali": "Bali",
+          "yakarta": "Jakarta",
+          "seul": "Séoul",
+          
+          "paris": "Paris",
+          "lyon": "Lyon",
+          "marsella": "Marseille",
+          "londres": "Londres",
+          "manchester": "Manchester",
+          "roma": "Rome",
+          "milan": "Milan",
+          "venecia": "Venise",
+          "madrid": "Madrid",
+          "barcelona": "Barcelone",
+          "berlin": "Berlin",
+          "munich": "Munich",
+          "amsterdam": "Amsterdam",
+          "bruselas": "Bruxelles",
+          "ginebra": "Genève",
+          "zurich": "Zurich",
+          
+          "nuevaYork": "New York",
+          "losAngeles": "Los Angeles",
+          "miami": "Miami",
+          "lasVegas": "Las Vegas",
+          "toronto": "Toronto",
+          "montreal": "Montréal",
+          "vancouver": "Vancouver",
+          
+          "casablanca": "Casablanca",
+          "marrakech": "Marrakech",
+          "tanger": "Tanger",
+          "dakar": "Dakar",
+          "nairobi": "Nairobi",
+          "ciudadDelCabo": "Le Cap"
+        
+
+
+
+
+
       
     
 }

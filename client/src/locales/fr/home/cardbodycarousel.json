@@ -1,5 +1,35 @@
 {
- 
+  
+    "categories": {
+      "locationVacances": "Location de Vacances",
+      "hajjUmrah": "Hajj & Omra",
+      "voyageOrganise": "Voyage Organisé",
+      "businessTrip": "Voyage d'Affaires",
+      "tourism": "Tourisme",
+      "adventure": "Aventure",
+      "cultural": "Culturel",
+      "beach": "Balnéaire",
+      "mountain": "Montagne",
+      "desert": "Désert"
+    },
+    
+    "departure": "Départ",
+    "destination": "Destination",
+    "location": "Localisation",
+    "editPost": "Modifier le post",
+    "deletePost": "Supprimer le post",
+    "writeToAgency": "Écrire à l'agence",
+    "followAgency": "Suivre l'agence",
+    "sharePost": "Partager",
+    "viewDetails": "Voir détails",
+   
+    "auth": {
+      "required": "Authentification requise",
+      "loginToContinue": "Veuillez vous connecter pour continuer",
+      "login": "Se connecter",
+      "register": "S'inscrire"
+    
+  },
  
     "servicess": {
       "categoria_administrativos": "Services Administratifs",
