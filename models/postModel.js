@@ -26,21 +26,20 @@ const postSchema = new mongoose.Schema({
     // 🔷 DESTINOS SEGÚN CATEGORÍA
     destinacion: String, // Campo unificado para destino
 
-    // 🔷 FECHAS Y DURACIÓN
+    datedepar: String,
     datedepar: String,
     horadudepar: String,
     dateretour: String,
     dureeSejour: String,
     
-    // 🔷 INFORMACIÓN HOTEL
+
     nombreHotel: String,
     ciudadHotel: String,
     zonaRegion: String,
     direccionHotel: String,
     commune: String,
 
-    hotelMeca: String,
-    hotelMedina: String,
+   
 
     // 🔷 CAMPOS ESPECÍFICOS POR CATEGORÍA
     // Hajj & Omra

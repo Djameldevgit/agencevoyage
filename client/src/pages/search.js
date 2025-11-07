@@ -1,10 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTranslation } from 'react-i18next';
 import { getDataAPI } from "../utils/fetchData";
-import { GLOBALTYPES } from "../redux/actions/globalTypes";
-import UserCard from "../components/UserCard";
 import Posts from "../components/home/Posts";
+import LoadIcon from "../images/loading.gif";
+
+import DestinacionHadjOmra from "../components/forms/hadjpmra/DestinacionHdjaOmra";
+import DestinacionLocationvacances from "../components/forms/locationvacances/DestinacionLocationvacances";
+import Destinacionvoyageorganise from "../components/forms/voyageorgranise/Destinacionvoyageorganise";
 
 import {
   Container,
@@ -12,88 +15,106 @@ import {
   Button,
   Spinner,
   Alert,
-  ListGroup,
-  InputGroup,
   Row,
   Col,
   Card,
-  Accordion,
   Badge,
+  Collapse,
 } from "react-bootstrap";
-
-import LoadIcon from "../images/loading.gif";
 
 export default function SearchPage() {
   const { t, i18n } = useTranslation('search');
   const languageReducer = useSelector(state => state.languageReducer);
   
+  // 🆕 DETECCIÓN RTL
+  const isRTL = i18n.language === 'ar';
+  
+  // 🆕 ESTADO PARA TOGGLE DE BÚSQUEDA AVANZADA
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  
   useEffect(() => {
-    const lang = languageReducer?.language || 'es';
+    const lang = languageReducer?.language || 'fr';
     if (i18n.language !== lang) {
       i18n.changeLanguage(lang);
     }
   }, [languageReducer?.language, i18n]);
 
-  // 🔹 Estados consolidados - SOLO 3 CAMPOS
-  const [search, setSearch] = useState("");
+  // 🔹 Estados para filtros tradicionales - CORREGIDOS
   const [filters, setFilters] = useState({
-    subCategory: "",
-    destinacionvoyage1: "",
-    wilaya: ""
+    subCategory: "",    
+    destinacion: "",    
+    datedeparMin: "",    // 🆕 CORREGIDO: Fecha mínima (coincide con campo real)
+    datedeparMax: "",    // 🆕 CORREGIDO: Fecha máxima (coincide con campo real)
+    nombreHotel: "",     // Búsqueda por hotel
+    minPrice: "",        // 🆕 NUEVO: Precio mínimo
+    maxPrice: "",        // 🆕 NUEVO: Precio máximo
+    latest: false       
   });
 
+  // 🔥 Estados para búsqueda inteligente
+  const [smartSearchResults, setSmartSearchResults] = useState([]);
+  const [smartSearchError, setSmartSearchError] = useState(null);
+  const [smartSearchLoading, setSmartSearchLoading] = useState(false);
+
+  // 🔹 Estados tradicionales
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [userLoading, setUserLoading] = useState(false);
 
   const { auth } = useSelector((state) => state);
-  const dispatch = useDispatch();
 
-  // 🔹 Opciones para los selects
+  // 🔹 Opciones para el select de categoría
   const subCategoryOptions = [
-    { value: "Voyage Organise", label: "Voyage Organisé" },
-    { value: "Location_Vacances", label: "Location Vacances" },
-    { value: "hadj_Omra", label: "Hadj & Omra" },
-    { value: "Reservations_Visa", label: "Réservations & Visa" }
+    { value: "Voyage Organise", label: t('categories.organizedTrip', 'Voyage Organisé') },
+    { value: "Location_Vacances", label: t('categories.vacationRental', 'Location Vacances') },
+    { value: "hadj_Omra", label: t('categories.hajjUmrah', 'Hadj & Omra') }
   ];
 
-  const destinationOptions = [
-    {
-      group: "Destinations Nationales",
-      options: [
-        "Alger", "Oran", "Constantine", "Tlemcen", "Béjaïa", 
-        "Timimoun", "Djanet", "Taghit", "Boussaâda", "Oued Souf"
-      ]
-    },
-    {
-      group: "Destinations Internationales",
-      options: [
-        "Istanbul", "Dubaï", "Le Caire", "Sharm El Sheikh", "Tunis",
-        "Sousse", "Djerba", "Moscou", "Saint Petersburg", "Kuala Lumpur",
-        "Langkawi", "Bakou", "Téhéran", "Kashan", "Ispahan", "Shiraz",
-        "New York", "Los Angeles", "Las Vegas", "San Francisco", "Andalousie",
-        "Rome", "Paris", "Maldives", "Zanzibar", "Jordanie", "Ouzbékistan", "Thaïlande"
-      ]
-    }
-  ];
-
-   
-
-  // 🔹 Buscar posts - SOLO 3 CAMPOS
+  // 🔹 Buscar posts con filtros tradicionales - ACTUALIZADO
   const handleSearch = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setError(null);
+    setSmartSearchError(null);
     setLoading(true);
 
     try {
       const queryParams = new URLSearchParams();
       
-      if (search.trim()) queryParams.append('title', search.trim().toLowerCase());
-      if (filters.subCategory.trim()) queryParams.append('subCategory', filters.subCategory.trim());
-      if (filters.destinacionvoyage1.trim()) queryParams.append('destinacionvoyage1', filters.destinacionvoyage1.trim());    if (filters.wilaya.trim()) queryParams.append('wilaya', filters.wilaya.trim().toLowerCase());
-
+      if (filters.subCategory.trim()) {
+        queryParams.append('subCategory', filters.subCategory.trim());
+      }
+      
+      if (filters.destinacion.trim()) {
+        queryParams.append('destinacion', filters.destinacion.trim());
+      }
+      
+      // 🆕 PARÁMETROS DE FECHAS - CORREGIDOS
+      if (filters.datedeparMin.trim()) {
+        queryParams.append('datedeparMin', filters.datedeparMin.trim());
+      }
+      
+      if (filters.datedeparMax.trim()) {
+        queryParams.append('datedeparMax', filters.datedeparMax.trim());
+      }
+      
+      // 🆕 BÚSQUEDA POR HOTEL
+      if (filters.nombreHotel.trim()) {
+        queryParams.append('nombreHotel', filters.nombreHotel.trim());
+      }
+      
+      // 🆕 PARÁMETROS DE PRECIO - NUEVOS
+      if (filters.minPrice.trim()) {
+        queryParams.append('minPrice', filters.minPrice.trim());
+      }
+      
+      if (filters.maxPrice.trim()) {
+        queryParams.append('maxPrice', filters.maxPrice.trim());
+      }
+      
+      if (filters.latest) {
+        queryParams.append('sort', '-createdAt');
+      }
+      
       const queryString = queryParams.toString();
       const url = `posts${queryString ? `?${queryString}` : ''}`;
       
@@ -101,245 +122,603 @@ export default function SearchPage() {
       setResults(res.data.posts || []);
       
     } catch (err) {
-      console.error("Error en búsqueda:", err);
+      console.error("Error en búsqueda tradicional:", err);
       setError(
-        err.response?.data?.message || err.message || t('errors.searchError')
+        err.response?.data?.message || err.message || t('errors.searchError', 'Erreur de recherche')
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCloseUsers = () => {
-    setUsers([]);
-    setSearch("");
+  // 🔹 Buscar últimos viajes automáticamente
+  const handleLatestTrips = () => {
+    setFilters(prev => ({
+      ...prev,
+      latest: true,
+      subCategory: "",
+      destinacion: "",
+      datedeparMin: "",
+      datedeparMax: "",
+      nombreHotel: "",
+      minPrice: "",
+      maxPrice: ""
+    }));
+    setSmartSearchResults([]);
+    setSmartSearchError(null);
   };
+
+  // 🔹 Efecto para búsqueda automática de últimos viajes
+  useEffect(() => {
+    if (filters.latest) {
+      handleSearch();
+    }
+  }, [filters.latest]);
+
+  // 🔥 Limpiar búsqueda inteligente cuando se usan filtros normales
+  useEffect(() => {
+    if (filters.subCategory || filters.destinacion || filters.datedeparMin || 
+        filters.datedeparMax || filters.nombreHotel || filters.minPrice || filters.maxPrice) {
+      setSmartSearchResults([]);
+      setSmartSearchError(null);
+    }
+  }, [filters.subCategory, filters.destinacion, filters.datedeparMin, 
+      filters.datedeparMax, filters.nombreHotel, filters.minPrice, filters.maxPrice]);
 
   // 🔹 Manejo de filtros optimizado
   const updateFilter = (field, value) => {
     setFilters(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
+      ...(field === 'subCategory' && { destinacion: "" })
+    }));
+  };
+
+  // 🔹 Función específica para actualizar el destino
+  const updateDestinacion = (value) => {
+    setFilters(prev => ({
+      ...prev,
+      destinacion: value
     }));
   };
 
   // 🔹 Limpiar todos los filtros
   const handleClearFilters = () => {
-    setSearch("");
     setFilters({
       subCategory: "",
-      destinacionvoyage1: "",
-      wilaya: ""
+      destinacion: "",
+      datedeparMin: "",
+      datedeparMax: "",
+      nombreHotel: "",
+      minPrice: "",
+      maxPrice: "",
+      latest: false
     });
     setResults([]);
-    setUsers([]);
+    setSmartSearchResults([]);
     setError(null);
+    setSmartSearchError(null);
+    setShowAdvancedSearch(false);
   };
 
-  // 🔹 Contador de filtros activos optimizado
+  // 🔹 Contador de filtros activos - ACTUALIZADO
   const activeFiltersCount = [
-    search,
     filters.subCategory,
-    filters.destinacionvoyage1,
-    filters.wilaya
+    filters.destinacion,
+    filters.datedeparMin,
+    filters.datedeparMax,
+    filters.nombreHotel,
+    filters.minPrice,
+    filters.maxPrice,
+    filters.latest,
+    smartSearchResults.length > 0 ? "búsqueda-activa" : ""
   ].filter(Boolean).length;
 
-  return (
-    <Container className="py-3">
-      {/* Header Compacto */}
-      <div className="text-center mb-3">
-        <h4 className="fw-bold text-primary mb-1">{t('title')}</h4>
-        <p className="text-muted small">{t('subtitle')}</p>
-      </div>
+  // 🔥 DETERMINAR QUÉ RESULTADOS MOSTRAR
+  const postsToShow = smartSearchResults.length > 0 ? smartSearchResults : results;
+  const showingSmartSearch = smartSearchResults.length > 0;
 
-      {/* Search Card Compacta */}
-      <Card className="shadow-sm border-0 mb-3">
+  // 🔥 COMPONENTE DE DESTINO DINÁMICO - CON RTL
+  const DestinationSelector = () => {
+    if (!filters.subCategory) {
+      return (
+        <Form.Group className="h-100 d-flex flex-column">
+          <Form.Label className="small fw-semibold mb-1">
+            {/* 🆕 ICONO RTL */}
+            {isRTL ? (
+              <span>
+                {t('labels.destination', 'Destination')} 
+                <i className="fas fa-map-marker-alt text-success ms-1"></i>
+              </span>
+            ) : (
+              <span>
+                <i className="fas fa-map-marker-alt text-success me-1"></i>
+                {t('labels.destination', 'Destination')}
+              </span>
+            )}
+          </Form.Label>
+          <Form.Select 
+            size="sm" 
+            disabled
+            className="flex-grow-1"
+            dir={isRTL ? "rtl" : "ltr"}
+          >
+            <option value="">{t('placeholders.selectCategoryFirst', 'Sélectionnez d\'abord une catégorie')}</option>
+          </Form.Select>
+        </Form.Group>
+      );
+    }
+
+    const destinationProps = {
+      postData: { destinacion: filters.destinacion },
+      handleChangeInput: (e) => {
+        if (e.target.name === 'destinacion') {
+          updateDestinacion(e.target.value);
+        }
+      }
+    };
+
+    const getDestinationLabel = () => {
+      switch (filters.subCategory) {
+        case "Voyage Organise":
+          return t('labels.destinationOrganized', 'Destination (Voyages Organisés)');
+        case "Location_Vacances":
+          return t('labels.destinationRental', 'Destination (Location Vacances)');
+        case "hadj_Omra":
+          return t('labels.destinationHajj', 'Destination (Hadj & Omra)');
+        default:
+          return t('labels.destination', 'Destination');
+      }
+    };
+
+    const getDestinationIcon = () => {
+      switch (filters.subCategory) {
+        case "Voyage Organise":
+          return "fas fa-globe-americas";
+        case "Location_Vacances":
+          return "fas fa-home";
+        case "hadj_Omra":
+          return "fas fa-mosque";
+        default:
+          return "fas fa-map-marker-alt";
+      }
+    };
+
+    const renderDestinationComponent = () => {
+      switch (filters.subCategory) {
+        case "Voyage Organise":
+          return <Destinacionvoyageorganise {...destinationProps} />;
+        case "Location_Vacances":
+          return <DestinacionLocationvacances {...destinationProps} />;
+        case "hadj_Omra":
+          return <DestinacionHadjOmra {...destinationProps} />;
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <Form.Group className="h-100 d-flex flex-column">
+        <Form.Label className="small fw-semibold mb-1">
+          {/* 🆕 ICONO RTL */}
+          {isRTL ? (
+            <span>
+              {getDestinationLabel()} 
+              <i className={`${getDestinationIcon()} text-success ms-1`}></i>
+            </span>
+          ) : (
+            <span>
+              <i className={`${getDestinationIcon()} text-success me-1`}></i>
+              {getDestinationLabel()}
+            </span>
+          )}
+        </Form.Label>
+        <div className="flex-grow-1">
+          {renderDestinationComponent()}
+        </div>
+      </Form.Group>
+    );
+  };
+
+  return (
+    <Container fluid className="px-0" dir={isRTL ? "rtl" : "ltr"}>
+      {/* 🔹 BÚSQUEDA PRINCIPAL CON FILTROS TRADICIONALES - CON RTL */}
+      <Card className="shadow-sm border-0 rounded-0 mb-3">
         <Card.Body className="p-3">
           <Form onSubmit={handleSearch}>
-            {/* 🔹 Búsqueda Principal Compacta */}
-           
-            {/* 🔹 Dropdown usuarios compacto */}
-            {search && users.length > 0 && (
-              <Card className="mb-2 border-primary">
-                <Card.Header className="bg-primary text-white py-1 px-2">
-                  <small className="fw-bold">
-                    <i className="fas fa-users me-1"></i>
-                    {t('travelAgenciesFound')} ({users.length})
-                  </small>
-                </Card.Header>
-                <ListGroup variant="flush" className="max-h-200 overflow-auto">
-                  {userLoading && (
-                    <ListGroup.Item className="text-center py-2">
-                      <Spinner animation="border" size="sm" className="me-2" />
-                      <small>{t('searchingAgencies')}</small>
-                    </ListGroup.Item>
-                  )}
-                  {users.map((user) => (
-                    <ListGroup.Item key={user._id} action className="p-2">
-                      <UserCard
-                        user={user}
-                        border="border-0"
-                        handleClose={handleCloseUsers}
-                        compact={true}
-                      />
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              </Card>
-            )}
-
-            {/* 🔹 Acordeón Compacto para Filtros - SOLO 3 CAMPOS */}
-            <Accordion className="mb-3" defaultActiveKey={['0']} alwaysOpen>
-              <Accordion.Item eventKey="0">
-                <Accordion.Header className="py-2">
-                  <div className="d-flex align-items-center w-100">
-                    <i className="fas fa-filter text-primary me-2 fs-6"></i>
-                    <small className="fw-semibold">{t('filters.title')}</small>
-                    {activeFiltersCount > 0 && (
-                      <Badge bg="primary" className="ms-2 fs-6">
-                        {activeFiltersCount}
-                      </Badge>
+            {/* 🆕 FILA 1: CATEGORÍA Y DESTINO EN MISMA FILA - CON RTL */}
+            <Row className={`g-3 align-items-stretch mb-3 ${isRTL ? 'flex-row-reverse' : ''}`} style={{ minHeight: '80px' }}>
+              {/* CATEGORÍA - 50% */}
+              <Col xl={6} lg={6} md={6} sm={12} className="d-flex flex-column">
+                <Form.Group className="h-100 d-flex flex-column">
+                  <Form.Label className="small fw-semibold mb-1">
+                    {/* 🆕 ICONO RTL */}
+                    {isRTL ? (
+                      <span>
+                        {t('labels.category', 'Catégorie')} 
+                        <i className="fas fa-tags text-info ms-1"></i>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fas fa-tags text-info me-1"></i>
+                        {t('labels.category', 'Catégorie')}
+                      </span>
                     )}
-                  </div>
-                </Accordion.Header>
-                <Accordion.Body className="p-2">
-                  <Row className="g-2">
-                    {/* 🔹 FILTRO 1: SUBCATEGORÍA - SELECT */}
-                    <Col sm={6}>
-                      <Form.Group className="mb-2">
-                        <Form.Label className="small fw-semibold mb-1">
-                          <i className="fas fa-tags text-info me-1"></i>
-                          {t('filters.subCategory')}
-                        </Form.Label>
-                        <Form.Select
-                          value={filters.subCategory}
-                          onChange={(e) => updateFilter('subCategory', e.target.value)}
-                          size="sm"
-                        >
-                          <option value="">{t('filters.selectSubCategory')}</option>
-                          {subCategoryOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
+                  </Form.Label>
+                  <Form.Select
+                    value={filters.subCategory}
+                    onChange={(e) => updateFilter('subCategory', e.target.value)}
+                    size="sm"
+                    disabled={loading}
+                    className="flex-grow-1"
+                    dir={isRTL ? "rtl" : "ltr"}
+                  >
+                    <option value="">{t('placeholders.allCategories', 'Toutes les catégories')}</option>
+                    {subCategoryOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
 
-                    {/* 🔹 FILTRO 2: DESTINO DEL VIAJE - SELECT */}
-                    <Col sm={6}>
-                      <Form.Group className="mb-2">
-                        <Form.Label className="small fw-semibold mb-1">
-                          <i className="fas fa-map-marker-alt text-success me-1"></i>
-                          {t('filters.destination')}
-                        </Form.Label>
-                        <Form.Select
-                          value={filters.destinacionvoyage1}
-                          onChange={(e) => updateFilter('destinacionvoyage1', e.target.value)}
-                          size="sm"
-                        >
-                          <option value="">{t('filters.selectDestination')}</option>
-                          
-                          {/* Destinos Nacionales */}
-                          <optgroup label={t('filters.nationalDestinations')}>
-                            {destinationOptions[0].options.map((destination) => (
-                              <option key={destination} value={destination}>
-                                {destination}
-                              </option>
-                            ))}
-                          </optgroup>
-                          
-                          {/* Destinos Internacionales */}
-                          <optgroup label={t('filters.internationalDestinations')}>
-                            {destinationOptions[1].options.map((destination) => (
-                              <option key={destination} value={destination}>
-                                {destination}
-                              </option>
-                            ))}
-                          </optgroup>
-                        </Form.Select>
-                      </Form.Group>
-                    </Col>
+              {/* DESTINO - 50% */}
+              <Col xl={6} lg={6} md={6} sm={12} className="d-flex flex-column">
+                <DestinationSelector />
+              </Col>
+            </Row>
 
-                    {/* 🔹 FILTRO 3: WILAYA - INPUT TEXT */}
-                    <Col sm={12}>
-                      <Form.Group className="">
-                        <Form.Label className="small fw-semibold">
-                          <i className="fas fa-globe-americas text-warning me-1"></i>
-                          {t('filters.wilaya')}
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder={t('filters.wilayaPlaceholder')}
-                          value={filters.wilaya}
-                          onChange={(e) => updateFilter('wilaya', e.target.value)}
-                          size="sm"
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
+            {/* 🆕 BOTÓN PARA BÚSQUEDA AVANZADA */}
+            <Row className={`mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Col>
+                <Button 
+                  variant="outline-primary" 
+                  size="sm"
+                  onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+                  className="w-100"
+                >
+                  <i className={`fas ${showAdvancedSearch ? 'fa-chevron-up' : 'fa-chevron-down'} ${isRTL ? 'ms-2' : 'me-2'}`}></i>
+                  {showAdvancedSearch 
+                    ? t('buttons.hideAdvanced', 'Masquer la recherche avancée') 
+                    : t('buttons.showAdvanced', 'Recherche avancée')}
+                  {activeFiltersCount > 0 && (
+                    <Badge bg="primary" className={`${isRTL ? 'me-2' : 'ms-2'}`}>
+                      {activeFiltersCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Col>
+            </Row>
 
-            {/* 🔹 Botones de Acción Compactos */}
-            
+            {/* 🆕 BÚSQUEDA AVANZADA - COLLAPSE */}
+            <Collapse in={showAdvancedSearch}>
+              <div>
+                {/* FILA 2: RANGO DE FECHAS Y BÚSQUEDA DE HOTEL - CON RTL */}
+                <Row className={`g-3 align-items-end mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  {/* FECHA INICIO */}
+                  <Col xl={4} lg={4} md={6} sm={12}>
+                    <Form.Group>
+                      <Form.Label className="small fw-semibold mb-1">
+                        {/* 🆕 ICONO RTL */}
+                        {isRTL ? (
+                          <span>
+                            {t('labels.startDate', 'Date de Départ Min')} 
+                            <i className="fas fa-calendar-plus text-primary ms-1"></i>
+                          </span>
+                        ) : (
+                          <span>
+                            <i className="fas fa-calendar-plus text-primary me-1"></i>
+                            {t('labels.startDate', 'Date de Départ Min')}
+                          </span>
+                        )}
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        value={filters.datedeparMin}
+                        onChange={(e) => updateFilter('datedeparMin', e.target.value)}
+                        size="sm"
+                        disabled={loading}
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  {/* FECHA FIN */}
+                  <Col xl={4} lg={4} md={6} sm={12}>
+                    <Form.Group>
+                      <Form.Label className="small fw-semibold mb-1">
+                        {/* 🆕 ICONO RTL */}
+                        {isRTL ? (
+                          <span>
+                            {t('labels.endDate', 'Date de Départ Max')} 
+                            <i className="fas fa-calendar-minus text-primary ms-1"></i>
+                          </span>
+                        ) : (
+                          <span>
+                            <i className="fas fa-calendar-minus text-primary me-1"></i>
+                            {t('labels.endDate', 'Date de Départ Max')}
+                          </span>
+                        )}
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        value={filters.datedeparMax}
+                        onChange={(e) => updateFilter('datedeparMax', e.target.value)}
+                        size="sm"
+                        disabled={loading}
+                        min={filters.datedeparMin}
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  {/* BÚSQUEDA POR HOTEL */}
+                  <Col xl={4} lg={4} md={12} sm={12}>
+                    <Form.Group>
+                      <Form.Label className="small fw-semibold mb-1">
+                        {/* 🆕 ICONO RTL */}
+                        {isRTL ? (
+                          <span>
+                            {t('labels.hotelSearch', 'Recherche par Hôtel')} 
+                            <i className="fas fa-hotel text-warning ms-1"></i>
+                          </span>
+                        ) : (
+                          <span>
+                            <i className="fas fa-hotel text-warning me-1"></i>
+                            {t('labels.hotelSearch', 'Recherche par Hôtel')}
+                          </span>
+                        )}
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder={t('placeholders.hotelName', 'Nom de l\'hôtel...')}
+                        value={filters.nombreHotel}
+                        onChange={(e) => updateFilter('nombreHotel', e.target.value)}
+                        size="sm"
+                        disabled={loading}
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                {/* 🆕 FILA 3: RANGO DE PRECIOS - NUEVO */}
+                <Row className={`g-3 align-items-end mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  {/* PRECIO MÍNIMO */}
+                  <Col xl={6} lg={6} md={6} sm={12}>
+                    <Form.Group>
+                      <Form.Label className="small fw-semibold mb-1">
+                        {/* 🆕 ICONO RTL */}
+                        {isRTL ? (
+                          <span>
+                            {t('labels.minPrice', 'Prix Minimum')} 
+                            <i className="fas fa-euro-sign text-success ms-1"></i>
+                          </span>
+                        ) : (
+                          <span>
+                            <i className="fas fa-euro-sign text-success me-1"></i>
+                            {t('labels.minPrice', 'Prix Minimum')}
+                          </span>
+                        )}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder={t('placeholders.minPrice', 'Min...')}
+                        value={filters.minPrice}
+                        onChange={(e) => updateFilter('minPrice', e.target.value)}
+                        size="sm"
+                        disabled={loading}
+                        min="0"
+                        step="0.01"
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </Form.Group>
+                  </Col>
+
+                  {/* PRECIO MÁXIMO */}
+                  <Col xl={6} lg={6} md={6} sm={12}>
+                    <Form.Group>
+                      <Form.Label className="small fw-semibold mb-1">
+                        {/* 🆕 ICONO RTL */}
+                        {isRTL ? (
+                          <span>
+                            {t('labels.maxPrice', 'Prix Maximum')} 
+                            <i className="fas fa-euro-sign text-success ms-1"></i>
+                          </span>
+                        ) : (
+                          <span>
+                            <i className="fas fa-euro-sign text-success me-1"></i>
+                            {t('labels.maxPrice', 'Prix Maximum')}
+                          </span>
+                        )}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder={t('placeholders.maxPrice', 'Max...')}
+                        value={filters.maxPrice}
+                        onChange={(e) => updateFilter('maxPrice', e.target.value)}
+                        size="sm"
+                        disabled={loading}
+                        min={filters.minPrice || "0"}
+                        step="0.01"
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </div>
+            </Collapse>
+
+            {/* 🆕 FILA 4: BOTONES DE ACCIÓN - CON RTL */}
+            <Row className={`g-3 align-items-end ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Col xl={12} lg={12} md={12} sm={12}>
+                <div className={`d-flex gap-2 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Button 
+                    variant="primary" 
+                    onClick={handleSearch}
+                    className="flex-fill"
+                    size="sm"
+                    disabled={loading}
+                    style={{ minWidth: '140px' }}
+                  >
+                    {loading ? (
+                      <>
+                        <Spinner animation="border" size="sm" className={isRTL ? "ms-1" : "me-1"} />
+                        {t('buttons.searching', 'Recherche...')}
+                      </>
+                    ) : (
+                      <>
+                        <i className={`fas fa-search ${isRTL ? "ms-1" : "me-1"}`}></i>
+                        {t('buttons.search', 'Rechercher')}
+                      </>
+                    )}
+                  </Button>
+                  
+                  <Button 
+                    variant="outline-secondary" 
+                    onClick={handleLatestTrips}
+                    size="sm"
+                    disabled={loading || filters.latest}
+                    style={{ minWidth: '120px' }}
+                  >
+                    <i className={`fas fa-clock ${isRTL ? "ms-1" : "me-1"}`}></i>
+                    {t('buttons.latestTrips', 'Derniers Voyages')}
+                  </Button>
+                  
+                  {activeFiltersCount > 0 && (
+                    <Button 
+                      variant="outline-danger" 
+                      onClick={handleClearFilters}
+                      size="sm"
+                      disabled={loading || smartSearchLoading}
+                      style={{ minWidth: '100px' }}
+                    >
+                      <i className={`fas fa-times ${isRTL ? "ms-1" : "me-1"}`}></i>
+                      {t('buttons.clearAll', 'Effacer')}
+                    </Button>
+                  )}
+                </div>
+              </Col>
+            </Row>
+
+            {/* 🔹 FILTROS ACTIVOS - ACTUALIZADO CON RTL */}
+            <div className="mt-3">
+              {activeFiltersCount > 0 && (
+                <div className={`d-flex align-items-center flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <small className={`text-muted ${isRTL ? "ms-2" : "me-2"}`}>
+                    {t('labels.activeFilters', 'Filtres actifs')}:
+                  </small>
+                  {filters.subCategory && (
+                    <Badge bg="info" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.category', 'Catégorie')}: {filters.subCategory}
+                    </Badge>
+                  )}
+                  {filters.destinacion && (
+                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.destination', 'Destination')}: {filters.destinacion}
+                    </Badge>
+                  )}
+                  {filters.datedeparMin && (
+                    <Badge bg="primary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.from', 'De')}: {filters.datedeparMin}
+                    </Badge>
+                  )}
+                  {filters.datedeparMax && (
+                    <Badge bg="primary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.to', 'À')}: {filters.datedeparMax}
+                    </Badge>
+                  )}
+                  {filters.nombreHotel && (
+                    <Badge bg="warning" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.hotel', 'Hôtel')}: {filters.nombreHotel}
+                    </Badge>
+                  )}
+                  {filters.minPrice && (
+                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.minPrice', 'Prix Min')}: ${filters.minPrice}
+                    </Badge>
+                  )}
+                  {filters.maxPrice && (
+                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.maxPrice', 'Prix Max')}: ${filters.maxPrice}
+                    </Badge>
+                  )}
+                  {showingSmartSearch && (
+                    <Badge bg="dark" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.smartSearch', 'Recherche Intelligente')}
+                    </Badge>
+                  )}
+                  {filters.latest && (
+                    <Badge bg="secondary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                      {t('labels.latestTrips', 'Derniers Voyages')}
+                    </Badge>
+                  )}
+                  <Badge bg="dark" className="mb-1">
+                    {activeFiltersCount} {activeFiltersCount === 1 ? t('labels.filter', 'filtre') : t('labels.filters', 'filtres')}
+                  </Badge>
+                </div>
+              )}
+            </div>
+
           </Form>
         </Card.Body>
       </Card>
 
-      {/* 🔹 Indicadores Compactos */}
-      {results.length > 0 && (
-        <Alert variant="info" className= "px-3  d-flex align-items-center">
-          <i className="fas fa-info-circle me-2 fs-6"></i>
-          <small className="fw-semibold">
-            {t('results.found', { count: results.length })}
-          </small>
-        </Alert>
-      )}
-
-      {error && (
-        <Alert variant="danger" className="px-3 d-flex align-items-center">
-          <i className="fas fa-exclamation-triangle me-2 fs-6"></i>
-          <small>{error}</small>
-        </Alert>
-      )}
-
-      {/* 🔹 Lista de Posts */}
-      <div className="">
-        {loading ? (
-          <Card className="text-center">
-            <Card.Body className="p-3">
-              <img src={LoadIcon} alt="loading" width="40" className="mb-2" />
-              <h6 className="text-muted mb-1">{t('results.searching')}</h6>
-              <small className="text-muted">{t('results.loading')}</small>
-            </Card.Body>
-          </Card>
-        ) : (
-          <Posts filters={filters } />
+      {/* 🔹 CONTENIDO PRINCIPAL - CON RTL */}
+      <Container className="py-3">
+        {/* 🔹 Indicadores de Resultados - CON RTL */}
+        {showingSmartSearch && smartSearchResults.length > 0 && (
+          <Alert variant="success" className="px-3 d-flex align-items-center mb-3">
+            <i className={`fas fa-check-circle ${isRTL ? "ms-2" : "me-2"} fs-6`}></i>
+            <small className="fw-semibold">
+              {t('results.smartSearchResults', 'Recherche intelligente')}: {smartSearchResults.length} {t('results.resultsFound', 'résultats trouvés')}
+            </small>
+          </Alert>
         )}
-      </div>
+
+        {results.length > 0 && !showingSmartSearch && (
+          <Alert variant="info" className="px-3 d-flex align-items-center mb-3">
+            <i className={`fas fa-info-circle ${isRTL ? "ms-2" : "me-2"} fs-6`}></i>
+            <small className="fw-semibold">
+              {t('results.filtersApplied', 'Filtres appliqués')}: {results.length} {t('results.resultsFound', 'résultats trouvés')}
+            </small>
+          </Alert>
+        )}
+
+        {(error || smartSearchError) && (
+          <Alert variant="danger" className="px-3 d-flex align-items-center mb-3">
+            <i className={`fas fa-exclamation-triangle ${isRTL ? "ms-2" : "me-2"} fs-6`}></i>
+            <small>{error || smartSearchError}</small>
+          </Alert>
+        )}
+
+        {showingSmartSearch && smartSearchResults.length === 0 && !smartSearchLoading && !smartSearchError && (
+          <Alert variant="warning" className="px-3 d-flex align-items-center mb-3">
+            <i className={`fas fa-search ${isRTL ? "ms-2" : "me-2"} fs-6`}></i>
+            <small className="fw-semibold">
+              {t('results.noSmartResults', 'Aucun résultat trouvé avec la recherche intelligente')}
+            </small>
+          </Alert>
+        )}
+
+        {/* 🔹 Lista de Posts */}
+        <div className="">
+          {(loading || smartSearchLoading) ? (
+            <Card className="text-center">
+              <Card.Body className="p-3">
+                <img src={LoadIcon} alt="loading" width="40" className="mb-2" />
+                <h6 className="text-muted mb-1">
+                  {smartSearchLoading ? t('states.searching', 'Recherche...') : t('states.applyingFilters', 'Application des filtres...')}
+                </h6>
+                <small className="text-muted">{t('states.pleaseWait', 'Veuillez patienter...')}</small>
+              </Card.Body>
+            </Card>
+          ) : (
+            <Posts posts={postsToShow.length > 0 ? postsToShow : null} filters={filters} />
+          )}
+        </div>
+      </Container>
     </Container>
   );
 }
-
-// 🔹 Estilos CSS adicionales para mejor compactación
-const styles = `
-.max-h-200 {
-  max-height: 200px;
-}
-.accordion-button {
-  padding: 0.5rem 1rem;
-}
-.accordion-button:not(.collapsed) {
-  background-color: #f8f9fa;
-}
-.accordion-body {
-  padding: 0.5rem;
-}
-`;
-
-// Agregar estilos al documento
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);

@@ -33,10 +33,13 @@ const ChangeView = ({ center, zoom }) => {
   return null;
 };
 
-const map = ({ post: postProp }) => {
+const Map = ({ post: postProp }) => {
   const location = useLocation();
   const history = useHistory();
-  const { t } = useTranslation('map');
+  const { t, i18n } = useTranslation('map');
+  
+  // 🆕 DETECCIÓN RTL
+  const isRTL = i18n.language === 'ar';
   
   const [mapCenter, setMapCenter] = useState([36.5, 3.5]);
   const [markerPosition, setMarkerPosition] = useState([36.5, 3.5]);
@@ -295,17 +298,27 @@ const map = ({ post: postProp }) => {
   }
 
   return (
-    <Container fluid className="py-4">
+    <Container fluid className="py-4" dir={isRTL ? "rtl" : "ltr"}>
       <Row className="justify-content-center">
         <Col lg={10} xl={8}>
-          {/* Header con información - TRADUCCIONES CORREGIDAS */}
+          {/* Header con información - CON RTL */}
           <Card className="shadow-sm mb-4">
             <Card.Header className="bg-primary text-white">
-              <Row className="align-items-center">
+              <Row className={`align-items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Col>
                   <h4 className="mb-0">
-                    <i className="fas fa-map-marked-alt me-2"></i>
-                    {getTranslatedText('map.locationTitle', 'Localisation sur la Carte')}
+                    {/* 🆕 ICONO RTL */}
+                    {isRTL ? (
+                      <span>
+                        {getTranslatedText('map.locationTitle', 'Localisation sur la Carte')}
+                        <i className="fas fa-map-marked-alt ms-2"></i>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fas fa-map-marked-alt me-2"></i>
+                        {getTranslatedText('map.locationTitle', 'Localisation sur la Carte')}
+                      </span>
+                    )}
                   </h4>
                   {post?.title && (
                     <small className="opacity-75">{post.title}</small>
@@ -317,17 +330,27 @@ const map = ({ post: postProp }) => {
                     size="sm" 
                     onClick={handleGoBack}
                   >
-                    <i className="fas fa-arrow-left me-1"></i>
-                    {getTranslatedText('common.back', 'Retour')}
+                    {/* 🆕 ICONO RTL */}
+                    {isRTL ? (
+                      <span>
+                        {getTranslatedText('common.back', 'Retour')}
+                        <i className="fas fa-arrow-left ms-1"></i>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fas fa-arrow-left me-1"></i>
+                        {getTranslatedText('common.back', 'Retour')}
+                      </span>
+                    )}
                   </Button>
                 </Col>
               </Row>
             </Card.Header>
             
-            <Card.Body>
-              {/* Información de ubicación - TRADUCCIONES CORREGIDAS */}
+            <Card.Body style={{ textAlign: isRTL ? 'right' : 'left' }}>
+              {/* Información de ubicación - CON RTL */}
               {post && (
-                <Row className="mb-3">
+                <Row className={`mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <Col md={6}>
                     <h6 className="text-muted">
                       {getTranslatedText('map.destinationInfo', 'Informations de destination')}:
@@ -370,12 +393,12 @@ const map = ({ post: postProp }) => {
                     <h6 className="text-muted">
                       {getTranslatedText('map.availableFields', 'Champs disponibles')}:
                     </h6>
-                    <div className="d-flex flex-wrap gap-1">
+                    <div className={`d-flex flex-wrap gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       {getLocationFields().map((field, index) => (
                         <Badge 
                           key={index} 
                           bg={usedField?.field === field.field ? "success" : "outline-secondary"} 
-                          className="mb-1"
+                          className={`mb-1 ${isRTL ? 'ms-1' : 'me-1'}`}
                         >
                           {field.label}
                         </Badge>
@@ -396,10 +419,10 @@ const map = ({ post: postProp }) => {
                 </Row>
               )}
 
-              {/* Controles del mapa - TRADUCCIONES CORREGIDAS */}
-              <Row className="align-items-center mb-3">
+              {/* Controles del mapa - CON RTL */}
+              <Row className={`align-items-center mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Col>
-                  <ButtonGroup size="sm">
+                  <ButtonGroup size="sm" className={isRTL ? 'flex-row-reverse' : ''}>
                     {Object.keys(mapProviders).map(style => (
                       <Button
                         key={style}
@@ -418,23 +441,33 @@ const map = ({ post: postProp }) => {
                     onClick={searchLocation}
                     disabled={loading}
                   >
-                    <i className="fas fa-sync-alt me-1"></i>
-                    {getTranslatedText('map.reload', 'Actualiser')}
+                    {/* 🆕 ICONO RTL */}
+                    {isRTL ? (
+                      <span>
+                        {getTranslatedText('map.reload', 'Actualiser')}
+                        <i className="fas fa-sync-alt ms-1"></i>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fas fa-sync-alt me-1"></i>
+                        {getTranslatedText('map.reload', 'Actualiser')}
+                      </span>
+                    )}
                   </Button>
                 </Col>
               </Row>
 
-              {/* Estados de carga y error - TRADUCCIONES CORREGIDAS */}
+              {/* Estados de carga y error - CON RTL */}
               {loading && (
-                <Alert variant="info" className="d-flex align-items-center">
-                  <Spinner animation="border" size="sm" className="me-2" />
+                <Alert variant="info" className={`d-flex align-items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Spinner animation="border" size="sm" className={isRTL ? "ms-2" : "me-2"} />
                   {getTranslatedText('map.searchingLocation', 'Recherche de la localisation...')}
                 </Alert>
               )}
               
               {error && (
-                <Alert variant="warning">
-                  <i className="fas fa-exclamation-triangle me-2"></i>
+                <Alert variant="warning" className={isRTL ? 'text-right' : ''}>
+                  <i className={`fas fa-exclamation-triangle ${isRTL ? 'ms-2' : 'me-2'}`}></i>
                   {error}
                 </Alert>
               )}
@@ -462,7 +495,11 @@ const map = ({ post: postProp }) => {
                 {!loading && !error && (
                   <Marker position={markerPosition}>
                     <Popup>
-                      <div style={{ minWidth: '250px' }}>
+                      <div style={{ 
+                        minWidth: '250px',
+                        direction: isRTL ? 'rtl' : 'ltr',
+                        textAlign: isRTL ? 'right' : 'left'
+                      }}>
                         <h6 className="fw-bold">
                           {post?.destinacion || getTranslatedText('map.unnamedLocation', 'Destination')}
                         </h6>
@@ -521,4 +558,4 @@ const map = ({ post: postProp }) => {
   );
 };
 
-export default map;
+export default Map;

@@ -53,7 +53,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
     const categoryInfo = getCategoryInfo();
 
-    // ✨ Componente para valores destacados
+    // ✨ Componente para valores destacados - MÁS COMPACTO
     const Highlight = ({ children, type = "default" }) => {
         const typeStyles = {
             default: { backgroundColor: '#e3f2fd', color: styles.primaryColor },
@@ -67,10 +67,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         return (
             <span style={{
                 ...style,
-                padding: '3px 8px',
-                borderRadius: '6px',
+                padding: '2px 6px',
+                borderRadius: '4px',
                 margin: '0 2px',
-                fontSize: '0.9em',
+                fontSize: '0.85em',
                 display: 'inline-block'
             }}>
                 {children}
@@ -97,6 +97,18 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         });
     };
 
+    // 🆕 FUNCIÓN PARA DETECTAR DISPOSITIVO MÓVIL
+    const isMobileDevice = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    // 🆕 FUNCIÓN PARA FORMATEAR NÚMERO DE TELÉFONO
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return '';
+        // Eliminar espacios, guiones, paréntesis, etc.
+        return phone.replace(/[\s\-\(\)\+]/g, '');
+    };
+
     // 🎯 GENERACIÓN DEL ANUNCIO MEJORADO - 5 PARTES
 
     // 🔹 PARTE 1: ANUNCIO PRINCIPAL MEJORADO
@@ -105,26 +117,26 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             <div style={{
                 background: categoryInfo.gradient,
                 color: 'white',
-                padding: '24px',
-                borderRadius: '12px',
-                marginBottom: '20px',
+                padding: '20px',
+                borderRadius: '10px',
+                marginBottom: '16px',
                 textAlign: 'center'
             }}>
-                <div style={{ fontSize: '32px', marginBottom: '12px' }}>
+                <div style={{ fontSize: '28px', marginBottom: '10px' }}>
                     {categoryInfo.icon}
                 </div>
                 <h1 style={{ 
-                    margin: '0 0 8px 0', 
-                    fontSize: '24px',
+                    margin: '0 0 6px 0', 
+                    fontSize: '20px',
                     fontWeight: '700'
                 }}>
                     {t('announcement.excitingNews', '🎉 Nouvelle Offre Exclusive !')}
                 </h1>
                 <p style={{ 
-                    fontSize: '18px', 
+                    fontSize: '16px', 
                     opacity: '0.9',
-                    lineHeight: '1.5',
-                    marginBottom: '16px'
+                    lineHeight: '1.4',
+                    marginBottom: '12px'
                 }}>
                     <strong>{post.category}</strong> {t('announcement.proudlyPresents', 'a le plaisir de vous présenter un')} 
                     <strong> {categoryInfo.title}</strong> {t('announcement.carefullyDesigned', 'soigneusement conçu pour votre plus grand plaisir.')}
@@ -134,18 +146,18 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    gap: '20px',
+                    gap: '16px',
                     flexWrap: 'wrap',
-                    marginTop: '16px'
+                    marginTop: '12px'
                 }}>
                     {post.datedepar && (
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '14px', opacity: '0.8' }}>🗓️ {t('announcement.departure', 'Départ')}</div>
-                            <div style={{ fontSize: '16px', fontWeight: '600' }}>
+                            <div style={{ fontSize: '12px', opacity: '0.8' }}>🗓️ {t('announcement.departure', 'Départ')}</div>
+                            <div style={{ fontSize: '14px', fontWeight: '600' }}>
                                 {formatBeautifulDate(post.datedepar)}
                             </div>
                             {post.horadudepar && (
-                                <div style={{ fontSize: '14px', opacity: '0.8' }}>
+                                <div style={{ fontSize: '12px', opacity: '0.8' }}>
                                     {t('announcement.at', 'à')} {post.horadudepar}
                                 </div>
                             )}
@@ -154,8 +166,8 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
                     {post.destinacion && (
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '14px', opacity: '0.8' }}>✈️ {t('announcement.destination', 'Destination')}</div>
-                            <div style={{ fontSize: '16px', fontWeight: '600' }}>
+                            <div style={{ fontSize: '12px', opacity: '0.8' }}>✈️ {t('announcement.destination', 'Destination')}</div>
+                            <div style={{ fontSize: '14px', fontWeight: '600' }}>
                                 {post.destinacion}
                             </div>
                         </div>
@@ -163,8 +175,8 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
                     {post.dureeSejour && (
                         <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '14px', opacity: '0.8' }}>⏱️ {t('announcement.duration', 'Durée')}</div>
-                            <div style={{ fontSize: '16px', fontWeight: '600' }}>
+                            <div style={{ fontSize: '12px', opacity: '0.8' }}>⏱️ {t('announcement.duration', 'Durée')}</div>
+                            <div style={{ fontSize: '14px', fontWeight: '600' }}>
                                 {post.dureeSejour}
                             </div>
                         </div>
@@ -179,32 +191,34 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         return (
             <div style={{
                 backgroundColor: '#f8fafc',
-                padding: '20px',
-                borderRadius: '12px',
-                marginBottom: '20px',
+                padding: '16px',
+                borderRadius: '10px',
+                marginBottom: '16px',
                 border: '1px solid #e2e8f0'
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '16px',
+                    gap: '6px',
+                    marginBottom: '12px',
                     color: styles.primaryColor,
-                    fontSize: '20px'
+                    fontSize: '18px'
                 }}>
                     🎯 {t('details.journeyDetails', 'Les Détails de Votre Voyage')}
                 </h2>
 
-                <div style={{ lineHeight: '1.6' }}>
+                <div style={{ lineHeight: '1.5' }}>
                     {/* Información de ubicación */}
                     {(post.wilaya || post.commune || post.vile) && (
-                        <p style={{ marginBottom: '12px' }}>
-                            <span style={{ fontWeight: '600', color: '#4a5568' }}>
-                                📍 {t('details.departureLocation', 'Lieu de départ')}: 
+                        <p style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '120px' }}>
+                                📍 {t('details.departureLocation', 'Lieu de départ')}:
                             </span>
-                            {post.wilaya && ` ${post.wilaya}`}
-                            {post.commune && `, ${post.commune}`}
-                            {post.vile && ` (${post.vile})`}
+                            <span>
+                                {post.wilaya && `${post.wilaya}`}
+                                {post.commune && `, ${post.commune}`}
+                                {post.vile && ` (${post.vile})`}
+                            </span>
                         </p>
                     )}
 
@@ -213,12 +227,14 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
                     {/* Servicios incluidos preview */}
                     {post.servicios && post.servicios.length > 0 && (
-                        <p style={{ marginBottom: '12px' }}>
-                            <span style={{ fontWeight: '600', color: '#4a5568' }}>
+                        <p style={{ marginBottom: '8px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '120px' }}>
                                 ✅ {t('details.includes', 'Comprend')}:
                             </span>
-                            {' '}{post.servicios.slice(0, 3).join(', ')}
-                            {post.servicios.length > 3 && ` ${t('details.andMore', 'et plus encore...')}`}
+                            <span>
+                                {post.servicios.slice(0, 3).join(', ')}
+                                {post.servicios.length > 3 && ` ${t('details.andMore', 'et plus encore...')}`}
+                            </span>
                         </p>
                     )}
                 </div>
@@ -233,18 +249,18 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         return (
             <div style={{
                 backgroundColor: '#fff7ed',
-                padding: '20px',
-                borderRadius: '12px',
-                marginBottom: '20px',
+                padding: '16px',
+                borderRadius: '10px',
+                marginBottom: '16px',
                 border: '1px solid #fed7aa'
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '16px',
+                    gap: '6px',
+                    marginBottom: '12px',
                     color: styles.warningColor,
-                    fontSize: '20px'
+                    fontSize: '18px'
                 }}>
                     🏨 {t('accommodation.yourStay', 'Votre Hébergement')}
                 </h2>
@@ -254,75 +270,143 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         );
     };
 
-    // 🔹 PARTE 4: PRECIOS Y OFERTAS MEJORADOS
+    // 🔹 PARTE 4: PRECIOS Y OFERTAS - COMPLETAMENTE REDISEÑADO (MÁS COMPACTO)
     const generatePricingDetails = () => {
+        if (!hasPricingData()) return null;
+
         return (
             <div style={{
                 backgroundColor: '#f0fdf4',
-                padding: '20px',
-                borderRadius: '12px',
-                marginBottom: '20px',
+                padding: '16px',
+                borderRadius: '10px',
+                marginBottom: '16px',
                 border: '1px solid #dcfce7'
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '16px',
+                    gap: '6px',
+                    marginBottom: '12px',
                     color: styles.successColor,
-                    fontSize: '20px'
+                    fontSize: '18px'
                 }}>
                     💰 {t('pricing.investment', 'Votre Investissement')}
                 </h2>
 
-                {renderPricingContent()}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {renderPricingContent()}
+                </div>
             </div>
         );
     };
 
-    // 🔹 PARTE 5: CONTACTO Y RESERVA MEJORADO
+    // 🔹 PARTE 5: CONTACTO Y RESERVA MEJORADO - CON CLICK TO CALL
     const generateContactSection = () => {
+        const phoneNumber = post.contacto ? formatPhoneNumber(post.contacto) : '';
+        const mobileDevice = isMobileDevice();
+
         return (
             <div style={{
                 background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                 color: 'white',
-                padding: '24px',
-                borderRadius: '12px',
+                padding: '20px',
+                borderRadius: '10px',
                 textAlign: 'center'
             }}>
                 <h2 style={{
-                    margin: '0 0 16px 0',
-                    fontSize: '22px',
+                    margin: '0 0 12px 0',
+                    fontSize: '18px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px'
+                    gap: '6px'
                 }}>
                     📞 {t('contact.readyToBook', 'Prêt à Réserver ?')}
                 </h2>
 
-                <p style={{ marginBottom: '16px', fontSize: '18px', opacity: '0.9' }}>
+                <p style={{ marginBottom: '12px', fontSize: '16px', opacity: '0.9' }}>
                     {t('contact.dontMiss', 'Ne manquez pas cette opportunité unique ! Notre équipe est à votre disposition pour répondre à toutes vos questions et finaliser votre réservation.')}
                 </p>
 
                 {post.contacto && (
                     <div style={{
                         backgroundColor: 'rgba(255,255,255,0.2)',
-                        padding: '12px 20px',
+                        padding: '12px 16px',
                         borderRadius: '8px',
                         display: 'inline-block',
-                        marginBottom: '16px'
-                    }}>
-                        <div style={{ fontSize: '14px', opacity: '0.8', marginBottom: '4px' }}>
+                        marginBottom: '12px',
+                        cursor: mobileDevice ? 'pointer' : 'default',
+                        transition: 'all 0.3s ease',
+                        border: mobileDevice ? '2px solid rgba(255,255,255,0.3)' : 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                        if (mobileDevice) {
+                            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                            e.currentTarget.style.transform = 'scale(1.02)';
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        if (mobileDevice) {
+                            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                            e.currentTarget.style.transform = 'scale(1)';
+                        }
+                    }}
+                    >
+                        <div style={{ fontSize: '12px', opacity: '0.8', marginBottom: '4px' }}>
                             📞 {t('contact.callNow', 'Appelez-nous dès maintenant')}
                         </div>
-                        <div style={{ fontSize: '20px', fontWeight: 'bold' }}>
-                            {post.contacto}
-                        </div>
+                        
+                        {/* 🆕 ELEMENTO CLICKABLE PARA LLAMAR EN MÓVIL */}
+                        {mobileDevice ? (
+                            <a 
+                                href={`tel:${phoneNumber}`}
+                                style={{
+                                    fontSize: '18px',
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    display: 'block'
+                                }}
+                                onClick={(e) => {
+                                    // Confirmación opcional antes de llamar
+                                    if (window.confirm(t('contact.confirmCall', `Voulez-vous appeler ${post.contacto} ?`))) {
+                                        // La llamada se activa automáticamente con el href="tel:"
+                                        console.log('Llamando a:', post.contacto);
+                                    } else {
+                                        e.preventDefault();
+                                    }
+                                }}
+                            >
+                                {post.contacto}
+                                <div style={{
+                                    fontSize: '11px',
+                                    opacity: '0.8',
+                                    marginTop: '2px',
+                                    fontStyle: 'italic'
+                                }}>
+                                    {t('contact.tapToCall', 'Touchez pour appeler')} 📱
+                                </div>
+                            </a>
+                        ) : (
+                            // En desktop mostramos solo el número
+                            <div>
+                                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                                    {post.contacto}
+                                </div>
+                                <div style={{
+                                    fontSize: '11px',
+                                    opacity: '0.8',
+                                    marginTop: '2px',
+                                    fontStyle: 'italic'
+                                }}>
+                                    {t('contact.useMobileToCall', 'Utilisez votre mobile pour appeler')}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
-                <p style={{ fontSize: '16px', opacity: '0.8', margin: '0' }}>
+                <p style={{ fontSize: '14px', opacity: '0.8', margin: '0' }}>
                     {t('contact.guarantee', 'Réservez en toute confiance et préparez-vous à vivre des moments inoubliables !')} 🎉
                 </p>
             </div>
@@ -336,92 +420,105 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                post.tipoPropiedad || post.capacidad || post.habitaciones;
     };
 
+    const hasPricingData = () => {
+        return post.precioBase || post.price || post.prixAdulte || 
+               post.tarifaNinos || post.prixEnfant || post.tarifaBebes || 
+               post.prixBebe || post.descuentoGrupo || post.ofertaEspecial ||
+               post.descuentoTemporadaBaja || post.descuentoAnticipacion;
+    };
+
     const renderCategorySpecificDetails = () => {
+        const details = [];
+
         switch (post.subCategory) {
             case "hadj_Omra":
-                return (
-                    <>
-                        {post.hotelMeca && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🕋 {t('specific.hotelMeca', 'Hôtel à La Mecque')}:</span>
-                                <Highlight type="feature">{post.hotelMeca}</Highlight>
-                            </p>
-                        )}
-                        {post.hotelMedina && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🕌 {t('specific.hotelMedina', 'Hôtel à Médine')}:</span>
-                                <Highlight type="feature">{post.hotelMedina}</Highlight>
-                            </p>
-                        )}
-                        {post.typeTransport && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🚗 {t('specific.transport', 'Transport')}:</span>
+                if (post.hotelMeca) {
+                    details.push(
+                        <div key="meca-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                🕋 {t('specific.hotelMeca', 'Hôtel à La Mecque')}:
+                            </span>
+                            <Highlight type="feature">{post.hotelMeca}</Highlight>
+                        </div>
+                    );
+                }
+                if (post.hotelMedina) {
+                    details.push(
+                        <div key="medina-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                🕌 {t('specific.hotelMedina', 'Hôtel à Médine')}:
+                            </span>
+                            <Highlight type="feature">{post.hotelMedina}</Highlight>
+                        </div>
+                    );
+                }
+                if (post.typeTransport) {
+                    details.push(
+                        <div key="transport" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                🚗 {t('specific.transport', 'Transport')}:
+                            </span>
+                            <span>
                                 <Highlight>{post.typeTransport}</Highlight>
                                 {post.compagnieAerienne && ` avec ${post.compagnieAerienne}`}
                                 {post.classeVol && ` (${post.classeVol})`}
-                            </p>
-                        )}
-                    </>
-                );
+                            </span>
+                        </div>
+                    );
+                }
+                break;
 
             case "Voyage Organise":
-                return (
-                    <>
-                        {post.nombreHotel && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🏨 {t('specific.hotel', 'Hôtel')}:</span>
+                if (post.nombreHotel) {
+                    details.push(
+                        <div key="hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                🏨 {t('specific.hotel', 'Hôtel')}:
+                            </span>
+                            <span>
                                 <Highlight type="feature">{post.nombreHotel}</Highlight>
                                 {post.ciudadHotel && ` à ${post.ciudadHotel}`}
-                            </p>
-                        )}
-                        {post.categoriaAlojamiento && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>⭐ {t('specific.category', 'Catégorie')}:</span>
-                                <Highlight>{post.categoriaAlojamiento}</Highlight>
-                            </p>
-                        )}
-                        {post.regimenComidas && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🍽️ {t('specific.mealPlan', 'Régime')}:</span>
-                                <Highlight>{post.regimenComidas}</Highlight>
-                            </p>
-                        )}
-                    </>
-                );
+                            </span>
+                        </div>
+                    );
+                }
+                if (post.categoriaAlojamiento) {
+                    details.push(
+                        <div key="category" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                ⭐ {t('specific.category', 'Catégorie')}:
+                            </span>
+                            <Highlight>{post.categoriaAlojamiento}</Highlight>
+                        </div>
+                    );
+                }
+                break;
 
             case "Location_Vacances":
-                return (
-                    <>
-                        {post.tipoPropiedad && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🏠 {t('specific.propertyType', 'Type de propriété')}:</span>
-                                <Highlight type="feature">{post.tipoPropiedad}</Highlight>
-                            </p>
-                        )}
-                        {post.capacidad && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>👥 {t('specific.capacity', 'Capacité')}:</span>
-                                <Highlight>{post.capacidad} {t('specific.people', 'personnes')}</Highlight>
-                            </p>
-                        )}
-                        {post.habitaciones && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>🛏️ {t('specific.rooms', 'Chambres')}:</span>
-                                <Highlight>{post.habitaciones}</Highlight>
-                            </p>
-                        )}
-                        {post.superficie && (
-                            <p style={{ marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '600' }}>📐 {t('specific.area', 'Surface')}:</span>
-                                <Highlight>{post.superficie}m²</Highlight>
-                            </p>
-                        )}
-                    </>
-                );
-
-            default:
-                return null;
+                if (post.tipoPropiedad) {
+                    details.push(
+                        <div key="property-type" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                🏠 {t('specific.propertyType', 'Type de propriété')}:
+                            </span>
+                            <Highlight type="feature">{post.tipoPropiedad}</Highlight>
+                        </div>
+                    );
+                }
+                if (post.capacidad) {
+                    details.push(
+                        <div key="capacity" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
+                                👥 {t('specific.capacity', 'Capacité')}:
+                            </span>
+                            <Highlight>{post.capacidad} {t('specific.people', 'personnes')}</Highlight>
+                        </div>
+                    );
+                }
+                break;
         }
+
+        return details;
     };
 
     const renderAccommodationContent = () => {
@@ -430,133 +527,149 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         // Información general de hotel
         if (post.nombreHotel) {
             content.push(
-                <p key="hotel-name" style={{ marginBottom: '12px' }}>
-                    <span style={{ fontWeight: '600', color: '#4a5568' }}>
+                <div key="hotel-name" style={{ marginBottom: '8px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                    <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
                         🏰 {t('accommodation.hotelName', 'Nom de l\'hôtel')}:
                     </span>
-                    {' '}<Highlight type="feature">{post.nombreHotel}</Highlight>
-                    {post.ciudadHotel && ` à ${post.ciudadHotel}`}
-                    {post.zonaRegion && `, ${post.zonaRegion}`}
-                </p>
+                    <span>
+                        <Highlight type="feature">{post.nombreHotel}</Highlight>
+                        {post.ciudadHotel && ` à ${post.ciudadHotel}`}
+                        {post.zonaRegion && `, ${post.zonaRegion}`}
+                    </span>
+                </div>
             );
-
-            if (post.direccionHotel) {
-                content.push(
-                    <p key="hotel-address" style={{ 
-                        marginBottom: '12px', 
-                        fontSize: '14px', 
-                        color: '#718096',
-                        paddingLeft: '20px'
-                    }}>
-                        📍 {post.direccionHotel}
-                    </p>
-                );
-            }
         }
 
         // Hoteles específicos para Hajj/Omra
         if (post.hotelMeca) {
             content.push(
-                <p key="meca-hotel" style={{ marginBottom: '8px' }}>
-                    <span style={{ fontWeight: '600', color: '#4a5568' }}>🕋 {t('accommodation.meca', 'La Mecque')}:</span>
-                    {' '}<Highlight type="feature">{post.hotelMeca}</Highlight>
-                </p>
+                <div key="meca-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>🕋 {t('accommodation.meca', 'La Mecque')}:</span>
+                    <Highlight type="feature">{post.hotelMeca}</Highlight>
+                </div>
             );
         }
 
         if (post.hotelMedina) {
             content.push(
-                <p key="medina-hotel" style={{ marginBottom: '8px' }}>
-                    <span style={{ fontWeight: '600', color: '#4a5568' }}>🕌 {t('accommodation.medina', 'Médine')}:</span>
-                    {' '}<Highlight type="feature">{post.hotelMedina}</Highlight>
-                </p>
+                <div key="medina-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>🕌 {t('accommodation.medina', 'Médine')}:</span>
+                    <Highlight type="feature">{post.hotelMedina}</Highlight>
+                </div>
             );
         }
 
         return content;
     };
 
+    // 🔥 NUEVA FUNCIÓN DE PRECIOS COMPACTA - CAMPO Y VALOR EN MISMA FILA
     const renderPricingContent = () => {
         const content = [];
 
-        // Precio principal destacado
+        // Precio principal
         const mainPrice = post.precioBase || post.price || post.prixAdulte;
         if (mainPrice) {
             content.push(
                 <div key="main-price" style={{ 
-                    textAlign: 'center', 
-                    marginBottom: '20px',
-                    padding: '20px',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    padding: '8px 12px',
                     backgroundColor: 'white',
-                    borderRadius: '8px',
-                    border: '2px solid #10b981'
+                    borderRadius: '6px',
+                    border: '1px solid #10b981'
                 }}>
-                    <div style={{ fontSize: '16px', color: '#64748b', marginBottom: '8px' }}>
-                        {t('pricing.startingFrom', 'À partir de')}
-                    </div>
-                    <div style={{ fontSize: '36px', fontWeight: 'bold', color: styles.successColor }}>
-                        ${mainPrice}
-                    </div>
-                    <div style={{ fontSize: '14px', color: '#64748b' }}>
-                        {t('pricing.perPerson', 'par personne')}
-                        {post.tipoPrecio && ` • ${post.tipoPrecio}`}
+                    <span style={{ fontWeight: '600', color: '#374151' }}>
+                        💰 {t('pricing.startingFrom', 'À partir de')}:
+                    </span>
+                    <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: '20px', fontWeight: 'bold', color: styles.successColor }}>
+                           {mainPrice} DA 
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                            {t('pricing.perPerson', 'par personne')}
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        // Tarifas por edad
-        const hasAgePrices = post.tarifaNinos || post.prixEnfant || post.tarifaBebes || post.prixBebe;
-        if (hasAgePrices) {
+        // Tarifas por edad - DISEÑO COMPACTO
+        const agePrices = [];
+        
+        if (post.prixAdulte) {
+            agePrices.push(
+                <div key="adult" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                    <span style={{ fontSize: '14px', color: '#4b5563' }}>👨‍🦳 {t('pricing.adults', 'Adultes')}:</span>
+                    <span style={{ fontWeight: '600', color: styles.successColor }}>${post.prixAdulte}</span>
+                </div>
+            );
+        }
+
+        if (post.prixEnfant || post.tarifaNinos) {
+            agePrices.push(
+                <div key="child" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                    <span style={{ fontSize: '14px', color: '#4b5563' }}>👧 {t('pricing.children', 'Enfants')}:</span>
+                    <span style={{ fontWeight: '600', color: styles.successColor }}>${post.prixEnfant || post.tarifaNinos}</span>
+                </div>
+            );
+        }
+
+        if (post.prixBebe || post.tarifaBebes) {
+            agePrices.push(
+                <div key="baby" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                    <span style={{ fontSize: '14px', color: '#4b5563' }}>👶 {t('pricing.babies', 'Bébés')}:</span>
+                    <span style={{ fontWeight: '600', color: styles.successColor }}>${post.prixBebe || post.tarifaBebes}</span>
+                </div>
+            );
+        }
+
+        if (agePrices.length > 0) {
             content.push(
-                <div key="age-prices" style={{ marginBottom: '16px' }}>
-                    <h3 style={{ color: '#4a5568', marginBottom: '12px', fontSize: '18px' }}>
+                <div key="age-prices" style={{ 
+                    backgroundColor: '#f8fafc', 
+                    padding: '8px 12px', 
+                    borderRadius: '6px',
+                    border: '1px solid #e5e7eb'
+                }}>
+                    <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>
                         👨‍👩‍👧‍👦 {t('pricing.familyRates', 'Tarifs Famille')}
-                    </h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
-                        {(post.prixAdulte || post.tarifaNinos) && (
-                            <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
-                                <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>👨‍🦳 {t('pricing.adults', 'Adultes')}</div>
-                                <div style={{ fontSize: '20px', fontWeight: 'bold', color: styles.successColor }}>
-                                    ${post.prixAdulte || post.tarifaNinos}
-                                </div>
-                            </div>
-                        )}
-                        {(post.prixEnfant || post.tarifaBebes) && (
-                            <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
-                                <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '4px' }}>👧 {t('pricing.children', 'Enfants')}</div>
-                                <div style={{ fontSize: '20px', fontWeight: 'bold', color: styles.successColor }}>
-                                    ${post.prixEnfant || post.tarifaBebes}
-                                </div>
-                            </div>
-                        )}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        {agePrices}
                     </div>
                 </div>
             );
         }
 
-        // Ofertas y descuentos
-        const hasDiscounts = post.descuentoGrupo || post.ofertaEspecial || post.descuentoTemporadaBaja || post.descuentoAnticipacion;
-        if (hasDiscounts) {
+        // Ofertas y descuentos - COMPACTO
+        const discounts = [];
+        
+        if (post.descuentoGrupo) discounts.push("👥 " + t('pricing.groupDiscount', 'Réduction Groupe'));
+        if (post.ofertaEspecial) discounts.push("⭐ " + t('pricing.specialOffer', 'Offre Spéciale'));
+        if (post.descuentoTemporadaBaja) discounts.push("🌸 " + t('pricing.lowSeason', 'Basse Saison'));
+        if (post.descuentoAnticipacion) discounts.push("🎯 " + t('pricing.earlyBooking', 'Réservation Anticipée'));
+
+        if (discounts.length > 0) {
             content.push(
-                <div key="discounts">
-                    <h3 style={{ color: '#4a5568', marginBottom: '12px', fontSize: '18px' }}>
-                        🎊 {t('pricing.specialOffers', 'Offres Spéciales')}
-                    </h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {post.descuentoGrupo && (
-                            <Highlight type="feature">👥 {t('pricing.groupDiscount', 'Réduction Groupe')}</Highlight>
-                        )}
-                        {post.ofertaEspecial && (
-                            <Highlight type="feature">⭐ {t('pricing.specialOffer', 'Offre Spéciale')}</Highlight>
-                        )}
-                        {post.descuentoTemporadaBaja && (
-                            <Highlight type="feature">🌸 {t('pricing.lowSeason', 'Basse Saison')}</Highlight>
-                        )}
-                        {post.descuentoAnticipacion && (
-                            <Highlight type="feature">🎯 {t('pricing.earlyBooking', 'Réservation Anticipée')}</Highlight>
-                        )}
-                    </div>
+                <div key="discounts" style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '6px',
+                    padding: '8px 0'
+                }}>
+                    {discounts.map((discount, index) => (
+                        <span key={index} style={{
+                            backgroundColor: '#fef3c7',
+                            color: styles.warningColor,
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '12px',
+                            fontWeight: '500'
+                        }}>
+                            {discount}
+                        </span>
+                    ))}
                 </div>
             );
         }
@@ -569,11 +682,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         <div style={{ 
             direction: isRTL ? 'rtl' : 'ltr',
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-            lineHeight: '1.6',
+            lineHeight: '1.5',
             color: '#2d3748',
             maxWidth: '800px',
             margin: '0 auto',
-            padding: '5px'
+            padding: '8px'
         }}>
             {generateMainAnnouncement()}
             {generateTravelDetails()}

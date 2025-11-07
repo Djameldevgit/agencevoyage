@@ -197,62 +197,141 @@ const postCtrl = {
         }
     },
 
-    getPosts: async (req, res) => {
-        try {
-            const { 
-                title, 
-                subCategory, 
-                destinacion, 
-                wilaya, 
-                page, 
-                limit 
-            } = req.query;
-    
-            // 🔹 INICIALIZAR QUERY - Sin filtro de aprobado
-            const query = {};
-    
-            // 🔹 Buscar por título
-            if (title && title.trim() !== "") {
-                query.title = { $regex: title.trim(), $options: "i" };
-            }
-    
-            // 🔹 Filtros directos para VIAJES
-            if (subCategory && subCategory.trim() !== "") {
-                query.subCategory = { $regex: subCategory.trim(), $options: "i" };
-            }
-            if (destinacion && destinacion.trim() !== "") {
-                query.destinacion = { $regex: destinacion.trim(), $options: "i" };
-            }
-            if (wilaya && wilaya.trim() !== "") {
-                query.wilaya = { $regex: wilaya.trim(), $options: "i" };
-            }
-    
-            console.log("Query final para viajes:", JSON.stringify(query, null, 2));
-    
-            // 🔥 Mantener paginación con APIfeatures
-            const features = new APIfeatures(Posts.find(query), req.query).paginating();
-    
-            const posts = await features.query
-                .sort("-createdAt")
-                .populate("user likes", "avatar username fullname followers")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "user likes",
-                        select: "-password",
-                    },
-                });
-    
-            res.json({
-                msg: "Success!",
-                result: posts.length,
-                posts,
-            });
-        } catch (err) {
-            console.error("Error en getPosts:", err);
-            return res.status(500).json({ msg: err.message });
+// ✅ NUEVO ENDPOINT PARA BÚSQUEDA INTELIGENTE
+// ✅ NUEVO CONTROLADOR PARA BÚSQUEDA INTELIGENTE DE POSTS
+// controllers/postCtrl.js
+ 
+getPosts: async (req, res) => {
+    try {
+        const { 
+            subCategory, 
+            destinacion, 
+            datedeparMin,    // 🆕 Fecha mínima (coincide con campo real)
+            datedeparMax,    // 🆕 Fecha máxima (coincide con campo real)
+            nombreHotel,     // Búsqueda por hotel
+            minPrice,        // 🆕 Precio mínimo
+            maxPrice,        // 🆕 Precio máximo
+            sort
+        } = req.query;
+
+        // 🔹 INICIALIZAR QUERY
+        const query = {};
+
+        // 🔹 Filtros directos
+        if (subCategory && subCategory.trim() !== "") {
+            query.subCategory = { $regex: subCategory.trim(), $options: "i" };
         }
-    },
+
+        // 🔹 Búsqueda mejorada para destino
+        if (destinacion && destinacion.trim() !== "") {
+            const searchDestinacion = destinacion.trim();
+            query.$or = [
+                { destinacion: { $regex: searchDestinacion, $options: "i" } },
+                { destinacionvoyage1: { $regex: searchDestinacion, $options: "i" } },
+                { destinacionomra: { $regex: searchDestinacion, $options: "i" } },
+                { destinacionlocacionvoyage: { $regex: searchDestinacion, $options: "i" } }
+            ];
+        }
+
+        // 🆕 BÚSQUEDA POR NOMBRE DE HOTEL
+        if (nombreHotel && nombreHotel.trim() !== "") {
+            const searchHotel = nombreHotel.trim();
+            query.$or = query.$or || [];
+            query.$or.push(
+                { nombreHotel: { $regex: searchHotel, $options: "i" } },
+                { hotelMeca: { $regex: searchHotel, $options: "i" } },
+                { hotelMedina: { $regex: searchHotel, $options: "i" } }
+            );
+        }
+
+        // 🆕 FILTRO POR RANGO DE FECHAS - CORREGIDO (datedeparMin/Max)
+        if (datedeparMin || datedeparMax) {
+            const dateFilter = {};
+            
+            if (datedeparMin) {
+                // Validar fecha inicio
+                const startDate = new Date(datedeparMin);
+                if (!isNaN(startDate.getTime())) {
+                    dateFilter.$gte = startDate;
+                }
+            }
+            
+            if (datedeparMax) {
+                // Validar fecha fin y ajustar a fin del día
+                const endDate = new Date(datedeparMax);
+                if (!isNaN(endDate.getTime())) {
+                    endDate.setHours(23, 59, 59, 999); // Hasta el final del día
+                    dateFilter.$lte = endDate;
+                }
+            }
+            
+            // Solo aplicar filtro si hay fechas válidas
+            if (Object.keys(dateFilter).length > 0) {
+                query.datedepar = dateFilter;
+            }
+        }
+
+        // 🆕 FILTRO POR RANGO DE PRECIOS - NUEVO
+        if (minPrice || maxPrice) {
+            const priceFilter = {};
+            
+            if (minPrice) {
+                const min = parseFloat(minPrice);
+                if (!isNaN(min)) {
+                    priceFilter.$gte = min;
+                }
+            }
+            
+            if (maxPrice) {
+                const max = parseFloat(maxPrice);
+                if (!isNaN(max)) {
+                    priceFilter.$lte = max;
+                }
+            }
+            
+            // Solo aplicar filtro si hay precios válidos
+            if (Object.keys(priceFilter).length > 0) {
+                // Buscar en múltiples campos de precio
+                query.$or = query.$or || [];
+                query.$or.push(
+                    { precioBase: priceFilter },
+                    { price: priceFilter },
+                    { prixAdulte: priceFilter }
+                );
+            }
+        }
+
+        // 🔥 Mantener paginación con APIfeatures
+        const features = new APIfeatures(Posts.find(query), req.query).paginating();
+
+        // ✅ MANEJO DEL SORT
+        let sortOption = "-createdAt";
+        if (sort && sort === "-createdAt") {
+            sortOption = "-createdAt";
+        }
+
+        const posts = await features.query
+            .sort(sortOption)
+            .populate("user likes", "avatar username fullname followers")
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user likes",
+                    select: "-password",
+                },
+            });
+
+        res.json({
+            msg: "Success!",
+            result: posts.length,
+            posts,
+        });
+    } catch (err) {
+        console.error("Error en getPosts:", err);
+        return res.status(500).json({ msg: err.message });
+    }
+},
+
     getUserPosts: async (req, res) => {
         try {
             const features = new APIfeatures(Posts.find({user: req.params.id}), req.query)

@@ -1,5 +1,55 @@
 {
-
+   
+  
+    
+  
+      
+      "destination_voyage_title": "🌍 Destination du Voyage Organisé",
+      "destination_voyage_subtitle": "Sélectionnez la destination principale de votre voyage organisé",
+      "destination_location_title": "🏠 Emplacement de la Propriété",
+      "destination_location_subtitle": "Sélectionnez la ville où se trouve votre propriété",
+      "destination_hajj_title": "🕋 Destination du Pèlerinage",
+      "destination_hajj_subtitle": "Sélectionnez le type de pèlerinage et la destination",
+    
+    
+    "common": {
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "confirm": "Confirmer",
+      "loading": "Chargement...",
+      "error": "Erreur",
+      "success": "Succès"
+    },
+    
+    "form": {
+      "title": "Titre",
+      "description": "Description",
+      "price": "Prix",
+      "category": "Catégorie",
+      "subCategory": "Sous-catégorie",
+      "wilaya": "Wilaya",
+      "commune": "Commune",
+      "city": "Ville",
+      "contact": "Contact",
+      "images": "Images",
+      "destination": "Destination",
+      "departure_date": "Date de départ",
+      "departure_time": "Heure de départ",
+      "return_date": "Date de retour",
+      "duration": "Durée du séjour",
+      "services": "Services"
+    },
+    
+  
+    
+    "subcategories": {
+      "Voyage_Organise": "Voyage Organisé",
+      "Location_Vacances": "Location de Vacances", 
+      "hadj_Omra": "Hadj & Omra"
+    },
+ 
    
   "camposCompletados": "Champs complétés",
   "precioBaseLabel": "Prix de Base Adulte",

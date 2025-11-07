@@ -90,10 +90,7 @@ const getInitialState = () => ({
   superficie: "",
   banos: "",
 
-  // 🏨 CAMPOS HAJJ OMRA HOTELS
-  hotelMeca: "",
-  hotelMedina: "",
-
+ 
   // ✈️ CAMPOS DE TransportHajjOmra
   typeTransport: "",
   compagnieAerienne: "",
@@ -190,10 +187,6 @@ const Createpost = () => {
     }));
   }, []);
 
-  // ✅ ELIMINADO: handleWilayaChange y handleCommuneChange
-  // ✅ ELIMINADO: selectedWilaya state
-  // ✅ ELIMINADO: communesjson import
-
   const handleChangeImages = useCallback((e) => {
     const files = [...e.target.files];
     let err = "";
@@ -274,18 +267,16 @@ const Createpost = () => {
     setShowAlert(true);
   }, []);
 
-  // ✅ COMPONENTE DE DESTINO UNIFICADO - USA SOLO 'destinacion'
+  // 🔥 COMPONENTE DE DESTINO UNIFICADO CON TÍTULOS
   const DestinationUnified = useMemo(() => {
     if (!postData.subCategory) return null;
 
     const destinationProps = {
       postData: {
         ...postData,
-        // ✅ FORZAR QUE LOS COMPONENTES HIJOS USEN SOLO 'destinacion'
         destinacion: postData.destinacion
       },
       handleChangeInput: (e) => {
-        // ✅ INTERCEPTAR CUALQUIER CAMBIO Y REDIRIGIR A 'destinacion'
         if (e.target.name.includes('destinacion')) {
           handleChangeInput({
             target: {
@@ -299,17 +290,60 @@ const Createpost = () => {
       }
     };
 
-    switch (postData.subCategory) {
-      case "Voyage Organise":
-        return <DestinationVoyagesOrganises {...destinationProps} />;
-      case "Location_Vacances":
-        return <DestinationLocationVacances {...destinationProps} />;
-      case "hadj_Omra":
-        return <DestinationHajjOmra {...destinationProps} />;
-      default:
-        return null;
-    }
-  }, [postData.subCategory, postData, handleChangeInput]);
+    // 🔥 TÍTULOS PARA CADA CATEGORÍA
+    const getDestinationTitle = () => {
+      switch (postData.subCategory) {
+        case "Voyage Organise":
+          return { 
+            title: t('destination_voyage_title', '🌍 Destino del Viaje Organizado'),
+            subtitle: t('destination_voyage_subtitle', 'Seleccione el destino principal de su viaje organizado')
+          };
+        case "Location_Vacances":
+          return { 
+            title: t('destination_location_title', '🏠 Ubicación de la Propiedad'),
+            subtitle: t('destination_location_subtitle', 'Seleccione la ciudad donde se encuentra su propiedad')
+          };
+        case "hadj_Omra":
+          return { 
+            title: t('destination_hajj_title', '🕋 Destino de Peregrinación'),
+            subtitle: t('destination_hajj_subtitle', 'Seleccione el tipo de peregrinación y destino')
+          };
+        default:
+          return { title: '', subtitle: '' };
+      }
+    };
+
+    const { title, subtitle } = getDestinationTitle();
+
+    const renderDestinationComponent = () => {
+      switch (postData.subCategory) {
+        case "Voyage Organise":
+          return <DestinationVoyagesOrganises {...destinationProps} />;
+        case "Location_Vacances":
+          return <DestinationLocationVacances {...destinationProps} />;
+        case "hadj_Omra":
+          return <DestinationHajjOmra {...destinationProps} />;
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <Card className="border-0 rounded-0 mb-3">
+        <Card.Header className="bg-light border-0 py-3">
+          <div className="d-flex align-items-center">
+            <div className="flex-grow-1">
+              <h5 className="mb-1 fw-bold text-dark fs-6">{title}</h5>
+              {subtitle && <p className="mb-0 text-muted small">{subtitle}</p>}
+            </div>
+          </div>
+        </Card.Header>
+        <Card.Body className="p-3">
+          {renderDestinationComponent()}
+        </Card.Body>
+      </Card>
+    );
+  }, [postData.subCategory, postData, handleChangeInput, t]);
 
   // ✅ COMPONENTE DE SERVICIOS UNIFICADO
   const ServicesUnified = useMemo(() => {
@@ -419,7 +453,6 @@ const Createpost = () => {
                   <>
                     <div className="px-2">
                       <DescriptionTextarea postData={postData} handleChangeInput={handleChangeInput} />
-                      {/* ✅ ADDRESSINPUT SIMPLIFICADO - SIN LÓGICA DE WILAYAS/COMMUNES */}
                       <AddressInput
                         postData={postData}
                         handleChangeInput={handleChangeInput}

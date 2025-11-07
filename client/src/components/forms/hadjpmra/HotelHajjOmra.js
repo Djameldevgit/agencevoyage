@@ -107,8 +107,8 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                                 🕋 {t('hotelMeca', 'Hotel en La Meca')} *
                             </Form.Label>
                             <Form.Select
-                                name="hotelMeca"
-                                value={postData.hotelMeca || ''}
+                                name="nombreHotel"
+                                value={postData.nombreHotel || ''}
                                 onChange={handleChangeInput}
                                 required
                                 className={`w-100 ${isRTL ? 'text-end' : ''}`}
@@ -136,8 +136,8 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                                 🕌 {t('hotelMedina', 'Hotel en Medina')} *
                             </Form.Label>
                             <Form.Select
-                                name="hotelMedina"
-                                value={postData.hotelMedina || ''}
+                                name="nombreHotel"
+                                value={postData.nombreHotel || ''}
                                 onChange={handleChangeInput}
                                 required
                                 className={`w-100 ${isRTL ? 'text-end' : ''}`}

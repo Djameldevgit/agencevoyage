@@ -1,4 +1,6 @@
-{
+{   
+  
+ 
    
     "title": "بحث الرحلات",
     "subtitle": "ابحث عن وجهتك القادمة المثالية",
@@ -22,7 +24,13 @@
     "buttons": {
       "search": "بحث الرحلات",
       "searching": "جاري البحث...",
-      "clear": "مسح"
+      "clear": "مسح",
+
+     
+      "showAdvanced": "بحث متقدم", 
+      "hideAdvanced": "إخفاء البحث المتقدم"
+
+
     },
     
     "results": {
@@ -34,6 +42,61 @@
     "errors": {
       "userSearchError": "خطأ في البحث عن الوكالات",
       "searchError": "خطأ في البحث عن الرحلات"
-    }
+    },
+    
+    
+        "categories": {
+          "organizedTrip": "رحلة منظمة",
+          "vacationRental": "إيجار عطلات",
+          "hajjUmrah": "حج وعمرة"
+        },
+        
+        "labels": {
+          "category": "الفئة",
+          "destination": "الوجهة",
+          "destinationOrganized": "الوجهة (رحلات منظمة)",
+          "destinationRental": "الوجهة (إيجار عطلات)",
+          "destinationHajj": "الوجهة (حج وعمرة)",
+          "departureDate": "تاريخ المغادرة",
+          "activeFilters": "الفلاتر النشطة",
+          "smartSearch": "بحث ذكي",
+          "latestTrips": "أحدث الرحلات",
+          "date": "التاريخ",
+          "filter": "فلتر",
+          "filters": "فلاتر",
+          "startDate": "تاريخ البداية",
+          "endDate": "تاريخ النهاية",
+          "from": "من",
+          "to": "إلى", 
+          "hotelSearch": "بحث بالفندق",
+          "hotel": "فندق",
+         
+          "minPrice": "أدنى سعر",
+          "maxPrice": "أقصى سعر"
+
+
+        },
+        
+        "placeholders": {
+          "allCategories": "جميع الفئات",
+          "selectCategoryFirst": "اختر فئة أولاً",
+          "hotelName": "اسم الفندق...",
+          "minPrice": "الحد الأدنى...",
+          "maxPrice": "الحد الأقصى..."
+
+
+        },
+        
+       
+        "states": {
+          "searching": "جاري البحث...",
+          "applyingFilters": "جاري تطبيق الفلاتر...",
+          "pleaseWait": "يرجى الانتظار..."
+        }
+        
+       
+    
+
+
   }
  

@@ -32,6 +32,7 @@ import bloginfo from './pages/bloginfo';
 import Bloqueos404 from './components/adminitration/Bloqueos404';
 import appinfo2 from './pages/appinfo2';
 import Createpost from './pages/createpost';
+import appinfo3 from './pages/appinfo3';
 
 function App() {
   const { auth, status, modal, languageReducer } = useSelector(state => state)
@@ -140,6 +141,8 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/bloginfo" component={bloginfo} />
             <Route exact path="/infoaplicacionn" component={appinfo2} />
+            <Route exact path="/infoaplicacionn3" component={appinfo3} />
+
             <Route path="/edit-post/:id" element={<Createpost />} />
           
               <Route exact path="/bloqueos404" component={Bloqueos404} />

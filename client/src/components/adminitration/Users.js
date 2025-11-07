@@ -42,7 +42,7 @@ import {
   bloquearUsuario,
   unBlockUser,
 } from "../../redux/actions/userAction";
- 
+
 import {
   getBlockedUsers,
 } from "../../redux/actions/userBlockAction";
@@ -81,27 +81,27 @@ const Users = () => {
   const searchUsers = useCallback(
     debounce(async (searchTerm, page = 1) => {
       if (!auth.token) return;
-      
+
       try {
         setIsSearching(true);
-        
+
         // ✅ Normalizar el término de búsqueda - eliminar espacios y hacer lowercase
         const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-        
+
         if (normalizedSearchTerm.length === 0) {
           setSearchResults([]);
           return;
         }
-        
+
         const query = `users/search?username=${encodeURIComponent(normalizedSearchTerm)}&page=${page}&limit=9&caseInsensitive=true`;
         const res = await getDataAPI(query, auth.token);
-        
+
         if (page === 1) {
           setSearchResults(res.data.users || []);
         } else {
           setSearchResults(prev => [...prev, ...(res.data.users || [])]);
         }
-        
+
         setSearchPage(page);
         setHasMoreSearch(res.data.users && res.data.users.length === 9);
       } catch (err) {
@@ -130,7 +130,7 @@ const Users = () => {
   // 🔹 Handler para cargar más resultados de búsqueda
   const handleLoadMoreSearch = async () => {
     if (!auth.token || search.trim() === "") return;
-    
+
     try {
       setLoad(true);
       await searchUsers(search, searchPage + 1);
@@ -245,7 +245,7 @@ const Users = () => {
     try {
       await dispatch(deleteUser({ id: userToDelete, auth }));
       setShowDeleteModal(false);
-      
+
       // Actualizar resultados de búsqueda si estamos en modo búsqueda
       if (search.trim() !== "") {
         setSearchResults(prev => prev.filter(user => user._id !== userToDelete));
@@ -278,14 +278,14 @@ const Users = () => {
         },
       });
       dispatch(getBlockedUsers(auth.token));
-      
+
       // Actualizar resultados de búsqueda si estamos en modo búsqueda
       if (search.trim() !== "") {
-        setSearchResults(prev => 
-          prev.map(u => u._id === selectedUser._id ? {...u, esBloqueado: true} : u)
+        setSearchResults(prev =>
+          prev.map(u => u._id === selectedUser._id ? { ...u, esBloqueado: true } : u)
         );
       }
-      
+
       handleCloseModal();
     } catch (err) {
       console.error(t('errors.blockUser'), err);
@@ -303,14 +303,14 @@ const Users = () => {
         },
       });
       dispatch(getBlockedUsers(auth.token));
-      
+
       // Actualizar resultados de búsqueda si estamos en modo búsqueda
       if (search.trim() !== "") {
-        setSearchResults(prev => 
-          prev.map(u => u._id === user._id ? {...u, esBloqueado: false} : u)
+        setSearchResults(prev =>
+          prev.map(u => u._id === user._id ? { ...u, esBloqueado: false } : u)
         );
       }
-      
+
       forceRender(n => n + 1);
     } catch (err) {
       console.error(t('errors.unblockUser'), err);
@@ -321,11 +321,11 @@ const Users = () => {
   const handleToggleActiveStatus = async (userId) => {
     try {
       await dispatch(toggleActiveStatus(userId, auth.token));
-      
+
       // Actualizar resultados de búsqueda si estamos en modo búsqueda
       if (search.trim() !== "") {
-        setSearchResults(prev => 
-          prev.map(u => u._id === userId ? {...u, isActive: !u.isActive} : u)
+        setSearchResults(prev =>
+          prev.map(u => u._id === userId ? { ...u, isActive: !u.isActive } : u)
         );
       }
     } catch (err) {
@@ -337,11 +337,11 @@ const Users = () => {
   const handleToggleVerification = async (userId) => {
     try {
       await dispatch(toggleVerification(userId, auth.token));
-      
+
       // Actualizar resultados de búsqueda si estamos en modo búsqueda
       if (search.trim() !== "") {
-        setSearchResults(prev => 
-          prev.map(u => u._id === userId ? {...u, isVerified: !u.isVerified} : u)
+        setSearchResults(prev =>
+          prev.map(u => u._id === userId ? { ...u, isVerified: !u.isVerified } : u)
         );
       }
     } catch (err) {
@@ -371,7 +371,7 @@ const Users = () => {
         <Col>
           <Card className="border-0 shadow-sm bg-gradient" style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
             <Card.Body className="py-4">
-            
+
               <Row className="align-items-center g-3">
                 <Col lg={8} md={7}>
                   <InputGroup size="lg">
@@ -387,8 +387,8 @@ const Users = () => {
                       style={{ fontSize: "1rem" }}
                     />
                     {search.trim() !== "" && (
-                      <Button 
-                        variant="light" 
+                      <Button
+                        variant="light"
                         onClick={() => setSearch("")}
                         className="border-0"
                       >

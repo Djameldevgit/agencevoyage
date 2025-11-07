@@ -7,14 +7,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
     const isRTL = i18n.language === 'ar';
     
     return (
-        <Card className="mb-3">
-            <Card.Header>
-                <h5 className="mb-0">
-                    🏖️ {t('destinoLocation', 'Destination de la Propriété')}
-                </h5>
-            </Card.Header>
-            <Card.Body className="p-3">
-                <Form.Group className="w-100">
+     
                 <Form.Select
                     name="destinacion"  
                     value={postData.destinacion || ''}  
@@ -71,9 +64,7 @@ const DestinacionLocationvacances = ({ postData, handleChangeInput, destinationN
                             <option value="El Kala">{t('citiesss.El Kala', 'El Kala')}</option>
                         </optgroup>
                     </Form.Select>
-                </Form.Group>
-            </Card.Body>
-        </Card>
+          
     );
 };
 

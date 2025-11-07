@@ -2,18 +2,13 @@ import React from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 1 }) => {
+const DestinacionHadjOmra = ({ postData, handleChangeInput }) => {
     const { t, i18n } = useTranslation(["categories"]);
     const isRTL = i18n.language === 'ar';
     
     return (
-        <Card className="mb-3">
-            <Card.Header>
-                <h5 className="mb-0">
-                    🕋 {t('destinoHajjOmra', 'Destination Hajj & Omra')}
-                </h5>
-            </Card.Header>
-            <Card.Body className="p-3">
+       
+              
                 <Form.Select
                     name="destinacion"  
                     value={postData.destinacion || ''}  
@@ -54,8 +49,8 @@ const DestinacionHadjOmra = ({ postData, handleChangeInput, destinationNumber = 
                         <option value="Medina Region">{t('citiessss.Medina Region', 'Région de Médine')}</option>
                     </optgroup>
                 </Form.Select>
-            </Card.Body>
-        </Card>
+         
+       
     );
 };
 

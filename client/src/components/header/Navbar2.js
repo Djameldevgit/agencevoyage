@@ -45,7 +45,6 @@ const Navbar2 = () => {
   const [showInstallButton, setShowInstallButton] = useState(false);
 
   // 🔥 DETECCIÓN RÁPIDA DE PWA
- 
   useEffect(() => {
     // Verificar si ya está instalada al cargar
     if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -329,7 +328,7 @@ const Navbar2 = () => {
               />
             </Link>
 
-            {/* 🔥 BOTÓN INSTALAR PWA MEJORADO - SOLO SE MUESTRA CUANDO ES NECESARIO */}
+            {/* 🔥 BOTÓN INSTALAR PWA MEJORADO - SOLO SE MUESTRA CUANDO NO ESTÁ INSTALADA */}
             {showInstallButton && !isPWAInstalled && (
               <button
                 className="d-flex align-items-center justify-content-center icon-button text-decoration-none"
@@ -351,6 +350,8 @@ const Navbar2 = () => {
                 />
               </button>
             )}
+
+            {/* 🔥 NO SE MUESTRA NADA CUANDO ESTÁ INSTALADA - SE AHORRA ESPACIO */}
 
             {/* Botón Agregar Post */}
             {(userRole === "Super-utilisateur" || userRole === "admin") && (
@@ -529,7 +530,9 @@ const Navbar2 = () => {
                     <MenuItem icon={FaInfoCircle} iconColor="#6c757d" to="/infoaplicacionn">
                       {t('appInfo')}
                     </MenuItem>
-                  
+                    <MenuItem icon={FaInfoCircle} iconColor="#6c757d" to="/infoaplicacionn3">
+                      {t('appInfo3')}
+                    </MenuItem>
 
                     <MenuItem icon={FaShareAlt} iconColor="#ffc107" onClick={() => setShowShareModal(true)}>
                       {t('shareApp')}

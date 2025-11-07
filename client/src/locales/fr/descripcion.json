@@ -1,5 +1,12 @@
 {
   
+
+  
+
+
+
+
+
     "categories": {
       "hajjUmrah": "Pèlerinage Hajj & Omra",
       "hajjDescription": "Expérience spirituelle unique vers les lieux saints de l'Islam",
@@ -61,8 +68,10 @@
       "readyToBook": "Prêt à Réserver ?",
       "dontMiss": "Ne manquez pas cette opportunité unique ! Notre équipe est à votre disposition pour répondre à toutes vos questions et finaliser votre réservation.",
       "callNow": "Appelez-nous dès maintenant",
-      "guarantee": "Réservez en toute confiance et préparez-vous à vivre des moments inoubliables !"
-    
+      "guarantee": "Réservez en toute confiance et préparez-vous à vivre des moments inoubliables !",
+      "confirmCall": "Voulez-vous appeler {{number}} ?",
+      "tapToCall": "Touchez pour appeler",
+      "useMobileToCall": "Utilisez votre mobile pour appeler"
   },
  
         "exceptionalOffer": "Offre exceptionnelle",
