@@ -90,7 +90,7 @@ const postCtrl = {
                         images: images || postData.images,
                         
                         // Solo campos críticos
-                        category: postData.category || "Agence de Voyage",
+                        category: postData.category || "Tassili Voyage",
                         description: postData.description || "",
                         
                         // Arrays
