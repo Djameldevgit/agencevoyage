@@ -14,7 +14,7 @@ import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
 const CardBodyTitle = ({ post }) => {
     const location = useLocation();
     const history = useHistory();
-    const { t, i18n } = useTranslation(['cardtitle','categories','descripcion', 'common']);
+    const { t, i18n } = useTranslation(['cardtitle', 'categories', 'descripcion', 'common']);
     const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
 
@@ -52,14 +52,14 @@ const CardBodyTitle = ({ post }) => {
 
     const getDayName = (dateString) => {
         if (!dateString) return '';
-        const days = { 
-            'Monday': t('days.monday', 'Lun'), 
-            'Tuesday': t('days.tuesday', 'Mar'), 
-            'Wednesday': t('days.wednesday', 'Mer'), 
-            'Thursday': t('days.thursday', 'Jeu'), 
-            'Friday': t('days.friday', 'Ven'), 
-            'Saturday': t('days.saturday', 'Sam'), 
-            'Sunday': t('days.sunday', 'Dim') 
+        const days = {
+            'Monday': t('days.monday', 'Lun'),
+            'Tuesday': t('days.tuesday', 'Mar'),
+            'Wednesday': t('days.wednesday', 'Mer'),
+            'Thursday': t('days.thursday', 'Jeu'),
+            'Friday': t('days.friday', 'Ven'),
+            'Saturday': t('days.saturday', 'Sam'),
+            'Sunday': t('days.sunday', 'Dim')
         };
         const day = moment(dateString).format('dddd');
         return days[day] || day;
@@ -67,15 +67,15 @@ const CardBodyTitle = ({ post }) => {
 
     const getSubCategoryIcon = (subCategory) => {
         const icons = {
-            'Location_Vacances': '🏖️', 
-            'hadj_Omra': '🕋', 
-            'Voyage Organise': '✈️', 
+            'Location_Vacances': '🏖️',
+            'hadj_Omra': '🕋',
+            'Voyage Organise': '✈️',
             'voyage affaires': '💼',
-            'tourisme': '🗺️', 
-            'aventure': '🧭', 
-            'culturel': '🏛️', 
-            'balnéaire': '🌊', 
-            'montagne': '⛰️', 
+            'tourisme': '🗺️',
+            'aventure': '🧭',
+            'culturel': '🏛️',
+            'balnéaire': '🌊',
+            'montagne': '⛰️',
             'désert': '🏜️'
         };
         return icons[subCategory] || '✈️';
@@ -109,11 +109,11 @@ const CardBodyTitle = ({ post }) => {
 
     // 🆕 FUNCIÓN MEJORADA: handleChatWithAgency
     const handleChatWithAgency = () => {
-        if (!auth.user) { 
-            setShowAuthModal(true); 
-            return; 
+        if (!auth.user) {
+            setShowAuthModal(true);
+            return;
         }
-        
+
         if (!post.user || !post.user._id) {
             dispatch({
                 type: GLOBALTYPES.ALERT,
@@ -124,20 +124,20 @@ const CardBodyTitle = ({ post }) => {
 
         try {
             // 🆕 USAR LA MISMA LÓGICA QUE EN CardBodyCarousel
-            dispatch({ 
-                type: MESS_TYPES.ADD_USER, 
-                payload: { ...post.user, text: '', media: [] } 
+            dispatch({
+                type: MESS_TYPES.ADD_USER,
+                payload: { ...post.user, text: '', media: [] }
             });
-            
+
             // Redirigir al chat con la agencia
             history.push(`/message/${post.user._id}`);
             setShowDropdown(false);
-            
+
             dispatch({
                 type: GLOBALTYPES.ALERT,
                 payload: { success: t('agency.chatStarted', 'Chat iniciado con la agencia') }
             });
-            
+
         } catch (error) {
             console.error('Error al iniciar chat con agencia:', error);
             dispatch({
@@ -173,25 +173,25 @@ const CardBodyTitle = ({ post }) => {
         }
     };
 
-    const handleFollowAgency = () => { 
-        console.log("Seguir agencia:", post.user?._id); 
-        setShowDropdown(false); 
+    const handleFollowAgency = () => {
+        console.log("Seguir agencia:", post.user?._id);
+        setShowDropdown(false);
     };
 
     // 🆕 FUNCIÓN CORREGIDA: handleSharePost
-    const handleSharePost = () => { 
-        setShowShareModal(true); 
-        setShowDropdown(false); 
+    const handleSharePost = () => {
+        setShowShareModal(true);
+        setShowDropdown(false);
     };
 
-    const handleViewDetails = () => { 
-        history.push(`/post/${post._id}`); 
-        setShowDropdown(false); 
+    const handleViewDetails = () => {
+        history.push(`/post/${post._id}`);
+        setShowDropdown(false);
     };
 
     const getDropdownOptions = () => {
         const options = [];
-        
+
         // Opciones para admin y dueño del post
         if (hasAdminRights) {
             options.push(
@@ -199,14 +199,14 @@ const CardBodyTitle = ({ post }) => {
                 { icon: "delete_outline", text: t('deletePost', 'Supprimer le post'), action: handleDeletePost }
             );
         }
-        
+
         if (isPostOwner) {
             options.push(
                 { icon: "create", text: t('editPost', 'Modifier le post'), action: handleEditPost },
                 { icon: "delete_outline", text: t('deletePost', 'Supprimer le post'), action: handleDeletePost }
             );
         }
-        
+
         // 🆕 OPCIONES PARA TODOS LOS USUARIOS AUTENTICADOS
         if (auth.user) {
             options.push(
@@ -215,7 +215,7 @@ const CardBodyTitle = ({ post }) => {
                 { icon: "share", text: t('sharePost', 'Partager'), action: handleSharePost },
                 { icon: "info", text: t('viewDetails', 'Voir détails'), action: handleViewDetails }
             );
-            
+
             // Solo mostrar seguir si no es el dueño
             if (!isPostOwner) {
                 options.push(
@@ -223,8 +223,8 @@ const CardBodyTitle = ({ post }) => {
                 );
             }
         }
-        
-        return options.filter((option, index, self) => 
+
+        return options.filter((option, index, self) =>
             index === self.findIndex(o => o.text === option.text)
         );
     };
@@ -234,13 +234,13 @@ const CardBodyTitle = ({ post }) => {
 
     const DropdownItem = ({ icon, text, onClick, isDanger = false }) => (
         <div style={{
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px', 
-            padding: '10px 12px', 
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 12px',
             cursor: 'pointer',
-            transition: 'background-color 0.2s', 
-            borderBottom: '1px solid #f1f5f9', 
+            transition: 'background-color 0.2s',
+            borderBottom: '1px solid #f1f5f9',
             fontSize: '14px',
             color: isDanger ? '#e53e3e' : '#4a5568',
             flexDirection: isRTL ? 'row-reverse' : 'row'
@@ -248,8 +248,8 @@ const CardBodyTitle = ({ post }) => {
             onClick={onClick}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#f7fafc'}
             onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-            <span className="material-icons" style={{ 
-                fontSize: '18px', 
+            <span className="material-icons" style={{
+                fontSize: '18px',
                 width: '20px',
                 transform: isRTL ? 'scaleX(-1)' : 'none'
             }}>{icon}</span>
@@ -259,26 +259,26 @@ const CardBodyTitle = ({ post }) => {
 
     // 🆕 PROPS PARA EL SHAREMODAL
     const shareUrl = `${window.location.origin}/post/${post._id}`;
-    const shareTitle = `${post.title || t('agency.offer', 'Offre Agence')} - ${post.user?.username || t('agency.name', 'Agence de Voyage')}`;
+    const shareTitle = `${post.title || t('agency.offer', 'Offre Agence')} - ${post.user?.username || t('agency.name', 'Tassili Voyage')}`;
     const imageUrl = post.images?.[0]?.url || post.user?.avatar;
 
     return (
         <div className="cardtitle" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
-           
-            <CardBody className="card-header" style={{ 
-                padding: '7px 10px', 
-                borderBottom: '1px solid #e2e8f0', 
+
+            <CardBody className="card-header" style={{
+                padding: '7px 10px',
+                borderBottom: '1px solid #e2e8f0',
                 background: 'white',
                 textAlign: isRTL ? 'right' : 'left'
             }}>
                 {!isDetailPage && (
                     <div style={{ width: '100%' }}>
                         {/* 🔥 FILA 1: Subcategoría + Destinación (misma línea) */}
-                        <div style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '5px', 
-                            marginBottom: '6px', 
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            marginBottom: '6px',
                             flexWrap: 'wrap',
                             flexDirection: isRTL ? 'row-reverse' : 'row'
                         }}>
@@ -318,27 +318,27 @@ const CardBodyTitle = ({ post }) => {
 
                                 {showDropdown && auth.user && (
                                     <div style={{
-                                        position: 'absolute', 
-                                        top: '100%', 
+                                        position: 'absolute',
+                                        top: '100%',
                                         [isRTL ? 'left' : 'right']: '0',
-                                        marginTop: '4px', 
-                                        backgroundColor: 'white', 
+                                        marginTop: '4px',
+                                        backgroundColor: 'white',
                                         border: '1px solid #e2e8f0',
-                                        borderRadius: '8px', 
-                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', 
+                                        borderRadius: '8px',
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                                         minWidth: '200px',
-                                        zIndex: 1000, 
+                                        zIndex: 1000,
                                         overflow: 'hidden',
                                         textAlign: isRTL ? 'right' : 'left'
                                     }}
                                         onMouseLeave={() => setShowDropdown(false)}>
                                         {dropdownOptions.map((option, index) => (
-                                            <DropdownItem 
-                                                key={index} 
-                                                icon={option.icon} 
+                                            <DropdownItem
+                                                key={index}
+                                                icon={option.icon}
                                                 text={option.text}
                                                 onClick={() => handleOptionClick(option.action)}
-                                                isDanger={option.icon === 'delete_outline'} 
+                                                isDanger={option.icon === 'delete_outline'}
                                             />
                                         ))}
                                     </div>
@@ -350,62 +350,72 @@ const CardBodyTitle = ({ post }) => {
                                 <div style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '1px',
+                                    gap: '3px',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s',
-                                    borderRadius: '12px',
+                                    borderRadius: '8px',
                                     background: 'white',
                                     border: '1px solid #e2e8f0',
-                                    fontSize: '14px',
+                                    fontSize: '13px',
                                     fontWeight: '500',
                                     flexDirection: isRTL ? 'row-reverse' : 'row',
-                                    padding: isRTL ? '6px 8px 6px 12px' : '6px 12px 6px 8px'
+                                    padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
+                                    flexShrink: 0,
+                                    minWidth: 0,
+                                    overflow: 'hidden'
                                 }}
                                     onClick={handleDestinationClick}
-                                    onMouseEnter={(e) => { 
-                                        e.target.style.backgroundColor = '#f0f9ff'; 
-                                        e.target.style.borderColor = '#3b82f6'; 
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.backgroundColor = '#f0f9ff';
+                                        e.currentTarget.style.borderColor = '#3b82f6';
                                     }}
-                                    onMouseLeave={(e) => { 
-                                        e.target.style.backgroundColor = 'white'; 
-                                        e.target.style.borderColor = '#e2e8f0'; 
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.backgroundColor = 'white';
+                                        e.currentTarget.style.borderColor = '#e2e8f0';
                                     }}
                                     title={t('cardbody.viewDestinationOnMap', 'Voir la destination sur la carte')}>
 
-                                    <span style={{ 
+                                    <span style={{
                                         color: '#374151',
-                                        margin: isRTL ? '0 0 0 8px' : '0 8px 0 0'
-                                    }}>{post.destinacion}</span>
-                                    <i className="fas fa-map-marker-alt" style={{
-                                        color: '#ef4444',
-                                        fontSize: '14px'
+                                        margin: isRTL ? '0 0 0 6px' : '0 6px 0 0',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}>
+                                        {/* 🔥 SOLUCIÓN CORREGIDA - Usar el namespace correcto */}
+                                        {t(`destinations.${post.destinacion}`, { defaultValue: post.destinacion })}
+                                    </span>
+                                    <i className="fas fa-location-dot" style={{
+                                        color: '#dc2626',
+                                        fontSize: '11px',
+                                        flexShrink: 0
                                     }}></i>
                                 </div>
                             )}
                         </div>
 
                         {/* 🔥 FILA 2: TODOS los demás campos en MISMA LÍNEA */}
-                        <div style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '12px', 
-                            flexWrap: 'wrap', 
-                            fontSize: '12px', 
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            flexWrap: 'wrap',
+                            fontSize: '12px',
                             color: '#6b7280',
                             flexDirection: isRTL ? 'row-reverse' : 'row'
                         }}>
 
                             {/* FECHA */}
                             {post.datedepar && (
-                                <div style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     gap: '4px',
                                     flexDirection: isRTL ? 'row-reverse' : 'row'
                                 }}>
-                                    <i className="far fa-calendar-alt" style={{ 
-                                        fontSize: '11px', 
-                                        color: '#8b5cf6' 
+                                    <i className="far fa-calendar-alt" style={{
+                                        fontSize: '11px',
+                                        color: '#8b5cf6'
                                     }}></i>
                                     <span style={{ fontWeight: '500' }}>
                                         {t('departure', 'Départ')} {formatDate(post.datedepar)}
@@ -418,15 +428,15 @@ const CardBodyTitle = ({ post }) => {
 
                             {/* UBICACIÓN */}
                             {post.wilaya && (
-                                <div style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     gap: '4px',
                                     flexDirection: isRTL ? 'row-reverse' : 'row'
                                 }}>
-                                    <i className="fas fa-map-pin" style={{ 
-                                        fontSize: '10px', 
-                                        color: '#10b981' 
+                                    <i className="fas fa-map-pin" style={{
+                                        fontSize: '10px',
+                                        color: '#10b981'
                                     }}></i>
                                     <span>
                                         {post.wilaya}{post.commune && `, ${post.commune}`}
@@ -440,132 +450,154 @@ const CardBodyTitle = ({ post }) => {
 
             {/* VISTA DETALLE COMPACTA */}
             {isDetailPage && (
-                <div style={{ padding: '8px', textAlign: isRTL ? 'right' : 'left' }}>
-                    {/* FILA 1: Subcategoría - TODO EL ANCHO */}
-                    <div style={{ marginBottom: '8px' }}>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            cursor: auth.user ? 'pointer' : 'default',
-                            transition: 'all 0.2s',
-                            padding: '12px 16px',
-                            borderRadius: '8px',
-                            backgroundColor: '#f8fafc',
-                            border: '1px solid #e2e8f0',
-                            fontSize: '18px',
-                            fontWeight: '700',
-                            width: '100%',
-                            boxSizing: 'border-box',
-                            flexDirection: isRTL ? 'row-reverse' : 'row'
-                        }}
-                            onClick={handleSubCategoryClick}
-                            onMouseEnter={(e) => { if (auth.user) e.target.style.backgroundColor = '#f1f5f9'; }}
-                            onMouseLeave={(e) => { if (auth.user) e.target.style.backgroundColor = '#f8fafc'; }}>
-                            <div style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '8px',
-                                flexDirection: isRTL ? 'row-reverse' : 'row'
-                            }}>
-                                <span style={{ fontSize: '20px' }}>{getSubCategoryIcon(post.subCategory)}</span>
-                                <span>{translateSubCategory(post.subCategory)}</span>
-                            </div>
-                            {auth.user && <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'}`}
-                                style={{
-                                    fontSize: '14px',
-                                    color: '#6b7280'
-                                }}></i>}
-                        </div>
-                    </div>
-
-                    {/* FILA 2: Destinación - TODO EL ANCHO */}
-                    {post.destinacion && (
-                        <div style={{ marginBottom: '8px' }}>
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s',
-                                padding: '12px 16px',
-                                borderRadius: '8px',
-                                background: 'white',
-                                border: '1px solid #e2e8f0',
-                                fontSize: '18px',
-                                fontWeight: '600',
-                                width: '100%',
-                                boxSizing: 'border-box',
-                                flexDirection: isRTL ? 'row-reverse' : 'row'
-                            }}
-                                onClick={handleDestinationClick}
-                                onMouseEnter={(e) => {
-                                    e.target.style.backgroundColor = '#f0f9ff';
-                                    e.target.style.borderColor = '#3b82f6';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.backgroundColor = 'white';
-                                    e.target.style.borderColor = '#e2e8f0';
-                                }}>
-                                <div style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: '8px',
-                                    flexDirection: isRTL ? 'row-reverse' : 'row'
-                                }}>
-                                    <i className="fas fa-map-marker-alt" style={{
-                                        color: '#ef4444',
-                                        fontSize: '16px'
-                                    }}></i>
-                                    <span>{post.destinacion}</span>
-                                </div>
-                                <i className="fas fa-external-link-alt" style={{
-                                    fontSize: '14px',
-                                    color: '#9ca3af'
-                                }}></i>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* FILA 3: Campos adicionales */}
+                <div className="post-header" style={{
+                    padding: '8px 12px',
+                    borderBottom: '1px solid #e2e8f0',
+                    background: 'white',
+                    direction: isRTL ? 'rtl' : 'ltr',
+                    textAlign: isRTL ? 'right' : 'left'
+                }}>
+                    {/* FILA 1: Subcategoría + Destinación - MÁS COMPACTA */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '16px',
+                        gap: '6px',
+                        marginBottom: '6px',
+                        flexWrap: 'nowrap',
+                        flexDirection: isRTL ? 'row-reverse' : 'row',
+                        overflow: 'hidden'
+                    }}>
+                        {/* SUBCATEGORÍA - MÁS COMPACTA */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: '#f8fafc',
+                            borderRadius: '8px',
+                            border: '1px solid #e2e8f0',
+                            minWidth: 'fit-content',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            color: '#374151',
+                            flexDirection: isRTL ? 'row-reverse' : 'row',
+                            padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
+                            flexShrink: 0
+                        }}>
+                            <span style={{ fontSize: '13px' }}>{getSubCategoryIcon(post.subCategory)}</span>
+                            <span style={{
+                                margin: isRTL ? '0 6px 0 0' : '0 0 0 6px',
+                                fontSize: '13px',
+                                whiteSpace: 'nowrap'
+                            }}>
+                                {translateSubCategory(post.subCategory)}
+                            </span>
+                        </div>
+
+                        {/* DESTINACIÓN - MÁS COMPACTA Y MEJOR ICONO */}
+                        {post.destinacion && (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                borderRadius: '8px',
+                                background: 'white',
+                                border: '1px solid #e2e8f0',
+                                fontSize: '13px',
+                                fontWeight: '500',
+                                flexDirection: isRTL ? 'row-reverse' : 'row',
+                                padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
+                                flexShrink: 0,
+                                minWidth: 0,
+                                overflow: 'hidden'
+                            }}
+                                onClick={handleDestinationClick}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f0f9ff';
+                                    e.currentTarget.style.borderColor = '#3b82f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                    e.currentTarget.style.borderColor = '#e2e8f0';
+                                }}
+                                title={t('cardbody.viewDestinationOnMap', 'Voir la destination sur la carte')}>
+
+                                <span style={{
+                                    color: '#374151',
+                                    margin: isRTL ? '0 0 0 6px' : '0 6px 0 0',
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }}>{post.destinacion}</span>
+                                <i className="fas fa-location-dot" style={{
+                                    color: '#dc2626',
+                                    fontSize: '11px',
+                                    flexShrink: 0
+                                }}></i>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* FILA 2: Fecha y Ubicación - MÁS COMPACTA */}
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
                         flexWrap: 'wrap',
-                        fontSize: '14px',
+                        fontSize: '12px',
                         color: '#6b7280',
-                        padding: '0 8px',
                         flexDirection: isRTL ? 'row-reverse' : 'row'
                     }}>
+                        {/* FECHA - MÁS COMPACTA */}
                         {post.datedepar && (
-                            <div style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '6px',
-                                flexDirection: isRTL ? 'row-reverse' : 'row'
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                flexDirection: isRTL ? 'row-reverse' : 'row',
+                                flexShrink: 0
                             }}>
-                                <i className="far fa-calendar-alt" style={{ fontSize: '12px', color: '#8b5cf6' }}></i>
-                                <span><strong>{t('departure', 'Départ')}:</strong> {formatDate(post.datedepar)}</span>
-                                <span style={{ color: '#d1d5db' }}>({getDayName(post.datedepar)})</span>
+                                <i className="far fa-calendar" style={{
+                                    fontSize: '11px',
+                                    color: '#7c3aed',
+                                    flexShrink: 0
+                                }}></i>
+                                <span style={{ fontWeight: '500', whiteSpace: 'nowrap' }}>
+                                    {t('departure', 'Départ')} {formatDate(post.datedepar)}
+                                </span>
+                                <span style={{
+                                    color: '#9ca3af',
+                                    fontSize: '11px',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    ({getDayName(post.datedepar)})
+                                </span>
                             </div>
                         )}
 
+                        {/* UBICACIÓN/DEPARTAMENTO - MÁS COMPACTA */}
                         {post.wilaya && (
-                            <div style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '6px',
-                                flexDirection: isRTL ? 'row-reverse' : 'row'
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                flexDirection: isRTL ? 'row-reverse' : 'row',
+                                flexShrink: 0
                             }}>
-                                <i className="fas fa-map-pin" style={{ fontSize: '11px', color: '#10b981' }}></i>
-                                <span>{post.wilaya}{post.commune && `, ${post.commune}`}</span>
+                                <i className="fas fa-location-pin" style={{
+                                    fontSize: '10px',
+                                    color: '#059669',
+                                    flexShrink: 0
+                                }}></i>
+                                <span style={{ whiteSpace: 'nowrap' }}>
+                                    {post.wilaya}{post.commune && `, ${post.commune}`}
+                                </span>
                             </div>
                         )}
                     </div>
                 </div>
             )}
-            
+
             {/* 🆕 SHAREMODAL CORREGIDO */}
             <ShareModal
                 show={showShareModal}
@@ -578,59 +610,59 @@ const CardBodyTitle = ({ post }) => {
 
             {showAuthModal && (
                 <div style={{
-                    position: 'fixed', 
-                    top: 0, 
-                    left: 0, 
-                    right: 0, 
-                    bottom: 0, 
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     zIndex: 10000
                 }}>
-                    <div style={{ 
-                        backgroundColor: 'white', 
-                        padding: '20px', 
-                        borderRadius: '8px', 
-                        textAlign: 'center', 
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        textAlign: 'center',
                         minWidth: '280px',
                         direction: isRTL ? 'rtl' : 'ltr'
                     }}>
-                        <h3 style={{ 
-                            marginBottom: '12px', 
-                            color: '#2d3748', 
-                            fontSize: '16px' 
+                        <h3 style={{
+                            marginBottom: '12px',
+                            color: '#2d3748',
+                            fontSize: '16px'
                         }}>{t('auth.required', 'Authentification Requise')}</h3>
-                        <p style={{ 
-                            marginBottom: '16px', 
-                            color: '#718096', 
-                            fontSize: '14px' 
+                        <p style={{
+                            marginBottom: '16px',
+                            color: '#718096',
+                            fontSize: '14px'
                         }}>{t('auth.loginToContinue', 'Veuillez vous connecter pour continuer')}</p>
-                        <div style={{ 
-                            display: 'flex', 
-                            gap: '10px', 
+                        <div style={{
+                            display: 'flex',
+                            gap: '10px',
                             justifyContent: 'center',
                             flexDirection: isRTL ? 'row-reverse' : 'row'
                         }}>
                             <button onClick={() => history.push('/login')} style={{
-                                padding: '8px 16px', 
+                                padding: '8px 16px',
                                 backgroundColor: '#4a5568',
-                                color: 'white', 
-                                border: 'none', 
-                                borderRadius: '6px', 
-                                cursor: 'pointer', 
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
                                 fontSize: '12px'
                             }}>
                                 {t('auth.login', 'Connexion')}
                             </button>
                             <button onClick={() => history.push('/register')} style={{
-                                padding: '8px 16px', 
+                                padding: '8px 16px',
                                 backgroundColor: '#e2e8f0',
-                                color: '#4a5568', 
-                                border: 'none', 
-                                borderRadius: '6px', 
-                                cursor: 'pointer', 
+                                color: '#4a5568',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
                                 fontSize: '12px'
                             }}>
                                 {t('auth.register', 'Inscription')}

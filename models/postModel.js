@@ -15,7 +15,7 @@ const postSchema = new mongoose.Schema({
     // 🔷 CAMPOS PRINCIPALES DE VIAJE
     category: {
         type: String,
-        default: "Agence de Voyage"
+        default: "Tassili Voyage"
     },
     subCategory: String,
     description: String,

@@ -40,7 +40,7 @@ import { createPost, updatePost } from '../redux/actions/postAction';
 
 const getInitialState = () => ({
   // ✅ CAMPOS COMUNES A TODAS LAS CATEGORÍAS
-  category: "Agence de Voyage Tassili",
+  category: "Tassili Voyage",
   subCategory: "",
   title: "",
   description: "",
@@ -137,7 +137,7 @@ const Createpost = () => {
       const finalPostData = {
         ...getInitialState(),
         ...sanitizedData,
-        category: sanitizedData.category || "Agence de Voyage",
+        category: sanitizedData.category || "Tassili Voyage",
         subCategory: sanitizedData.subCategory || "",
         description: sanitizedData.description || sanitizedData.content || "",
         title: sanitizedData.title || "",
