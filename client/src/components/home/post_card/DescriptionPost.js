@@ -6,13 +6,15 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const { t, i18n } = useTranslation('descripcion');
     const isRTL = i18n.language === 'ar';
 
-    // 🎨 Colores y estilos consistentes
+    // 🎨 Colores y estilos consistentes - MÁS CLAROS Y SUAVES
     const styles = {
-        primaryColor: "#1e88e5",
-        accentColor: "#1565c0",
-        successColor: "#059669",
-        warningColor: "#d97706",
-        gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        primaryColor: "#1e88e5",        // Azul principal
+        accentColor: "#1565c0",         // Azul más oscuro
+        successColor: "#059669",        // Verde éxito
+        warningColor: "#d97706",        // Naranja advertencia
+        // 🆕 GRADIENTES MÁS CLAROS Y DEFINIDOS
+        mainGradient: "linear-gradient(135deg, #c2d9ff 0%, #4f46e5 100%)",        // Azul lavanda a índigo
+        contactGradient: "linear-gradient(135deg, #93c5fd 0%, #2563eb 100%)",     // Azul cielo a azul real
         cardShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
     };
 
@@ -23,21 +25,21 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                 icon: "🕋",
                 title: t('categories.hajjUmrah', 'Pèlerinage Hajj & Omra'),
                 color: "#8B4513",
-                gradient: "linear-gradient(135deg, #8B4513 0%, #D2691E 100%)",
+                gradient: styles.mainGradient,
                 description: t('categories.hajjDescription', 'Expérience spirituelle unique')
             },
             "Voyage Organise": {
                 icon: "✈️",
                 title: t('categories.organizedTrip', 'Voyage Organisé'),
                 color: "#3498db",
-                gradient: "linear-gradient(135deg, #3498db 0%, #1abc9c 100%)",
+                gradient: styles.mainGradient,
                 description: t('categories.organizedDescription', 'Aventure planifiée pour votre confort')
             },
             "Location_Vacances": {
                 icon: "🏠",
                 title: t('categories.vacationRental', 'Location de Vacances'),
                 color: "#e74c3c",
-                gradient: "linear-gradient(135deg, #e74c3c 0%, #e67e22 100%)",
+                gradient: styles.mainGradient,
                 description: t('categories.rentalDescription', 'Votre maison loin de chez vous')
             }
         };
@@ -46,14 +48,14 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             icon: "🌟",
             title: post.subCategory || t('categories.general', 'Offre Exceptionnelle'),
             color: "#9b59b6",
-            gradient: "linear-gradient(135deg, #9b59b6 0%, #3498db 100%)",
+            gradient: styles.mainGradient,
             description: t('categories.generalDescription', 'Expérience de voyage unique')
         };
     };
 
     const categoryInfo = getCategoryInfo();
 
-    // ✨ Componente para valores destacados - MÁS COMPACTO
+    // ✨ Componente para valores destacados
     const Highlight = ({ children, type = "default" }) => {
         const typeStyles = {
             default: { backgroundColor: '#e3f2fd', color: styles.primaryColor },
@@ -105,17 +107,16 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     // 🆕 FUNCIÓN PARA FORMATEAR NÚMERO DE TELÉFONO
     const formatPhoneNumber = (phone) => {
         if (!phone) return '';
-        // Eliminar espacios, guiones, paréntesis, etc.
         return phone.replace(/[\s\-\(\)\+]/g, '');
     };
 
-    // 🎯 GENERACIÓN DEL ANUNCIO MEJORADO - 5 PARTES
+    // 🎯 GENERACIÓN DEL ANUNCIO MEJORADO
 
     // 🔹 PARTE 1: ANUNCIO PRINCIPAL MEJORADO
     const generateMainAnnouncement = () => {
         return (
             <div style={{
-                background: categoryInfo.gradient,
+                background: styles.mainGradient,
                 color: 'white',
                 padding: '20px',
                 borderRadius: '10px',
@@ -225,17 +226,67 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                     {/* Información específica por categoría */}
                     {renderCategorySpecificDetails()}
 
-                    {/* Servicios incluidos preview */}
+                    {/* 🆕 SECCIÓN MEJORADA DE SERVICIOS */}
                     {post.servicios && post.servicios.length > 0 && (
-                        <p style={{ marginBottom: '8px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '120px' }}>
-                                ✅ {t('details.includes', 'Comprend')}:
-                            </span>
-                            <span>
-                                {post.servicios.slice(0, 3).join(', ')}
-                                {post.servicios.length > 3 && ` ${t('details.andMore', 'et plus encore...')}`}
-                            </span>
-                        </p>
+                        <div style={{ 
+                            marginTop: '12px',
+                            padding: '12px',
+                            backgroundColor: '#f0f9ff',
+                            borderRadius: '8px',
+                            border: '1px solid #bae6fd'
+                        }}>
+                            <h3 style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                marginBottom: '8px',
+                                color: styles.primaryColor,
+                                fontSize: '16px',
+                                fontWeight: '600'
+                            }}>
+                                ✨ {t('services.exclusiveServices', 'Services Exclusifs Inclus')}
+                            </h3>
+                            <p style={{ 
+                                fontSize: '14px', 
+                                color: '#475569',
+                                marginBottom: '8px',
+                                fontStyle: 'italic'
+                            }}>
+                                {t('services.presentation', 'Pour votre confort et satisfaction, nous avons soigneusement sélectionné ces services:')}
+                            </p>
+                            <div style={{ 
+                                display: 'flex', 
+                                flexWrap: 'wrap', 
+                                gap: '6px',
+                                alignItems: 'center'
+                            }}>
+                                {post.servicios.slice(0, 5).map((servicio, index) => (
+                                    <span key={index} style={{
+                                        backgroundColor: '#dbeafe',
+                                        color: styles.primaryColor,
+                                        padding: '4px 8px',
+                                        borderRadius: '6px',
+                                        fontSize: '12px',
+                                        fontWeight: '500',
+                                        border: '1px solid #93c5fd'
+                                    }}>
+                                        ✅ {servicio}
+                                    </span>
+                                ))}
+                                {post.servicios.length > 5 && (
+                                    <span style={{
+                                        backgroundColor: '#fef3c7',
+                                        color: styles.warningColor,
+                                        padding: '4px 8px',
+                                        borderRadius: '6px',
+                                        fontSize: '12px',
+                                        fontWeight: '500'
+                                    }}>
+                                        +{post.servicios.length - 5} {t('services.moreServices', 'autres services')}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
@@ -270,7 +321,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         );
     };
 
-    // 🔹 PARTE 4: PRECIOS Y OFERTAS - COMPLETAMENTE REDISEÑADO (MÁS COMPACTO)
+    // 🔹 PARTE 4: PRECIOS Y OFERTAS - CON NUEVO TÍTULO PARA SERVICIOS DE PRECIOS
     const generatePricingDetails = () => {
         if (!hasPricingData()) return null;
 
@@ -300,14 +351,14 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         );
     };
 
-    // 🔹 PARTE 5: CONTACTO Y RESERVA MEJORADO - CON CLICK TO CALL
+    // 🔹 PARTE 5: CONTACTO Y RESERVA MEJORADO
     const generateContactSection = () => {
         const phoneNumber = post.contacto ? formatPhoneNumber(post.contacto) : '';
         const mobileDevice = isMobileDevice();
 
         return (
             <div style={{
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                background: styles.contactGradient,
                 color: 'white',
                 padding: '20px',
                 borderRadius: '10px',
@@ -356,7 +407,6 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                             📞 {t('contact.callNow', 'Appelez-nous dès maintenant')}
                         </div>
                         
-                        {/* 🆕 ELEMENTO CLICKABLE PARA LLAMAR EN MÓVIL */}
                         {mobileDevice ? (
                             <a 
                                 href={`tel:${phoneNumber}`}
@@ -368,9 +418,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                     display: 'block'
                                 }}
                                 onClick={(e) => {
-                                    // Confirmación opcional antes de llamar
                                     if (window.confirm(t('contact.confirmCall', `Voulez-vous appeler ${post.contacto} ?`))) {
-                                        // La llamada se activa automáticamente con el href="tel:"
                                         console.log('Llamando a:', post.contacto);
                                     } else {
                                         e.preventDefault();
@@ -388,7 +436,6 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
                                 </div>
                             </a>
                         ) : (
-                            // En desktop mostramos solo el número
                             <div>
                                 <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
                                     {post.contacto}
@@ -416,8 +463,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     // 🛠️ FUNCIONES AUXILIARES MEJORADAS
 
     const hasAccommodationData = () => {
-        return post.nombreHotel || post.hotelMeca || post.hotelMedina || 
-               post.tipoPropiedad || post.capacidad || post.habitaciones;
+        return post.nombreHotel || post.tipoPropiedad || post.capacidad || post.habitaciones;
     };
 
     const hasPricingData = () => {
@@ -432,23 +478,13 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
 
         switch (post.subCategory) {
             case "hadj_Omra":
-                if (post.hotelMeca) {
+                if (post.nombreHotel) {
                     details.push(
-                        <div key="meca-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div key="hajj-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
-                                🕋 {t('specific.hotelMeca', 'Hôtel à La Mecque')}:
+                                🏨 {t('specific.hotel', 'Hôtel')}:
                             </span>
-                            <Highlight type="feature">{post.hotelMeca}</Highlight>
-                        </div>
-                    );
-                }
-                if (post.hotelMedina) {
-                    details.push(
-                        <div key="medina-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
-                                🕌 {t('specific.hotelMedina', 'Hôtel à Médine')}:
-                            </span>
-                            <Highlight type="feature">{post.hotelMedina}</Highlight>
+                            <Highlight type="feature">{post.nombreHotel}</Highlight>
                         </div>
                     );
                 }
@@ -524,12 +560,11 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
     const renderAccommodationContent = () => {
         const content = [];
 
-        // Información general de hotel
         if (post.nombreHotel) {
             content.push(
                 <div key="hotel-name" style={{ marginBottom: '8px', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                     <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>
-                        🏰 {t('accommodation.hotelName', 'Nom de l\'hôtel')}:
+                        🏨 {t('accommodation.hotelName', 'Nom de l\'hôtel')}:
                     </span>
                     <span>
                         <Highlight type="feature">{post.nombreHotel}</Highlight>
@@ -540,29 +575,10 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             );
         }
 
-        // Hoteles específicos para Hajj/Omra
-        if (post.hotelMeca) {
-            content.push(
-                <div key="meca-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>🕋 {t('accommodation.meca', 'La Mecque')}:</span>
-                    <Highlight type="feature">{post.hotelMeca}</Highlight>
-                </div>
-            );
-        }
-
-        if (post.hotelMedina) {
-            content.push(
-                <div key="medina-hotel" style={{ marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontWeight: '600', color: '#4a5568', minWidth: '140px' }}>🕌 {t('accommodation.medina', 'Médine')}:</span>
-                    <Highlight type="feature">{post.hotelMedina}</Highlight>
-                </div>
-            );
-        }
-
         return content;
     };
 
-    // 🔥 NUEVA FUNCIÓN DE PRECIOS COMPACTA - CAMPO Y VALOR EN MISMA FILA
+    // 🔥 NUEVA FUNCIÓN DE PRECIOS - CON TÍTULO PARA SERVICIOS DE PRECIOS
     const renderPricingContent = () => {
         const content = [];
 
@@ -594,7 +610,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             );
         }
 
-        // Tarifas por edad - DISEÑO COMPACTO
+        // Tarifas por edad
         const agePrices = [];
         
         if (post.prixAdulte) {
@@ -642,7 +658,7 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
             );
         }
 
-        // Ofertas y descuentos - COMPACTO
+        // 🆕 SERVICIOS DE PRECIOS CON TÍTULO
         const discounts = [];
         
         if (post.descuentoGrupo) discounts.push("👥 " + t('pricing.groupDiscount', 'Réduction Groupe'));
@@ -653,23 +669,41 @@ const DescriptionPost = ({ post, readMore, setReadMore }) => {
         if (discounts.length > 0) {
             content.push(
                 <div key="discounts" style={{ 
-                    display: 'flex', 
-                    flexWrap: 'wrap', 
-                    gap: '6px',
-                    padding: '8px 0'
+                    backgroundColor: '#fff7ed',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    border: '1px solid #fed7aa'
                 }}>
-                    {discounts.map((discount, index) => (
-                        <span key={index} style={{
-                            backgroundColor: '#fef3c7',
-                            color: styles.warningColor,
-                            padding: '4px 8px',
-                            borderRadius: '4px',
-                            fontSize: '12px',
-                            fontWeight: '500'
-                        }}>
-                            {discount}
-                        </span>
-                    ))}
+                    <div style={{ 
+                        fontSize: '14px', 
+                        fontWeight: '600', 
+                        color: styles.warningColor, 
+                        marginBottom: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                    }}>
+                        🎁 {t('pricing.benefitsTitle', 'Avantages Exclusifs Inclus')}
+                    </div>
+                    <div style={{ 
+                        display: 'flex', 
+                        flexWrap: 'wrap', 
+                        gap: '6px'
+                    }}>
+                        {discounts.map((discount, index) => (
+                            <span key={index} style={{
+                                backgroundColor: '#fef3c7',
+                                color: styles.warningColor,
+                                padding: '6px 10px',
+                                borderRadius: '6px',
+                                fontSize: '13px',
+                                fontWeight: '500',
+                                border: '1px solid #fcd34d'
+                            }}>
+                                {discount}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             );
         }

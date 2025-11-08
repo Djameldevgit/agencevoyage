@@ -7,6 +7,10 @@ import ShareModal from './ShareModal';
 import { deletePost } from '../../../redux/actions/postAction';
 import { CardBody } from "react-bootstrap";
 
+// 🆕 IMPORTAR LAS DEPENDENCIAS NECESARIAS PARA EL CHAT
+import { MESS_TYPES } from '../../../redux/actions/messageAction';
+import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
+
 const CardBodyTitle = ({ post }) => {
     const location = useLocation();
     const history = useHistory();
@@ -103,16 +107,44 @@ const CardBodyTitle = ({ post }) => {
         if (auth.user) setShowDropdown(!showDropdown);
     };
 
-    // Funciones del dropdown
+    // 🆕 FUNCIÓN MEJORADA: handleChatWithAgency
     const handleChatWithAgency = () => {
-        if (!auth.user) { setShowAuthModal(true); return; }
+        if (!auth.user) { 
+            setShowAuthModal(true); 
+            return; 
+        }
+        
         if (!post.user || !post.user._id) {
-            alert(t('agency.contactError', 'Impossible de contacter cette agence'));
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: { error: t('agency.contactError', 'Impossible de contacter cette agence') }
+            });
             return;
         }
-        dispatch({ type: 'MESS_TYPES.ADD_USER', payload: { ...post.user, text: '', media: [] } });
-        history.push(`/message/${post.user._id}`);
-        setShowDropdown(false);
+
+        try {
+            // 🆕 USAR LA MISMA LÓGICA QUE EN CardBodyCarousel
+            dispatch({ 
+                type: MESS_TYPES.ADD_USER, 
+                payload: { ...post.user, text: '', media: [] } 
+            });
+            
+            // Redirigir al chat con la agencia
+            history.push(`/message/${post.user._id}`);
+            setShowDropdown(false);
+            
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: { success: t('agency.chatStarted', 'Chat iniciado con la agencia') }
+            });
+            
+        } catch (error) {
+            console.error('Error al iniciar chat con agencia:', error);
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: { error: t('agency.chatError', 'Error al iniciar el chat') }
+            });
+        }
     };
 
     const handleViewAgencyProfile = () => {
@@ -146,6 +178,7 @@ const CardBodyTitle = ({ post }) => {
         setShowDropdown(false); 
     };
 
+    // 🆕 FUNCIÓN CORREGIDA: handleSharePost
     const handleSharePost = () => { 
         setShowShareModal(true); 
         setShowDropdown(false); 
@@ -158,27 +191,42 @@ const CardBodyTitle = ({ post }) => {
 
     const getDropdownOptions = () => {
         const options = [];
+        
+        // Opciones para admin y dueño del post
         if (hasAdminRights) {
             options.push(
                 { icon: "create", text: t('editPost', 'Modifier le post'), action: handleEditPost },
                 { icon: "delete_outline", text: t('deletePost', 'Supprimer le post'), action: handleDeletePost }
             );
         }
+        
         if (isPostOwner) {
             options.push(
                 { icon: "create", text: t('editPost', 'Modifier le post'), action: handleEditPost },
                 { icon: "delete_outline", text: t('deletePost', 'Supprimer le post'), action: handleDeletePost }
             );
         }
+        
+        // 🆕 OPCIONES PARA TODOS LOS USUARIOS AUTENTICADOS
         if (auth.user) {
             options.push(
                 { icon: "chat", text: t('writeToAgency', 'Écrire à l\'agence'), action: handleChatWithAgency },
-                { icon: "person_add", text: t('followAgency', 'Suivre l\'agence'), action: handleFollowAgency },
+                { icon: "person", text: t('viewAgencyProfile', 'Voir profil agence'), action: handleViewAgencyProfile },
                 { icon: "share", text: t('sharePost', 'Partager'), action: handleSharePost },
                 { icon: "info", text: t('viewDetails', 'Voir détails'), action: handleViewDetails }
             );
+            
+            // Solo mostrar seguir si no es el dueño
+            if (!isPostOwner) {
+                options.push(
+                    { icon: "person_add", text: t('followAgency', 'Suivre l\'agence'), action: handleFollowAgency }
+                );
+            }
         }
-        return options.filter((option, index, self) => index === self.findIndex(o => o.text === option.text));
+        
+        return options.filter((option, index, self) => 
+            index === self.findIndex(o => o.text === option.text)
+        );
     };
 
     const dropdownOptions = getDropdownOptions();
@@ -208,6 +256,11 @@ const CardBodyTitle = ({ post }) => {
             <span>{text}</span>
         </div>
     );
+
+    // 🆕 PROPS PARA EL SHAREMODAL
+    const shareUrl = `${window.location.origin}/post/${post._id}`;
+    const shareTitle = `${post.title || t('agency.offer', 'Offre Agence')} - ${post.user?.username || t('agency.name', 'Agence de Voyage')}`;
+    const imageUrl = post.images?.[0]?.url || post.user?.avatar;
 
     return (
         <div className="cardtitle" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
@@ -513,8 +566,15 @@ const CardBodyTitle = ({ post }) => {
                 </div>
             )}
             
-            {/* Modales */}
-            {showShareModal && <ShareModal url={`${window.location.origin}/post/${post._id}`} onClose={() => setShowShareModal(false)} />}
+            {/* 🆕 SHAREMODAL CORREGIDO */}
+            <ShareModal
+                show={showShareModal}
+                onHide={() => setShowShareModal(false)}
+                post={post}
+                shareUrl={shareUrl}
+                shareTitle={shareTitle}
+                imageUrl={imageUrl}
+            />
 
             {showAuthModal && (
                 <div style={{

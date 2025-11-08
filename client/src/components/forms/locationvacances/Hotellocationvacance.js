@@ -94,6 +94,24 @@ const Hotellocationvacance = ({ postData, handleChangeInput }) => {
                 </h5>
             </Card.Header>
             <Card.Body>
+                {/* Campo nombreHotel agregado aquí */}
+                <Form.Group className="mb-3">
+                    <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
+                        {t('nombreHotel', 'Nom du Logement')} *
+                    </Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="nombreHotel"
+                        placeholder={t('placeholderNombreHotel', 'Ex: Villa Les Palmiers, Riad Marrakech...')}
+                        value={postData.nombreHotel || ''}
+                        onChange={handleChangeInput}
+                        required
+                        className={`w-100 ${isRTL ? 'text-end' : ''}`}
+                        dir={isRTL ? 'rtl' : 'ltr'}
+                        size="lg"
+                    />
+                </Form.Group>
+
                 <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }} className="g-3">
                     
                     {/* Tipo de Propiedad */}

@@ -1,6 +1,8 @@
 {
   
+  
     "categories": {
+      "presentation":"من أجل راحتك ورضاك، قمنا باختيار هذه الخدمات بعناية",
       "hajjUmrah": "الحج والعمرة",
       "hajjDescription": "تجربة روحانية فريدة نحو الأماكن المقدسة في الإسلام",
       "organizedTrip": "رحلة منظمة",
@@ -45,6 +47,8 @@
       "medina": "المدينة المنورة"
     },
     "pricing": {
+      "benefitsTitle": "المزايا الحصرية المشمولة",
+    
       "investment": "استثماركم",
       "startingFrom": "ابتداءً من",
       "perPerson": "للشخص الواحد",
@@ -63,7 +67,7 @@
       "callNow": "اتصل بنا الآن",
       "guarantee": "احجز بثقة واستعد لعيش لحظات لا تُنسى!"
     },
-  
+   
   
       "departureDate": "تاريخ المغادرة",
       "returnDate": "تاريخ العودة",
@@ -578,7 +582,9 @@
   
  
     "services": {
- 
+      "presentation":"من أجل راحتك ورضاك، قمنا باختيار هذه الخدمات بعناية:",
+
+      "exclusiveServices": "خدمات حصرية",
       "servicesVoyageOrganise": "خدمات السفر المنظم",
       "servicesDescriptionVoyage": "اختر الخدمات المدرجة في رحلتك",
       "selectServicesVoyage": "اختر الخدمات:",

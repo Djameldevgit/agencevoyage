@@ -3,7 +3,7 @@ import { Form, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 const HotelHajjOmra = ({ postData, handleChangeInput }) => {
-    const { t, i18n } = useTranslation([ "categories"]);
+    const { t, i18n } = useTranslation(["categories"]);
     const isRTL = i18n.language === 'ar' || i18n.language === 'ara';
 
     // Hoteles en La Meca organizados por zona
@@ -90,6 +90,18 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
         }
     ];
 
+    // Combinar todos los hoteles en una sola lista
+    const todosLosHoteles = [
+        {
+            grupo: t('hotelesLaMeca', '🕋 Hoteles en La Meca'),
+            hoteles: hotelesMeca.flatMap(grupo => grupo.hoteles)
+        },
+        {
+            grupo: t('hotelesMedina', '🕌 Hoteles en Medina'), 
+            hoteles: hotelesMedina.flatMap(grupo => grupo.hoteles)
+        }
+    ];
+
     return (
         <Card className="mb-4">
             <Card.Header style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
@@ -98,13 +110,11 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                 </h5>
             </Card.Header>
             <Card.Body>
-                <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }} className="g-3">
-                    
-                    {/* Hotel en La Meca - Mitad izquierda */}
-                    <Col xs={12} md={6}>
+                <Row style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
+                    <Col xs={12}>
                         <Form.Group className="h-100">
                             <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                🕋 {t('hotelMeca', 'Hotel en La Meca')} *
+                                🏨 {t('seleccionarHotel', 'Seleccionar Hotel')} *
                             </Form.Label>
                             <Form.Select
                                 name="nombreHotel"
@@ -115,39 +125,10 @@ const HotelHajjOmra = ({ postData, handleChangeInput }) => {
                                 dir={isRTL ? 'rtl' : 'ltr'}
                                 size="lg"
                             >
-                                <option value="">{t('selectHotelMeca', 'Seleccione hotel en La Meca')}</option>
-                                {hotelesMeca.map((grupo, index) => (
-                                    <optgroup key={index} label={grupo.grupo}>
-                                        {grupo.hoteles.map((hotel, hotelIndex) => (
-                                            <option key={hotelIndex} value={hotel.value}>
-                                                {hotel.label}
-                                            </option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-
-                    {/* Hotel en Medina - Mitad derecha */}
-                    <Col xs={12} md={6}>
-                        <Form.Group className="h-100">
-                            <Form.Label className={`fw-bold ${isRTL ? 'text-end d-block' : ''}`}>
-                                🕌 {t('hotelMedina', 'Hotel en Medina')} *
-                            </Form.Label>
-                            <Form.Select
-                                name="nombreHotel"
-                                value={postData.nombreHotel || ''}
-                                onChange={handleChangeInput}
-                                required
-                                className={`w-100 ${isRTL ? 'text-end' : ''}`}
-                                dir={isRTL ? 'rtl' : 'ltr'}
-                                size="lg"
-                            >
-                                <option value="">{t('selectHotelMedina', 'Seleccione hotel en Medina')}</option>
-                                {hotelesMedina.map((grupo, index) => (
-                                    <optgroup key={index} label={grupo.grupo}>
-                                        {grupo.hoteles.map((hotel, hotelIndex) => (
+                                <option value="">{t('selectHotel', 'Seleccione un hotel en La Meca o Medina')}</option>
+                                {todosLosHoteles.map((ciudad, index) => (
+                                    <optgroup key={index} label={ciudad.grupo}>
+                                        {ciudad.hoteles.map((hotel, hotelIndex) => (
                                             <option key={hotelIndex} value={hotel.value}>
                                                 {hotel.label}
                                             </option>

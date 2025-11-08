@@ -52,6 +52,10 @@
       "medina": "Médine"
     },
     "pricing": {
+
+      "benefitsTitle": "Avantages Exclusifs Inclus",
+       
+
       "investment": "Votre Investissement",
       "startingFrom": "À partir de",
       "perPerson": "par personne",
@@ -73,8 +77,7 @@
       "tapToCall": "Touchez pour appeler",
       "useMobileToCall": "Utilisez votre mobile pour appeler"
   },
- 
-        "exceptionalOffer": "Offre exceptionnelle",
+      "exceptionalOffer": "Offre exceptionnelle",
         "exclusiveOffer": "Offre exclusive",
         "publishedOn": "Publié le",
         "views": "vues",
@@ -138,7 +141,9 @@
   
      
       "services": {
-     
+
+        "presentation":"Pour votre confort et satisfaction, nous avons soigneusement sélectionné ces services:",
+        "exclusiveServices":"Services exclusifs",
         "servicesVoyageOrganise": "Services Voyage Organisé",
         "servicesDescriptionVoyage": "Sélectionnez les services inclus dans votre circuit",
         "selectServicesVoyage": "Choisissez les services:",

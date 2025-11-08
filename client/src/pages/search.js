@@ -383,7 +383,7 @@ export default function SearchPage() {
                     ? t('buttons.hideAdvanced', 'Masquer la recherche avancée') 
                     : t('buttons.showAdvanced', 'Recherche avancée')}
                   {activeFiltersCount > 0 && (
-                    <Badge bg="primary" className={`${isRTL ? 'me-2' : 'ms-2'}`}>
+                    <Badge   className={`${isRTL ? 'me-2' : 'ms-2'}`}>
                       {activeFiltersCount}
                     </Badge>
                   )}
@@ -610,51 +610,51 @@ export default function SearchPage() {
                     {t('labels.activeFilters', 'Filtres actifs')}:
                   </small>
                   {filters.subCategory && (
-                    <Badge bg="info" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.category', 'Catégorie')}: {filters.subCategory}
                     </Badge>
                   )}
                   {filters.destinacion && (
-                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.destination', 'Destination')}: {filters.destinacion}
                     </Badge>
                   )}
                   {filters.datedeparMin && (
-                    <Badge bg="primary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.from', 'De')}: {filters.datedeparMin}
                     </Badge>
                   )}
                   {filters.datedeparMax && (
-                    <Badge bg="primary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge  className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.to', 'À')}: {filters.datedeparMax}
                     </Badge>
                   )}
                   {filters.nombreHotel && (
-                    <Badge bg="warning" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.hotel', 'Hôtel')}: {filters.nombreHotel}
                     </Badge>
                   )}
                   {filters.minPrice && (
-                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.minPrice', 'Prix Min')}: ${filters.minPrice}
                     </Badge>
                   )}
                   {filters.maxPrice && (
-                    <Badge bg="success" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge    className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.maxPrice', 'Prix Max')}: ${filters.maxPrice}
                     </Badge>
                   )}
                   {showingSmartSearch && (
-                    <Badge bg="dark" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.smartSearch', 'Recherche Intelligente')}
                     </Badge>
                   )}
                   {filters.latest && (
-                    <Badge bg="secondary" className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
+                    <Badge   className={isRTL ? "ms-1 mb-1" : "me-1 mb-1"}>
                       {t('labels.latestTrips', 'Derniers Voyages')}
                     </Badge>
                   )}
-                  <Badge bg="dark" className="mb-1">
+                  <Badge  className="mb-1">
                     {activeFiltersCount} {activeFiltersCount === 1 ? t('labels.filter', 'filtre') : t('labels.filters', 'filtres')}
                   </Badge>
                 </div>
