@@ -12,7 +12,7 @@
       "hajjDescription": "Expérience spirituelle unique vers les lieux saints de l'Islam",
       "organizedTrip": "Voyage Organisé",
       "organizedDescription": "Aventure planifiée pour votre confort et découverte",
-      "vacationRental": "Location de Vacances",
+      "vacationRental": "Location vacances",
       "rentalDescription": "Votre maison loin de chez vous pour des moments inoubliables",
       "general": "Offre Exceptionnelle",
       "generalDescription": "Expérience de voyage unique soigneusement préparée"
@@ -263,7 +263,7 @@
    
       "servicesss": {
        
-        "servicesLocationVacances": "Services Location de Vacances",
+        "servicesLocationVacances": "Services Location vacance",
         "servicesDescriptionLocation": "Sélectionnez les équipements et services inclus",
         "selectServicesLocation": "Choisissez les équipements:",
         "selectPlaceholderLocation": "Sélectionnez les équipements désirés...",
@@ -844,7 +844,7 @@
       },
     
       "select_category_title": "📋 Choisir une catégorie",
-      "select_category_message": "Choisissez entre voyage organisé, location de vacances ou hadj et omra",
+      "select_category_message": "Choisissez entre voyage organisé, location vacances ou hadj et omra",
     
      
       "button_cancel": "Annuler",
@@ -1844,7 +1844,7 @@
   "travelTypes": {
     "hadj_Omra": "Pèlerinage Hajj & Omra",
     "Voyage Organise": "Voyage Organisé",
-    "Location_Vacances": "Location de Vacances"
+    "Location_Vacances": "Location vacance"
   },
   "labels": {
     "exclusiveOffer": "Offre Exclusive",

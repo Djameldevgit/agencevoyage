@@ -6,8 +6,6 @@ import moment from "moment";
 import ShareModal from './ShareModal';
 import { deletePost } from '../../../redux/actions/postAction';
 import { CardBody } from "react-bootstrap";
-
-// 🆕 IMPORTAR LAS DEPENDENCIAS NECESARIAS PARA EL CHAT
 import { MESS_TYPES } from '../../../redux/actions/messageAction';
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes';
 
@@ -83,7 +81,7 @@ const CardBodyTitle = ({ post }) => {
 
     const translateSubCategory = (subCategory) => {
         const translations = {
-            'Location_Vacances': t('categories.locationVacances', 'Location de Vacances'),
+            'Location_Vacances': t('categories.locationVacances', 'Location vacance'),
             'hadj_Omra': t('categories.hajjUmrah', 'Hajj & Omra'),
             'Voyage Organise': t('categories.voyageOrganise', 'Voyage Organisé'),
             'voyage affaires': t('categories.businessTrip', 'Voyage d\'Affaires'),
@@ -107,7 +105,6 @@ const CardBodyTitle = ({ post }) => {
         if (auth.user) setShowDropdown(!showDropdown);
     };
 
-    // 🆕 FUNCIÓN MEJORADA: handleChatWithAgency
     const handleChatWithAgency = () => {
         if (!auth.user) {
             setShowAuthModal(true);
@@ -123,13 +120,11 @@ const CardBodyTitle = ({ post }) => {
         }
 
         try {
-            // 🆕 USAR LA MISMA LÓGICA QUE EN CardBodyCarousel
             dispatch({
                 type: MESS_TYPES.ADD_USER,
                 payload: { ...post.user, text: '', media: [] }
             });
 
-            // Redirigir al chat con la agencia
             history.push(`/message/${post.user._id}`);
             setShowDropdown(false);
 
@@ -178,7 +173,6 @@ const CardBodyTitle = ({ post }) => {
         setShowDropdown(false);
     };
 
-    // 🆕 FUNCIÓN CORREGIDA: handleSharePost
     const handleSharePost = () => {
         setShowShareModal(true);
         setShowDropdown(false);
@@ -192,7 +186,6 @@ const CardBodyTitle = ({ post }) => {
     const getDropdownOptions = () => {
         const options = [];
 
-        // Opciones para admin y dueño del post
         if (hasAdminRights) {
             options.push(
                 { icon: "create", text: t('editPost', 'Modifier le post'), action: handleEditPost },
@@ -207,7 +200,6 @@ const CardBodyTitle = ({ post }) => {
             );
         }
 
-        // 🆕 OPCIONES PARA TODOS LOS USUARIOS AUTENTICADOS
         if (auth.user) {
             options.push(
                 { icon: "chat", text: t('writeToAgency', 'Écrire à l\'agence'), action: handleChatWithAgency },
@@ -216,7 +208,6 @@ const CardBodyTitle = ({ post }) => {
                 { icon: "info", text: t('viewDetails', 'Voir détails'), action: handleViewDetails }
             );
 
-            // Solo mostrar seguir si no es el dueño
             if (!isPostOwner) {
                 options.push(
                     { icon: "person_add", text: t('followAgency', 'Suivre l\'agence'), action: handleFollowAgency }
@@ -246,8 +237,8 @@ const CardBodyTitle = ({ post }) => {
             flexDirection: isRTL ? 'row-reverse' : 'row'
         }}
             onClick={onClick}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#f7fafc'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f7fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
             <span className="material-icons" style={{
                 fontSize: '18px',
                 width: '20px',
@@ -257,7 +248,6 @@ const CardBodyTitle = ({ post }) => {
         </div>
     );
 
-    // 🆕 PROPS PARA EL SHAREMODAL
     const shareUrl = `${window.location.origin}/post/${post._id}`;
     const shareTitle = `${post.title || t('agency.offer', 'Offre Agence')} - ${post.user?.username || t('agency.name', 'Tassili Voyage')}`;
     const imageUrl = post.images?.[0]?.url || post.user?.avatar;
@@ -266,54 +256,70 @@ const CardBodyTitle = ({ post }) => {
         <div className="cardtitle" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
 
             <CardBody className="card-header" style={{
-                padding: '7px 10px',
+                padding: '5px 8px',  // ✅ OPTIMIZADO
                 borderBottom: '1px solid #e2e8f0',
                 background: 'white',
                 textAlign: isRTL ? 'right' : 'left'
             }}>
                 {!isDetailPage && (
                     <div style={{ width: '100%' }}>
-                        {/* 🔥 FILA 1: Subcategoría + Destinación (misma línea) */}
+                        {/* 🔥 FILA 1: Subcategoría + Destinación - OPTIMIZADA */}
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '5px',
-                            marginBottom: '6px',
+                            gap: '6px',  // ✅ REDUCIDO
+                            marginBottom: '5px',  // ✅ REDUCIDO
                             flexWrap: 'wrap',
                             flexDirection: isRTL ? 'row-reverse' : 'row'
                         }}>
 
-                            {/* SUBCATEGORÍA - MÁS GRANDE */}
+                            {/* SUBCATEGORÍA - OPTIMIZADA */}
                             <div className="dropdown-container" style={{ position: 'relative', display: 'inline-block' }}>
                                 <div style={{
-                                    display: 'flex',
+                                    display: 'inline-flex',  // ✅ CAMBIO CLAVE
                                     alignItems: 'center',
                                     backgroundColor: '#f8fafc',
-                                    borderRadius: '12px',
+                                    borderRadius: '10px',  // ✅ REDUCIDO
                                     border: '1px solid #e2e8f0',
                                     cursor: auth.user ? 'pointer' : 'default',
                                     transition: 'all 0.2s',
-                                    minWidth: 'fit-content',
-                                    fontSize: '18px',
+                                    fontSize: '15px',  // ✅ REDUCIDO
                                     fontWeight: '600',
                                     color: '#374151',
-                                    flexDirection: isRTL ? 'row-reverse' : 'row',
-                                    padding: isRTL ? '6px 8px 6px 12px' : '6px 12px 6px 8px'
+                                    padding: '3px 8px',  // ✅ REDUCIDO
+                                    gap: '5px',  // ✅ NUEVO
+                                    maxWidth: '100%',  // ✅ CRUCIAL
+                                    overflow: 'hidden'  // ✅ CRUCIAL
                                 }}
                                     onClick={handleSubCategoryClick}
-                                    onMouseEnter={(e) => { if (auth.user) e.target.style.backgroundColor = '#f1f5f9'; }}
-                                    onMouseLeave={(e) => { if (auth.user) e.target.style.backgroundColor = '#f8fafc'; }}
+                                    onMouseEnter={(e) => { if (auth.user) e.currentTarget.style.backgroundColor = '#f1f5f9'; }}
+                                    onMouseLeave={(e) => { if (auth.user) e.currentTarget.style.backgroundColor = '#f8fafc'; }}
                                     title={auth.user ? t('cardbody.moreOptions', 'Plus d\'options') : ''}>
-                                    <span>{getSubCategoryIcon(post.subCategory)}</span>
-                                    <span style={{ margin: isRTL ? '0 8px 0 0' : '0 0 0 8px' }}>
+                                    
+                                    <span style={{ 
+                                        fontSize: '14px',
+                                        flexShrink: 0  // ✅ NO SE COMPRIME
+                                    }}>
+                                        {getSubCategoryIcon(post.subCategory)}
+                                    </span>
+                                    
+                                    <span style={{
+                                        overflow: 'hidden',  // ✅ TRUNCADO
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}>
                                         {translateSubCategory(post.subCategory)}
                                     </span>
-                                    {auth.user && <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'}`}
-                                        style={{
-                                            fontSize: '10px',
-                                            color: '#6b7280',
-                                            margin: isRTL ? '0 8px 0 0' : '0 0 0 8px'
-                                        }}></i>}
+                                    
+                                    {auth.user && (
+                                        <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'}`}
+                                            style={{
+                                                fontSize: '9px',  // ✅ REDUCIDO
+                                                color: '#6b7280',
+                                                flexShrink: 0
+                                            }}>
+                                        </i>
+                                    )}
                                 </div>
 
                                 {showDropdown && auth.user && (
@@ -345,24 +351,22 @@ const CardBodyTitle = ({ post }) => {
                                 )}
                             </div>
 
-                            {/* DESTINACIÓN - MÁS GRANDE */}
+                            {/* DESTINACIÓN - OPTIMIZADA */}
                             {post.destinacion && (
                                 <div style={{
-                                    display: 'flex',
+                                    display: 'inline-flex',  // ✅ CAMBIO CLAVE
                                     alignItems: 'center',
-                                    gap: '3px',
+                                    gap: '4px',  // ✅ REDUCIDO
                                     cursor: 'pointer',
                                     transition: 'all 0.2s',
                                     borderRadius: '8px',
                                     background: 'white',
                                     border: '1px solid #e2e8f0',
-                                    fontSize: '13px',
+                                    fontSize: '12px',  // ✅ REDUCIDO
                                     fontWeight: '500',
-                                    flexDirection: isRTL ? 'row-reverse' : 'row',
-                                    padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
-                                    flexShrink: 0,
-                                    minWidth: 0,
-                                    overflow: 'hidden'
+                                    padding: '3px 7px',  // ✅ REDUCIDO
+                                    maxWidth: '100%',  // ✅ CRUCIAL
+                                    overflow: 'hidden'  // ✅ CRUCIAL
                                 }}
                                     onClick={handleDestinationClick}
                                     onMouseEnter={(e) => {
@@ -377,30 +381,30 @@ const CardBodyTitle = ({ post }) => {
 
                                     <span style={{
                                         color: '#374151',
-                                        margin: isRTL ? '0 0 0 6px' : '0 6px 0 0',
+                                        overflow: 'hidden',  // ✅ TRUNCADO
+                                        textOverflow: 'ellipsis',
                                         whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis'
+                                        [isRTL ? 'marginLeft' : 'marginRight']: '4px'  // ✅ DINÁMICO
                                     }}>
-                                        {/* 🔥 SOLUCIÓN CORREGIDA - Usar el namespace correcto */}
                                         {t(`destinations.${post.destinacion}`, { defaultValue: post.destinacion })}
                                     </span>
+                                    
                                     <i className="fas fa-location-dot" style={{
                                         color: '#dc2626',
-                                        fontSize: '11px',
-                                        flexShrink: 0
+                                        fontSize: '10px',  // ✅ REDUCIDO
+                                        flexShrink: 0  // ✅ NO SE COMPRIME
                                     }}></i>
                                 </div>
                             )}
                         </div>
 
-                        {/* 🔥 FILA 2: TODOS los demás campos en MISMA LÍNEA */}
+                        {/* 🔥 FILA 2: Fecha + Ubicación - OPTIMIZADA */}
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
+                            gap: '8px',  // ✅ REDUCIDO
                             flexWrap: 'wrap',
-                            fontSize: '12px',
+                            fontSize: '11px',  // ✅ REDUCIDO
                             color: '#6b7280',
                             flexDirection: isRTL ? 'row-reverse' : 'row'
                         }}>
@@ -408,19 +412,24 @@ const CardBodyTitle = ({ post }) => {
                             {/* FECHA */}
                             {post.datedepar && (
                                 <div style={{
-                                    display: 'flex',
+                                    display: 'inline-flex',  // ✅ OPTIMIZADO
                                     alignItems: 'center',
-                                    gap: '4px',
+                                    gap: '3px',  // ✅ REDUCIDO
+                                    whiteSpace: 'nowrap',  // ✅ NO SALTOS DE LÍNEA
                                     flexDirection: isRTL ? 'row-reverse' : 'row'
                                 }}>
                                     <i className="far fa-calendar-alt" style={{
-                                        fontSize: '11px',
-                                        color: '#8b5cf6'
+                                        fontSize: '10px',  // ✅ REDUCIDO
+                                        color: '#8b5cf6',
+                                        flexShrink: 0
                                     }}></i>
                                     <span style={{ fontWeight: '500' }}>
                                         {t('departure', 'Départ')} {formatDate(post.datedepar)}
                                     </span>
-                                    <span style={{ color: '#d1d5db' }}>
+                                    <span style={{ 
+                                        color: '#d1d5db',
+                                        fontSize: '10px'  // ✅ MÁS PEQUEÑO
+                                    }}>
                                         ({getDayName(post.datedepar)})
                                     </span>
                                 </div>
@@ -429,14 +438,16 @@ const CardBodyTitle = ({ post }) => {
                             {/* UBICACIÓN */}
                             {post.wilaya && (
                                 <div style={{
-                                    display: 'flex',
+                                    display: 'inline-flex',  // ✅ OPTIMIZADO
                                     alignItems: 'center',
-                                    gap: '4px',
+                                    gap: '3px',  // ✅ REDUCIDO
+                                    whiteSpace: 'nowrap',
                                     flexDirection: isRTL ? 'row-reverse' : 'row'
                                 }}>
                                     <i className="fas fa-map-pin" style={{
-                                        fontSize: '10px',
-                                        color: '#10b981'
+                                        fontSize: '9px',  // ✅ REDUCIDO
+                                        color: '#10b981',
+                                        flexShrink: 0
                                     }}></i>
                                     <span>
                                         {post.wilaya}{post.commune && `, ${post.commune}`}
@@ -451,51 +462,57 @@ const CardBodyTitle = ({ post }) => {
             {/* VISTA DETALLE COMPACTA */}
             {isDetailPage && (
                 <div className="post-header" style={{
-                    padding: '8px 12px',
+                    padding: '6px 8px',  // ✅ REDUCIDO
                     borderBottom: '1px solid #e2e8f0',
                     background: 'white',
                     direction: isRTL ? 'rtl' : 'ltr',
                     textAlign: isRTL ? 'right' : 'left'
                 }}>
-                    {/* FILA 1: Subcategoría + Destinación - MÁS COMPACTA */}
+                    {/* FILA 1: Subcategoría + Destinación */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
-                        marginBottom: '6px',
+                        marginBottom: '5px',
                         flexWrap: 'nowrap',
                         flexDirection: isRTL ? 'row-reverse' : 'row',
                         overflow: 'hidden'
                     }}>
-                        {/* SUBCATEGORÍA - MÁS COMPACTA */}
+                        {/* SUBCATEGORÍA */}
                         <div style={{
-                            display: 'flex',
+                            display: 'inline-flex',
                             alignItems: 'center',
                             backgroundColor: '#f8fafc',
                             borderRadius: '8px',
                             border: '1px solid #e2e8f0',
-                            minWidth: 'fit-content',
-                            fontSize: '14px',
+                            fontSize: '13px',  // ✅ REDUCIDO
                             fontWeight: '600',
                             color: '#374151',
-                            flexDirection: isRTL ? 'row-reverse' : 'row',
-                            padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
+                            padding: '3px 7px',  // ✅ REDUCIDO
+                            gap: '4px',
+                            maxWidth: '100%',
+                            overflow: 'hidden',
                             flexShrink: 0
                         }}>
-                            <span style={{ fontSize: '13px' }}>{getSubCategoryIcon(post.subCategory)}</span>
-                            <span style={{
-                                margin: isRTL ? '0 6px 0 0' : '0 0 0 6px',
+                            <span style={{ 
                                 fontSize: '13px',
+                                flexShrink: 0
+                            }}>
+                                {getSubCategoryIcon(post.subCategory)}
+                            </span>
+                            <span style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap'
                             }}>
                                 {translateSubCategory(post.subCategory)}
                             </span>
                         </div>
 
-                        {/* DESTINACIÓN - MÁS COMPACTA Y MEJOR ICONO */}
+                        {/* DESTINACIÓN */}
                         {post.destinacion && (
                             <div style={{
-                                display: 'flex',
+                                display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '3px',
                                 cursor: 'pointer',
@@ -503,13 +520,12 @@ const CardBodyTitle = ({ post }) => {
                                 borderRadius: '8px',
                                 background: 'white',
                                 border: '1px solid #e2e8f0',
-                                fontSize: '13px',
+                                fontSize: '12px',
                                 fontWeight: '500',
-                                flexDirection: isRTL ? 'row-reverse' : 'row',
-                                padding: isRTL ? '4px 6px 4px 8px' : '4px 8px 4px 6px',
-                                flexShrink: 0,
-                                minWidth: 0,
-                                overflow: 'hidden'
+                                padding: '3px 7px',
+                                maxWidth: '100%',
+                                overflow: 'hidden',
+                                flexShrink: 0
                             }}
                                 onClick={handleDestinationClick}
                                 onMouseEnter={(e) => {
@@ -524,72 +540,76 @@ const CardBodyTitle = ({ post }) => {
 
                                 <span style={{
                                     color: '#374151',
-                                    margin: isRTL ? '0 0 0 6px' : '0 6px 0 0',
-                                    whiteSpace: 'nowrap',
                                     overflow: 'hidden',
-                                    textOverflow: 'ellipsis'
-                                }}>{post.destinacion}</span>
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    [isRTL ? 'marginLeft' : 'marginRight']: '4px'
+                                }}>
+                                    {post.destinacion}
+                                </span>
+                                
                                 <i className="fas fa-location-dot" style={{
                                     color: '#dc2626',
-                                    fontSize: '11px',
+                                    fontSize: '10px',
                                     flexShrink: 0
                                 }}></i>
                             </div>
                         )}
                     </div>
 
-                    {/* FILA 2: Fecha y Ubicación - MÁS COMPACTA */}
+                    {/* FILA 2: Fecha y Ubicación */}
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
+                        gap: '8px',
                         flexWrap: 'wrap',
-                        fontSize: '12px',
+                        fontSize: '11px',
                         color: '#6b7280',
                         flexDirection: isRTL ? 'row-reverse' : 'row'
                     }}>
-                        {/* FECHA - MÁS COMPACTA */}
+                        {/* FECHA */}
                         {post.datedepar && (
                             <div style={{
-                                display: 'flex',
+                                display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '4px',
+                                gap: '3px',
+                                whiteSpace: 'nowrap',
                                 flexDirection: isRTL ? 'row-reverse' : 'row',
                                 flexShrink: 0
                             }}>
                                 <i className="far fa-calendar" style={{
-                                    fontSize: '11px',
+                                    fontSize: '10px',
                                     color: '#7c3aed',
                                     flexShrink: 0
                                 }}></i>
-                                <span style={{ fontWeight: '500', whiteSpace: 'nowrap' }}>
+                                <span style={{ fontWeight: '500' }}>
                                     {t('departure', 'Départ')} {formatDate(post.datedepar)}
                                 </span>
                                 <span style={{
                                     color: '#9ca3af',
-                                    fontSize: '11px',
-                                    whiteSpace: 'nowrap'
+                                    fontSize: '10px'
                                 }}>
                                     ({getDayName(post.datedepar)})
                                 </span>
                             </div>
                         )}
 
-                        {/* UBICACIÓN/DEPARTAMENTO - MÁS COMPACTA */}
+                        {/* UBICACIÓN */}
                         {post.wilaya && (
                             <div style={{
-                                display: 'flex',
+                                display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '4px',
+                                gap: '3px',
+                                whiteSpace: 'nowrap',
                                 flexDirection: isRTL ? 'row-reverse' : 'row',
                                 flexShrink: 0
                             }}>
                                 <i className="fas fa-location-pin" style={{
-                                    fontSize: '10px',
+                                    fontSize: '9px',
                                     color: '#059669',
                                     flexShrink: 0
                                 }}></i>
-                                <span style={{ whiteSpace: 'nowrap' }}>
+                                <span>
                                     {post.wilaya}{post.commune && `, ${post.commune}`}
                                 </span>
                             </div>
@@ -598,7 +618,7 @@ const CardBodyTitle = ({ post }) => {
                 </div>
             )}
 
-            {/* 🆕 SHAREMODAL CORREGIDO */}
+            {/* SHAREMODAL */}
             <ShareModal
                 show={showShareModal}
                 onHide={() => setShowShareModal(false)}
@@ -608,6 +628,7 @@ const CardBodyTitle = ({ post }) => {
                 imageUrl={imageUrl}
             />
 
+            {/* AUTH MODAL */}
             {showAuthModal && (
                 <div style={{
                     position: 'fixed',
@@ -633,12 +654,16 @@ const CardBodyTitle = ({ post }) => {
                             marginBottom: '12px',
                             color: '#2d3748',
                             fontSize: '16px'
-                        }}>{t('auth.required', 'Authentification Requise')}</h3>
+                        }}>
+                            {t('auth.required', 'Authentification Requise')}
+                        </h3>
                         <p style={{
                             marginBottom: '16px',
                             color: '#718096',
                             fontSize: '14px'
-                        }}>{t('auth.loginToContinue', 'Veuillez vous connecter pour continuer')}</p>
+                        }}>
+                            {t('auth.loginToContinue', 'Veuillez vous connecter pour continuer')}
+                        </p>
                         <div style={{
                             display: 'flex',
                             gap: '10px',

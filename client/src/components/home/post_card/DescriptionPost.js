@@ -1,48 +1,50 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 
 const DescriptionPost = ({ post }) => {
     const { t, i18n } = useTranslation(['descripcion', 'categories']);
     const isRTL = i18n.language === 'ar';
-    const [readMore, setReadMore] = useState(false);
-
-    // 🎨 Colores y estilos consistentes
+    const [readMore, setReadMore] = useState(false);     
+    // 🎨 COLORES MEJORADOS - SIN AZULES EN TEXTO
     const styles = {
-        primaryColor: "#1e88e5",
-        accentColor: "#1565c0",
-        successColor: "#059669",
-        warningColor: "#d97706",
-        mainGradient: "linear-gradient(135deg, #c2d9ff 0%, #4f46e5 100%)",
-        contactGradient: "linear-gradient(135deg, #93c5fd 0%, #2563eb 100%)",
-        cardShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+        primaryColor: "#1e293b",  // ✅ Azul reemplazado por gris oscuro
+        accentColor: "#0f172a",   // ✅ Azul reemplazado por negro azulado
+        successColor: "#065f46",  // ✅ Verde oscuro
+        warningColor: "#92400e",  // ✅ Ámbar oscuro
+        purpleColor: "#7c3aed",   // ✅ Violeta oscuro
+        textDark: "#000000",      // ✅ Negro puro para mejor contraste
+        textMedium: "#1f2937",    // ✅ Gris muy oscuro
+        textLight: "#374151",     // ✅ Gris oscuro
+        mainGradient: "linear-gradient(135deg, #1e293b 0%, #7c3aed 100%)", // ✅ Sin azul
+        contactGradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", // ✅ Sin azul
+        cardShadow: "0 2px 8px rgba(0, 0, 0, 0.12)"
     };
 
-    // 🏷️ Información de categoría mejorada
+    // 🏷️ Información de categoría
     const getCategoryInfo = () => {
         const categories = {
             "hadj_Omra": {
                 icon: "🕋",
                 title: t('categories.hajjUmrah', 'Pèlerinage Hajj & Omra'),
-                color: "#8B4513",
+                color: "#78350f",
                 description: t('categories.hajjDescription', 'Expérience spirituelle unique')
             },
             "Voyage Organise": {
                 icon: "✈️",
                 title: t('categories.organizedTrip', 'Voyage Organisé'),
-                color: "#3498db",
+                color: "#1e293b", // ✅ Sin azul
                 description: t('categories.organizedDescription', 'Aventure planifiée pour votre confort')
             },
             "Location_Vacances": {
                 icon: "🏠",
                 title: t('categories.vacationRental', 'Location de Vacances'),
-                color: "#e74c3c",
+                color: "#991b1b",
                 description: t('categories.rentalDescription', 'Votre maison loin de chez vous')
             },
             "voyage affaires": {
                 icon: "💼",
                 title: t('categories.businessTrip', 'Voyage d\'Affaires'),
-                color: "#2c3e50",
+                color: "#1f2937",
                 description: t('categories.businessDescription', 'Solutions professionnelles pour vos déplacements')
             }
         };
@@ -50,18 +52,35 @@ const DescriptionPost = ({ post }) => {
         return categories[post.subCategory] || {
             icon: "🌟",
             title: post.subCategory || t('categories.general', 'Offre Exceptionnelle'),
-            color: "#9b59b6",
+            color: "#7c3aed",
             description: t('categories.generalDescription', 'Expérience de voyage unique')
         };
     };
 
-    // ✨ Componente para valores destacados
+    // ✨ HIGHLIGHT MEJORADO - SIN COLOR AZUL
     const Highlight = ({ children, type = "default" }) => {
         const typeStyles = {
-            default: { backgroundColor: '#e3f2fd', color: styles.primaryColor },
-            price: { backgroundColor: '#dcfce7', color: styles.successColor, fontWeight: '700' },
-            feature: { backgroundColor: '#fef3c7', color: styles.warningColor },
-            contact: { backgroundColor: '#dbeafe', color: styles.accentColor, fontWeight: '600' }
+            default: { 
+                backgroundColor: '#f3f4f6', // ✅ Gris claro en lugar de azul
+                color: '#1f2937',  // ✅ Negro/gris oscuro
+                fontWeight: '700'  // ✅ Negrita
+            },
+            price: { 
+                backgroundColor: '#d1fae5', 
+                color: '#065f46',  // ✅ Verde muy oscuro
+                fontWeight: '800', // ✅ Extra negrita
+                border: '1px solid #10b981'
+            },
+            feature: { 
+                backgroundColor: '#fef3c7', 
+                color: '#92400e',  // ✅ Ámbar muy oscuro
+                fontWeight: '700'  // ✅ Negrita
+            },
+            contact: { 
+                backgroundColor: '#f3f4f6', // ✅ Gris claro en lugar de azul
+                color: '#1f2937',  // ✅ Negro/gris oscuro
+                fontWeight: '800'  // ✅ Extra negrita
+            }
         };
 
         const style = typeStyles[type] || typeStyles.default;
@@ -69,20 +88,22 @@ const DescriptionPost = ({ post }) => {
         return (
             <span style={{
                 ...style,
-                padding: '2px 6px',
-                borderRadius: '4px',
-                margin: '0 2px',
-                fontSize: '0.85em',
+                padding: '4px 10px', // ✅ Padding aumentado
+                borderRadius: '6px',
+                margin: '0 3px',
+                fontSize: '15px', // ✅ Tamaño de fuente aumentado
                 display: 'inline-block',
                 wordBreak: 'break-word',
-                maxWidth: '100%'
+                maxWidth: '100%',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                lineHeight: '1.4'
             }}>
                 {children}
             </span>
         );
     };
 
-    // 🗓️ Formateo de fechas mejorado
+    // 🗓️ Formateo de fechas
     const formatBeautifulDate = (dateString) => {
         if (!dateString) return '';
 
@@ -95,7 +116,7 @@ const DescriptionPost = ({ post }) => {
         });
     };
 
-    // 🆕 COMPONENTES REUTILIZABLES PARA CAMPOS
+    // 🆕 FIELDDISPLAY MEJORADO - TEXTO MÁS GRANDE Y NEGRITA
     const FieldDisplay = ({ label, value, icon, type = "text" }) => {
         if (!value && type !== "boolean") return null;
 
@@ -103,36 +124,51 @@ const DescriptionPost = ({ post }) => {
             <div style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                gap: '8px',
-                marginBottom: '8px',
+                gap: '12px', // ✅ Espacio aumentado
+                marginBottom: '12px', // ✅ Margen aumentado
+                padding: '10px 0', // ✅ Padding aumentado
+                borderBottom: '1px solid #e5e7eb',
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 width: '100%',
                 wordBreak: 'break-word'
             }}>
                 <span style={{
-                    fontWeight: '600',
-                    color: '#4a5568',
-                    minWidth: isRTL ? 'auto' : '120px',
-                    maxWidth: isRTL ? '140px' : '140px',
-                    fontSize: '13px',
+                    fontWeight: '800',  // ✅ Extra negrita
+                    color: '#000000',   // ✅ Negro puro para mejor contraste
+                    minWidth: isRTL ? 'auto' : '140px', // ✅ Ancho aumentado
+                    maxWidth: isRTL ? '160px' : '160px', // ✅ Ancho aumentado
+                    fontSize: '16px', // ✅ Tamaño de fuente aumentado
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px',
+                    gap: '8px', // ✅ Espacio aumentado
                     flexShrink: 0,
-                    textAlign: isRTL ? 'right' : 'left'
+                    textAlign: isRTL ? 'right' : 'left',
+                    lineHeight: '1.5'
                 }}>
                     {isRTL ? <>{label} {icon}</> : <>{icon} {label}</>}:
                 </span>
                 <span style={{ 
-                    fontSize: '13px', 
-                    color: '#2d3748',
+                    fontSize: '16px', // ✅ Tamaño de fuente aumentado
+                    color: '#1f2937',  // ✅ Negro/gris oscuro
+                    fontWeight: '600',  // ✅ Semi-negrita
                     flex: 1,
                     textAlign: isRTL ? 'right' : 'left',
                     wordBreak: 'break-word',
-                    overflowWrap: 'break-word'
+                    overflowWrap: 'break-word',
+                    lineHeight: '1.6'
                 }}>
                     {type === "boolean" ? (
-                        value ? "✅ Oui" : "❌ Non"
+                        <span style={{
+                            padding: '6px 12px', // ✅ Padding aumentado
+                            borderRadius: '6px',
+                            fontSize: '14px', // ✅ Tamaño de fuente aumentado
+                            fontWeight: '700', // ✅ Negrita
+                            backgroundColor: value ? '#d1fae5' : '#fee2e2',
+                            color: value ? '#065f46' : '#991b1b',
+                            display: 'inline-block'
+                        }}>
+                            {value ? "✅ Oui" : "❌ Non"}
+                        </span>
                     ) : (
                         <Highlight>{value}</Highlight>
                     )}
@@ -141,6 +177,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
+    // 💰 PRICEDISPLAY MEJORADO - TEXTO MÁS GRANDE
     const PriceDisplay = ({ label, value, currency = "DZD" }) => {
         if (!value) return null;
 
@@ -149,29 +186,31 @@ const DescriptionPost = ({ post }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '10px 12px',
-                backgroundColor: 'white',
-                borderRadius: '6px',
-                border: '1px solid #10b981',
-                marginBottom: '8px',
+                padding: '14px 16px', // ✅ Padding aumentado
+                backgroundColor: '#ecfdf5',
+                borderRadius: '8px',
+                border: '2px solid #10b981',
+                marginBottom: '12px', // ✅ Margen aumentado
                 flexDirection: isRTL ? 'row-reverse' : 'row',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: '0 2px 4px rgba(16, 185, 129, 0.15)'
             }}>
                 <span style={{ 
-                    fontWeight: '600', 
-                    color: '#374151', 
-                    fontSize: '13px',
+                    fontWeight: '800',  // ✅ Extra negrita
+                    color: '#000000',   // ✅ Negro puro
+                    fontSize: '16px', // ✅ Tamaño de fuente aumentado
                     textAlign: isRTL ? 'right' : 'left'
                 }}>
                     {isRTL ? <>{label} 💰</> : <>💰 {label}</>}:
                 </span>
                 <div style={{ textAlign: isRTL ? 'left' : 'right' }}>
                     <div style={{ 
-                        fontSize: '15px', 
-                        fontWeight: 'bold', 
-                        color: styles.successColor,
-                        whiteSpace: 'nowrap'
+                        fontSize: '20px',  // ✅ Tamaño aumentado
+                        fontWeight: '900',  // ✅ Extra negrita
+                        color: '#065f46',   // ✅ Verde muy oscuro
+                        whiteSpace: 'nowrap',
+                        textShadow: '0 1px 2px rgba(0,0,0,0.1)'
                     }}>
                         {value} {currency}
                     </div>
@@ -180,39 +219,45 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
+    // 📋 ARRAYDISPLAY MEJORADO - TEXTO MÁS GRANDE
     const ArrayDisplay = ({ label, items, icon }) => {
         if (!items || items.length === 0) return null;
 
         return (
-            <div style={{ marginBottom: '12px', width: '100%' }}>
+            <div style={{ marginBottom: '16px', width: '100%' }}> {/* ✅ Margen aumentado */}
                 <div style={{
-                    fontWeight: '600',
-                    color: '#4a5568',
-                    marginBottom: '8px',
-                    fontSize: '14px',
+                    fontWeight: '800',  // ✅ Extra negrita
+                    color: '#000000',   // ✅ Negro puro
+                    marginBottom: '12px', // ✅ Margen aumentado
+                    fontSize: '18px', // ✅ Tamaño de fuente aumentado
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    flexDirection: isRTL ? 'row-reverse' : 'row'
+                    gap: '8px', // ✅ Espacio aumentado
+                    flexDirection: isRTL ? 'row-reverse' : 'row',
+                    padding: '8px 0', // ✅ Padding aumentado
+                    borderBottom: '2px solid #e5e7eb'
                 }}>
                     {isRTL ? <>{label} {icon}</> : <>{icon} {label}</>}:
                 </div>
                 <div style={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: '6px',
-                    justifyContent: isRTL ? 'flex-end' : 'flex-start'
+                    gap: '10px', // ✅ Espacio aumentado
+                    justifyContent: isRTL ? 'flex-end' : 'flex-start',
+                    marginTop: '10px' // ✅ Margen aumentado
                 }}>
                     {items.map((item, index) => (
                         <span key={index} style={{
-                            backgroundColor: '#e3f2fd',
-                            color: styles.primaryColor,
-                            padding: '6px 10px',
-                            borderRadius: '6px',
-                            fontSize: '12px',
-                            fontWeight: '500',
+                            backgroundColor: '#f3f4f6', // ✅ Gris claro en lugar de azul
+                            color: '#1f2937', // ✅ Negro/gris oscuro
+                            padding: '10px 14px', // ✅ Padding aumentado
+                            borderRadius: '8px',
+                            fontSize: '15px', // ✅ Tamaño de fuente aumentado
+                            fontWeight: '700',  // ✅ Negrita
                             wordBreak: 'break-word',
-                            textAlign: isRTL ? 'right' : 'left'
+                            textAlign: isRTL ? 'right' : 'left',
+                            border: '1px solid #d1d5db', // ✅ Borde gris
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                         }}>
                             {isRTL ? <>{item} ✅</> : <>✅ {item}</>}
                         </span>
@@ -222,7 +267,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 1: ANUNCIO PRINCIPAL MEJORADO
+    // 🔹 SECCIÓN 1: ANUNCIO PRINCIPAL - TEXTO MÁS GRANDE
     const generateMainAnnouncement = () => {
         const categoryInfo = getCategoryInfo();
 
@@ -230,59 +275,80 @@ const DescriptionPost = ({ post }) => {
             <div style={{
                 background: styles.mainGradient,
                 color: 'white',
-                padding: '16px',
-                borderRadius: '10px',
-                marginBottom: '12px',
+                padding: '20px', // ✅ Padding aumentado
+                borderRadius: '12px',
+                marginBottom: '16px', // ✅ Margen aumentado
                 textAlign: 'center',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
             }}>
-                <div style={{ fontSize: '28px', marginBottom: '8px' }}>
+                <div style={{ fontSize: '36px', marginBottom: '12px' }}> {/* ✅ Tamaño aumentado */}
                     {categoryInfo.icon}
                 </div>
                 <h1 style={{
-                    margin: '0 0 6px 0',
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    wordBreak: 'break-word'
+                    margin: '0 0 10px 0',
+                    fontSize: '24px', // ✅ Tamaño aumentado
+                    fontWeight: '900',  // ✅ Extra negrita
+                    wordBreak: 'break-word',
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)'
                 }}>
                     {t('excitingNews', '🎉 Nouvelle Offre Exclusive !')}
                 </h1>
                 <p style={{
-                    fontSize: '14px',
-                    opacity: '0.95',
-                    lineHeight: '1.5',
-                    marginBottom: '12px',
-                    padding: '0 8px',
-                    wordBreak: 'break-word'
+                    fontSize: '17px', // ✅ Tamaño aumentado
+                    opacity: '0.98',
+                    lineHeight: '1.6',
+                    marginBottom: '16px', // ✅ Margen aumentado
+                    padding: '0 12px', // ✅ Padding aumentado
+                    wordBreak: 'break-word',
+                    fontWeight: '600' // ✅ Negrita
                 }}>
-                    <strong>{post.category}</strong> {t('proudlyPresents', 'a le plaisir de vous présenter un')}
-                    <strong> {categoryInfo.title}</strong> {t('carefullyDesigned', 'soigneusement conçu pour votre plus grand plaisir.')}
+                    <strong style={{ fontSize: '18px' }}>{post.category}</strong> {t('proudlyPresents', 'a le plaisir de vous présenter un')}
+                    <strong style={{ fontSize: '18px' }}> {categoryInfo.title}</strong> {t('carefullyDesigned', 'soigneusement conçu pour votre plus grand plaisir.')}
                 </p>
 
-                {/* Información clave destacada */}
+                {/* Información clave */}
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
-                    gap: '12px',
+                    gap: '16px', // ✅ Espacio aumentado
                     flexWrap: 'wrap',
-                    marginTop: '12px'
+                    marginTop: '16px' // ✅ Margen aumentado
                 }}>
                     {post.datedepar && (
-                        <div style={{ textAlign: 'center', minWidth: '140px', flex: '1 1 auto', maxWidth: '200px' }}>
-                            <div style={{ fontSize: '11px', opacity: '0.85' }}>
+                        <div style={{ 
+                            textAlign: 'center', 
+                            minWidth: '160px', // ✅ Ancho aumentado
+                            flex: '1 1 auto', 
+                            maxWidth: '240px', // ✅ Ancho aumentado
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            padding: '12px', // ✅ Padding aumentado
+                            borderRadius: '8px'
+                        }}>
+                            <div style={{ 
+                                fontSize: '14px', // ✅ Tamaño aumentado
+                                opacity: '0.9',
+                                fontWeight: '700' // ✅ Negrita
+                            }}>
                                 {isRTL ? 'المغادرة 🗓️' : '🗓️ Départ'}
                             </div>
                             <div style={{ 
-                                fontSize: '12px', 
-                                fontWeight: '600',
+                                fontSize: '15px', // ✅ Tamaño aumentado
+                                fontWeight: '800',  // ✅ Extra negrita
                                 wordBreak: 'break-word',
-                                padding: '0 4px'
+                                padding: '6px', // ✅ Padding aumentado
+                                marginTop: '6px' // ✅ Margen aumentado
                             }}>
                                 {formatBeautifulDate(post.datedepar)}
                             </div>
                             {post.horadudepar && (
-                                <div style={{ fontSize: '11px', opacity: '0.85' }}>
+                                <div style={{ 
+                                    fontSize: '14px', // ✅ Tamaño aumentado
+                                    opacity: '0.9',
+                                    marginTop: '6px', // ✅ Margen aumentado
+                                    fontWeight: '700' // ✅ Negrita
+                                }}>
                                     {isRTL ? post.horadudepar : t('at', 'à')} {isRTL ? '' : post.horadudepar}
                                 </div>
                             )}
@@ -292,18 +358,26 @@ const DescriptionPost = ({ post }) => {
                     {post.destinacion && (
                         <div style={{ 
                             textAlign: 'center',
-                            minWidth: '120px',
+                            minWidth: '140px', // ✅ Ancho aumentado
                             flex: '1 1 auto',
-                            maxWidth: '200px'
+                            maxWidth: '240px', // ✅ Ancho aumentado
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            padding: '12px', // ✅ Padding aumentado
+                            borderRadius: '8px'
                         }}>
-                            <div style={{ fontSize: '11px', opacity: '0.85' }}>
+                            <div style={{ 
+                                fontSize: '14px', // ✅ Tamaño aumentado
+                                opacity: '0.9',
+                                fontWeight: '700' // ✅ Negrita
+                            }}>
                                 {isRTL ? 'الوجهة ✈️' : '✈️ Destination'}
                             </div>
                             <div style={{
-                                fontSize: '12px',
-                                fontWeight: '600',
+                                fontSize: '15px', // ✅ Tamaño aumentado
+                                fontWeight: '800',  // ✅ Extra negrita
                                 wordBreak: 'break-word',
-                                padding: '0 4px'
+                                padding: '6px', // ✅ Padding aumentado
+                                marginTop: '6px' // ✅ Margen aumentado
                             }}>
                                 {post.destinacion}
                             </div>
@@ -311,11 +385,27 @@ const DescriptionPost = ({ post }) => {
                     )}
 
                     {post.dureeSejour && (
-                        <div style={{ textAlign: 'center', minWidth: '100px', flex: '1 1 auto', maxWidth: '150px' }}>
-                            <div style={{ fontSize: '11px', opacity: '0.85' }}>
+                        <div style={{ 
+                            textAlign: 'center', 
+                            minWidth: '120px', // ✅ Ancho aumentado
+                            flex: '1 1 auto', 
+                            maxWidth: '180px', // ✅ Ancho aumentado
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            padding: '12px', // ✅ Padding aumentado
+                            borderRadius: '8px'
+                        }}>
+                            <div style={{ 
+                                fontSize: '14px', // ✅ Tamaño aumentado
+                                opacity: '0.9',
+                                fontWeight: '700' // ✅ Negrita
+                            }}>
                                 {isRTL ? 'المدة ⏱️' : '⏱️ Durée'}
                             </div>
-                            <div style={{ fontSize: '12px', fontWeight: '600' }}>
+                            <div style={{ 
+                                fontSize: '15px', // ✅ Tamaño aumentado
+                                fontWeight: '800', // ✅ Extra negrita
+                                marginTop: '6px' // ✅ Margen aumentado
+                            }}>
                                 {post.dureeSejour}
                             </div>
                         </div>
@@ -325,38 +415,43 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 2: DESCRIPCIÓN CON "LEER MÁS"
+    // 🔹 SECCIÓN 2: DESCRIPCIÓN - TEXTO MÁS GRANDE
     const generateDescriptionSection = () => {
         if (!post.description) return null;
 
         return (
             <div style={{
                 backgroundColor: '#f8fafc',
-                padding: '14px',
-                borderRadius: '10px',
-                marginBottom: '12px',
-                border: '1px solid #e2e8f0',
+                padding: '18px', // ✅ Padding aumentado
+                borderRadius: '12px',
+                marginBottom: '16px', // ✅ Margen aumentado
+                border: '2px solid #cbd5e1',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: styles.cardShadow
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '10px', // ✅ Espacio aumentado
+                    marginBottom: '14px', // ✅ Margen aumentado
                     color: styles.primaryColor,
-                    fontSize: '16px',
-                    flexDirection: isRTL ? 'row-reverse' : 'row'
+                    fontSize: '20px', // ✅ Tamaño aumentado
+                    fontWeight: '900',  // ✅ Extra negrita
+                    flexDirection: isRTL ? 'row-reverse' : 'row',
+                    borderBottom: '2px solid #cbd5e1',
+                    paddingBottom: '10px' // ✅ Padding aumentado
                 }}>
                     {isRTL ? 'وصف الرحلة 📝' : '📝 Description du Voyage'}
                 </h2>
                 <div style={{
-                    fontSize: '13px',
-                    color: '#4b5563',
-                    lineHeight: '1.6',
+                    fontSize: '16px', // ✅ Tamaño aumentado
+                    color: '#374151',
+                    lineHeight: '1.7',
                     textAlign: isRTL ? 'right' : 'left',
                     wordBreak: 'break-word',
-                    overflowWrap: 'break-word'
+                    overflowWrap: 'break-word',
+                    fontWeight: '600'  // ✅ Negrita
                 }}>
                     <span>
                         {
@@ -368,14 +463,15 @@ const DescriptionPost = ({ post }) => {
                     {post.description.length > 120 && (
                         <span
                             style={{
-                                color: '#3b82f6',
+                                color: '#1e293b',  // ✅ Sin azul
                                 cursor: 'pointer',
-                                fontWeight: '500',
-                                marginLeft: isRTL ? '0' : '6px',
-                                marginRight: isRTL ? '6px' : '0',
-                                fontSize: '12px',
+                                fontWeight: '800',  // ✅ Extra negrita
+                                marginLeft: isRTL ? '0' : '10px', // ✅ Margen aumentado
+                                marginRight: isRTL ? '10px' : '0', // ✅ Margen aumentado
+                                fontSize: '15px', // ✅ Tamaño aumentado
                                 display: 'inline-block',
-                                marginTop: '4px'
+                                marginTop: '8px', // ✅ Margen aumentado
+                                textDecoration: 'underline'
                             }}
                             onClick={() => setReadMore(!readMore)}
                         >
@@ -389,26 +485,32 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 3: INFORMACIÓN BÁSICA DEL VIAJE
+    // 🔹 SECCIÓN 3: INFO BÁSICA - TEXTO MÁS GRANDE
     const generateBasicInfoSection = () => {
         return (
             <div style={{
-                backgroundColor: '#f0f9ff',
-                padding: '14px',
-                borderRadius: '10px',
-                marginBottom: '12px',
-                border: '1px solid #bae6fd',
+                backgroundColor: '#eff6ff',
+                padding: '18px', // ✅ Padding aumentado
+                borderRadius: '12px',
+                marginBottom: '16px', // ✅ Margen aumentado
+                border: '2px solid #93c5fd',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: styles.cardShadow,
+             
+
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '10px', // ✅ Espacio aumentado
+                    marginBottom: '14px', // ✅ Margen aumentado
                     color: styles.primaryColor,
-                    fontSize: '16px',
-                    flexDirection: isRTL ? 'row-reverse' : 'row'
+                    fontSize: '20px', // ✅ Tamaño aumentado
+                    fontWeight: '900', // ✅ Extra negrita
+                    flexDirection: isRTL ? 'row-reverse' : 'row',
+                    borderBottom: '2px solid #93c5fd',
+                    paddingBottom: '10px' // ✅ Padding aumentado
                 }}>
                     {isRTL ? 'معلومات الرحلة 🎯' : '🎯 Informations du Voyage'}
                 </h2>
@@ -430,8 +532,8 @@ const DescriptionPost = ({ post }) => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px',
-                    marginTop: '10px'
+                    gap: '0',
+                    marginTop: '6px' // ✅ Margen aumentado
                 }}>
                     <FieldDisplay
                         label={isRTL ? "تاريخ المغادرة" : "Date Départ"}
@@ -458,28 +560,32 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 4: INFORMACIÓN DE UBICACIÓN
+    // 🔹 SECCIÓN 4: UBICACIÓN - TEXTO MÁS GRANDE
     const generateLocationSection = () => {
         if (!post.wilaya && !post.commune && !post.vile) return null;
 
         return (
             <div style={{
                 backgroundColor: '#f0fdf4',
-                padding: '14px',
-                borderRadius: '10px',
-                marginBottom: '12px',
-                border: '1px solid #dcfce7',
+                padding: '18px', // ✅ Padding aumentado
+                borderRadius: '12px',
+                marginBottom: '16px', // ✅ Margen aumentado
+                border: '2px solid #86efac',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: styles.cardShadow
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '10px', // ✅ Espacio aumentado
+                    marginBottom: '14px', // ✅ Margen aumentado
                     color: styles.successColor,
-                    fontSize: '16px',
-                    flexDirection: isRTL ? 'row-reverse' : 'row'
+                    fontSize: '20px', // ✅ Tamaño aumentado
+                    fontWeight: '900', // ✅ Extra negrita
+                    flexDirection: isRTL ? 'row-reverse' : 'row',
+                    borderBottom: '2px solid #86efac',
+                    paddingBottom: '10px' // ✅ Padding aumentado
                 }}>
                     {isRTL ? 'الموقع 🗺️' : '🗺️ Localisation'}
                 </h2>
@@ -487,7 +593,7 @@ const DescriptionPost = ({ post }) => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px'
+                    gap: '0'
                 }}>
                     <FieldDisplay
                         label={isRTL ? "الولاية" : "Wilaya"}
@@ -514,7 +620,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 5: INFORMACIÓN DE PRECIOS
+    // 🔹 SECCIÓN 5: PRECIOS - TEXTO MÁS GRANDE
     const generatePricingSection = () => {
         const hasPricing = post.precioBase || post.price || post.prixAdulte || post.prixEnfant ||
             post.prixBebe || post.tarifaNinos || post.tarifaBebes;
@@ -523,22 +629,26 @@ const DescriptionPost = ({ post }) => {
 
         return (
             <div style={{
-                backgroundColor: '#fff7ed',
-                padding: '14px',
-                borderRadius: '10px',
-                marginBottom: '12px',
-                border: '1px solid #fed7aa',
+                backgroundColor: '#fffbeb',
+                padding: '18px', // ✅ Padding aumentado
+                borderRadius: '12px',
+                marginBottom: '16px', // ✅ Margen aumentado
+                border: '2px solid #fbbf24',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                boxShadow: styles.cardShadow
             }}>
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '10px', // ✅ Espacio aumentado
+                    marginBottom: '14px', // ✅ Margen aumentado
                     color: styles.warningColor,
-                    fontSize: '16px',
-                    flexDirection: isRTL ? 'row-reverse' : 'row'
+                    fontSize: '20px', // ✅ Tamaño aumentado
+                    fontWeight: '900', // ✅ Extra negrita
+                    flexDirection: isRTL ? 'row-reverse' : 'row',
+                    borderBottom: '2px solid #fbbf24',
+                    paddingBottom: '10px' // ✅ Padding aumentado
                 }}>
                     {isRTL ? 'التسعير 💰' : '💰 Tarification'}
                 </h2>
@@ -546,7 +656,7 @@ const DescriptionPost = ({ post }) => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px'
+                    gap: '10px' // ✅ Espacio aumentado
                 }}>
                     <PriceDisplay
                         label={isRTL ? "السعر الأساسي" : "Prix de Base"}
@@ -567,7 +677,7 @@ const DescriptionPost = ({ post }) => {
                 </div>
 
                 {post.tipoPrecio && (
-                    <div style={{ marginTop: '8px' }}>
+                    <div style={{ marginTop: '12px' }}> {/* ✅ Margen aumentado */}
                         <FieldDisplay 
                             label={isRTL ? "نوع السعر" : "Type de Prix"} 
                             value={post.tipoPrecio}
@@ -576,21 +686,23 @@ const DescriptionPost = ({ post }) => {
                     </div>
                 )}
 
-                {/* Descuentos y ofertas */}
-                <div style={{ marginTop: '12px' }}>
+                {/* Descuentos */}
+                <div style={{ marginTop: '16px' }}> {/* ✅ Margen aumentado */}
                     <div style={{
-                        fontSize: '13px',
-                        fontWeight: '600',
-                        color: '#374151',
-                        marginBottom: '8px',
-                        textAlign: isRTL ? 'right' : 'left'
+                        fontSize: '18px', // ✅ Tamaño aumentado
+                        fontWeight: '900',  // ✅ Extra negrita
+                        color: '#000000', // ✅ Negro puro
+                        marginBottom: '12px', // ✅ Margen aumentado
+                        textAlign: isRTL ? 'right' : 'left',
+                        padding: '8px 0', // ✅ Padding aumentado
+                        borderBottom: '2px solid #fde68a'
                     }}>
                         {isRTL ? 'عروض خاصة 🎁' : '🎁 Offres Spéciales'}
                     </div>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '6px'
+                        gap: '0'
                     }}>
                         <FieldDisplay
                             label={isRTL ? "خصم جماعي" : "Remise Groupe"}
@@ -622,7 +734,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 6: INFORMACIÓN DEL HOTEL
+    // 🔹 PARTE 6: INFORMACIÓN DEL HOTEL - TEXTO MÁS GRANDE
     const generateHotelSection = () => {
         const hasHotelData = post.nombreHotel || post.ciudadHotel || post.zonaRegion || post.direccionHotel;
 
@@ -631,9 +743,9 @@ const DescriptionPost = ({ post }) => {
         return (
             <div style={{
                 backgroundColor: '#faf5ff',
-                padding: '14px',
+                padding: '16px', // ✅ Padding aumentado
                 borderRadius: '10px',
-                marginBottom: '12px',
+                marginBottom: '14px', // ✅ Margen aumentado
                 border: '1px solid #e9d5ff',
                 width: '100%',
                 boxSizing: 'border-box'
@@ -641,10 +753,11 @@ const DescriptionPost = ({ post }) => {
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '8px', // ✅ Espacio aumentado
+                    marginBottom: '12px', // ✅ Margen aumentado
                     color: '#8b5cf6',
-                    fontSize: '16px',
+                    fontSize: '18px', // ✅ Tamaño aumentado
+                    fontWeight: '800', // ✅ Extra negrita
                     flexDirection: isRTL ? 'row-reverse' : 'row'
                 }}>
                     {isRTL ? 'معلومات الإقامة 🏨' : '🏨 Informations d\'Hébergement'}
@@ -653,7 +766,7 @@ const DescriptionPost = ({ post }) => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px'
+                    gap: '10px' // ✅ Espacio aumentado
                 }}>
                     <FieldDisplay
                         label={isRTL ? "اسم الفندق" : "Nom de l'Hôtel"}
@@ -680,7 +793,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 7: INFORMACIÓN DE TRANSPORTE
+    // 🔹 PARTE 7: INFORMACIÓN DE TRANSPORTE - TEXTO MÁS GRANDE
     const generateTransportSection = () => {
         const hasTransportData = post.typeTransport || post.compagnieAerienne || post.classeVol || post.transportTerrestre;
 
@@ -688,10 +801,13 @@ const DescriptionPost = ({ post }) => {
 
         return (
             <div style={{
+              
+
+
                 backgroundColor: '#ecfdf5',
-                padding: '14px',
+                padding: '16px', // ✅ Padding aumentado
                 borderRadius: '10px',
-                marginBottom: '12px',
+                marginBottom: '14px', // ✅ Margen aumentado
                 border: '1px solid #a7f3d0',
                 width: '100%',
                 boxSizing: 'border-box'
@@ -699,10 +815,11 @@ const DescriptionPost = ({ post }) => {
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '8px', // ✅ Espacio aumentado
+                    marginBottom: '12px', // ✅ Margen aumentado
                     color: styles.successColor,
-                    fontSize: '16px',
+                    fontSize: '18px', // ✅ Tamaño aumentado
+                    fontWeight: '800', // ✅ Extra negrita
                     flexDirection: isRTL ? 'row-reverse' : 'row'
                 }}>
                     {isRTL ? 'معلومات النقل 🚗' : '🚗 Informations de Transport'}
@@ -711,7 +828,7 @@ const DescriptionPost = ({ post }) => {
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px'
+                    gap: '10px' // ✅ Espacio aumentado
                 }}>
                     <FieldDisplay
                         label={isRTL ? "نوع النقل" : "Type Transport"}
@@ -738,7 +855,7 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 8: PROPIEDAD DE VACACIONES
+    // 🔹 PARTE 8: PROPIEDAD DE VACACIONES - TEXTO MÁS GRANDE
     const generatePropertySection = () => {
         const hasPropertyData = post.tipoPropiedad || post.categoria || post.capacidad ||
             post.habitaciones || post.superficie || post.banos;
@@ -748,9 +865,9 @@ const DescriptionPost = ({ post }) => {
         return (
             <div style={{
                 backgroundColor: '#fffbeb',
-                padding: '14px',
+                padding: '16px', // ✅ Padding aumentado
                 borderRadius: '10px',
-                marginBottom: '12px',
+                marginBottom: '14px', // ✅ Margen aumentado
                 border: '1px solid #fde68a',
                 width: '100%',
                 boxSizing: 'border-box'
@@ -758,21 +875,24 @@ const DescriptionPost = ({ post }) => {
                 <h2 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    marginBottom: '10px',
+                    gap: '8px', // ✅ Espacio aumentado
+                    marginBottom: '12px', // ✅ Margen aumentado
                     color: styles.warningColor,
-                    fontSize: '16px',
+                    fontSize: '18px', // ✅ Tamaño aumentado
+                    fontWeight: '800', // ✅ Extra negrita
                     flexDirection: isRTL ? 'row-reverse' : 'row'
                 }}>
                     {isRTL ? 'خصائص العقار 🏠' : '🏠 Caractéristiques de la Propriété'}
                 </h2>
 
                 <div style={{
+                    
                     display: 'grid',
                     gridTemplateColumns: '1fr',
-                    gap: '8px'
+                    gap: '10px' // ✅ Espacio aumentado
                 }}>
                     <FieldDisplay
+                    
                         label={isRTL ? "نوع العقار" : "Type Propriété"}
                         value={post.tipoPropiedad}
                         icon="🏠"
@@ -807,16 +927,16 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 9: SERVICIOS INCLUIDOS
+    // 🔹 PARTE 9: SERVICIOS INCLUIDOS - TEXTO MÁS GRANDE
     const generateServicesSection = () => {
         if (!post.servicios || post.servicios.length === 0) return null;
 
         return (
             <div style={{
                 backgroundColor: '#f0f9ff',
-                padding: '14px',
+                padding: '16px', // ✅ Padding aumentado
                 borderRadius: '10px',
-                marginBottom: '12px',
+                marginBottom: '14px', // ✅ Margen aumentado
                 border: '1px solid #bae6fd',
                 width: '100%',
                 boxSizing: 'border-box'
@@ -830,37 +950,40 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🔹 PARTE 10: CONTACTO Y RESERVA
+    // 🔹 PARTE 10: CONTACTO Y RESERVA - TEXTO MÁS GRANDE CON TECLADO TELEFÓNICO
     const generateContactSection = () => {
         return (
             <div style={{
+               // ✅ CORREGIDO - dirección en style
                 background: styles.contactGradient,
                 color: 'white',
-                padding: '16px',
+                padding: '18px',
                 borderRadius: '10px',
                 textAlign: 'center',
                 width: '100%',
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
             }}>
                 <h2 style={{
-                    margin: '0 0 10px 0',
-                    fontSize: '16px',
+                    margin: '0 0 12px 0', // ✅ Margen aumentado
+                    fontSize: '18px', // ✅ Tamaño aumentado
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '6px',
-                    flexWrap: 'wrap'
+                    gap: '8px', // ✅ Espacio aumentado
+                    flexWrap: 'wrap',
+                    fontWeight: '800' // ✅ Extra negrita
                 }}>
                     {isRTL ? 'جاهز للحجز؟ 📞' : '📞 Prêt à Réserver ?'}
                 </h2>
 
                 <p style={{ 
-                    marginBottom: '12px', 
-                    fontSize: '14px', 
+                    marginBottom: '14px', // ✅ Margen aumentado
+                    fontSize: '16px', // ✅ Tamaño aumentado
                     opacity: '0.95',
-                    padding: '0 8px',
+                    padding: '0 10px', // ✅ Padding aumentado
                     lineHeight: '1.5',
-                    wordBreak: 'break-word'
+                    wordBreak: 'break-word',
+                    fontWeight: '600' // ✅ Negrita
                 }}>
                     {isRTL 
                         ? 'لا تفوت هذه الفرصة الفريدة! اتصل بنا الآن.'
@@ -871,35 +994,69 @@ const DescriptionPost = ({ post }) => {
                 {post.contacto && (
                     <div style={{
                         backgroundColor: 'rgba(255,255,255,0.2)',
-                        padding: '12px 16px',
+                        padding: '14px 18px', // ✅ Padding aumentado
                         borderRadius: '8px',
                         display: 'inline-block',
-                        marginBottom: '12px',
+                        marginBottom: '14px', // ✅ Margen aumentado
                         maxWidth: '100%',
                         wordBreak: 'break-word'
                     }}>
                         <div style={{ 
-                            fontSize: '11px', 
+                            fontSize: '13px', // ✅ Tamaño aumentado
                             opacity: '0.85', 
-                            marginBottom: '4px'
+                            marginBottom: '6px', // ✅ Margen aumentado
+                            fontWeight: '700' // ✅ Negrita
                         }}>
                             {isRTL ? 'اتصل بنا 📞' : '📞 Contactez-nous'}
                         </div>
-                        <div style={{ 
-                            fontSize: '16px', 
-                            fontWeight: 'bold',
-                            direction: 'ltr'
-                        }}>
+                        {/* ✅ CORRECCIÓN: Añadido inputMode="tel" para teclado telefónico */}
+                        <div 
+                            style={{ 
+                                fontSize: '18px', // ✅ Tamaño aumentado
+                                fontWeight: '900', // ✅ Extra negrita
+                                direction: 'ltr',
+                                cursor: 'pointer',
+                                padding: '8px 12px',
+                                borderRadius: '6px',
+                                backgroundColor: 'rgba(255,255,255,0.1)',
+                                display: 'inline-block',
+                                minWidth: '200px',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onClick={() => {
+                                // ✅ Abre el dialer del teléfono
+                                window.location.href = `tel:${post.contacto}`;
+                            }}
+                            onTouchStart={(e) => {
+                                // ✅ Efecto táctil para feedback
+                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                                e.currentTarget.style.transform = 'scale(0.98)';
+                            }}
+                            onTouchEnd={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                        >
                             {post.contacto}
+                        </div>
+                        <div style={{
+                            fontSize: '12px',
+                            opacity: '0.7',
+                            marginTop: '6px',
+                            fontStyle: 'italic'
+                        }}>
+                            {isRTL ? 'انقر للاتصال' : 'Cliquez pour appeler'}
                         </div>
                     </div>
                 )}
 
                 <p style={{ 
-                    fontSize: '13px', 
+                    fontSize: '15px', // ✅ Tamaño aumentado
                     opacity: '0.9', 
                     margin: '0',
-                    wordBreak: 'break-word'
+                    wordBreak: 'break-word',
+                    fontWeight: '700' // ✅ Negrita
                 }}>
                     {isRTL 
                         ? '🎉 احجز بثقة تامة!'
@@ -910,19 +1067,20 @@ const DescriptionPost = ({ post }) => {
         );
     };
 
-    // 🎯 RENDER PRINCIPAL MEJORADO Y RESPONSIVE
+    // 🎯 RENDER PRINCIPAL MEJORADO - CORRECCIÓN RTL COMPLETA
     return (
         <div style={{
-            direction: isRTL ? 'rtl' : 'ltr',
+            direction: isRTL ? 'rtl' : 'ltr', // ✅ CORREGIDO: Ahora el árabe se muestra de derecha a izquierda
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             lineHeight: '1.5',
             color: '#2d3748',
             maxWidth: '800px',
             margin: '0 auto',
-            padding: '12px',
+            padding: '14px', // ✅ Padding aumentado
             width: '100%',
             boxSizing: 'border-box',
-            overflowX: 'hidden'
+            overflowX: 'hidden',
+            textAlign: isRTL ? 'right' : 'left' // ✅ CORREGIDO: Alineación correcta para RTL
         }}>
             {generateMainAnnouncement()}
             {generateDescriptionSection()}

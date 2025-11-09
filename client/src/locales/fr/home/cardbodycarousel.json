@@ -1,7 +1,7 @@
 {
   
     "categories": {
-      "locationVacances": "Location de Vacances",
+      "locationVacances": "Location vacances",
       "hajjUmrah": "Hajj & Omra",
       "voyageOrganise": "Voyage Organisé",
       "businessTrip": "Voyage d'Affaires",
@@ -236,7 +236,7 @@
     },
     
     "travelTypes": {
-      "Location_Vacances": "Location de Vacances",
+      "Location_Vacances": "Location vacance",
       "hadj_Omra": "Hajj et Omra",
       "Voyage Organise": "Voyage Organisé"
     },

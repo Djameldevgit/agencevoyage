@@ -469,7 +469,7 @@ const ServicesLocationVacances = ({ postData, handleChangeInput }) => {
           fontWeight: '600',
           color: '#2d3748'
         }}>
-          🏡 {t("servicesss.servicesLocationVacances", "Services Location de Vacances")}
+          🏡 {t("servicesss.servicesLocationVacances", "Services Location vacance")}
         </h5>
         <small style={{ 
           color: '#718096',

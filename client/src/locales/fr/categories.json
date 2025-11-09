@@ -46,7 +46,7 @@
     
     "subcategories": {
       "Voyage_Organise": "Voyage Organisé",
-      "Location_Vacances": "Location de Vacances", 
+      "Location_Vacances": "Location vacance", 
       "hadj_Omra": "Hadj & Omra"
     },
  
@@ -189,7 +189,7 @@
  
     "servicesss": {
      
-      "servicesLocationVacances": "Services Location de Vacances",
+      "servicesLocationVacances": "Services Location vacance",
       "servicesDescriptionLocation": "Sélectionnez les équipements et services inclus",
       "selectServicesLocation": "Choisissez les équipements:",
       "selectPlaceholderLocation": "Sélectionnez les équipements désirés...",
@@ -791,7 +791,7 @@
     },
   
     "select_category_title": "📋 Choisir une catégorie",
-    "select_category_message": "Choisissez entre voyage organisé, location de vacances ou hadj et omra",
+    "select_category_message": "Choisissez entre voyage organisé, location vacance ou hadj et omra",
   
    
     "button_cancel": "Annuler",
